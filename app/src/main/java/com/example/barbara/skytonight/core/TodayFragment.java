@@ -93,6 +93,18 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public void clearList() {
+        this.list.clear();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateList(AstroObject object) {
+        this.list.add(object);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setPresenter(TodayContract.Presenter presenter) {
         mPresenter = presenter;
     }

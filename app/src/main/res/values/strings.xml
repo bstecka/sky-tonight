@@ -2,5 +2,6 @@
     <string name="app_name">SkyTonight</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="blank_fragment_news">This is a placeholder for the News fragment</string>
+    <string name="blank_fragment_calendar">This is a placeholder for the Calendar fragment</string>
 </resources>

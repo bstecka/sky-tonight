@@ -23,12 +23,12 @@ public class TodayRepository implements TodaysDataSource {
         INSTANCE = null;
     }
 
-    public List<AstroObject> getAstroObjectsFromRemoteRepository(Calendar time, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
-        return mAstroObjectsRemoteDataSource.getAstroObjects(time, callback);
+    public void getAstroObjectFromRemoteRepository(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
+        mAstroObjectsRemoteDataSource.getAstroObject(time, objectId, callback);
     }
 
     @Override
-    public List<AstroObject> getAstroObjects(Calendar time, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
-        return getAstroObjectsFromRemoteRepository(time, callback);
+    public void getAstroObject(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
+        getAstroObjectFromRemoteRepository(time, objectId, callback);
     }
 }

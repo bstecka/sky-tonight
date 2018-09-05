@@ -48,8 +48,30 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
     }
 
     @Override
-    public List<AstroObject> getAstroObjects(Calendar time, GetAstroObjectsCallback callback) {
-        return null;
+    public void getAstroObject(Calendar time, final int objectId, final GetAstroObjectsCallback callback) {
+        String RA, decl;
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'%20'HH:mm:ss");
+        isoFormat.setTimeZone(TimeZone.getTimeZone("UT1"));
+        String str_date = isoFormat.format(time.getTime());
+        System.out.println("Object " + objectId + ", " + str_date.replaceAll("%20", " "));
+        time.add(Calendar.HOUR, 1);
+        String str_date_end = isoFormat.format(time.getTime());
+        String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
+        Log.e("RemoteDataSource", url);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        callback.onDataLoaded(response, objectId);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onDataNotAvailable();
+            }
+        });
+        queue.add(stringRequest);
+        Log.e("RemoteDataSource", "Request added to queue");
     }
 
     private double strToDeg(String str) {
@@ -106,30 +128,5 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             e.printStackTrace();
         }
         return astroObject;
-    }
-
-    private AstroObject getAstroObject(final int objectId, Calendar time, final GetAstroObjectsCallback callback)
-    {
-        String RA, decl;
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'%20'HH:mm:ss");
-        isoFormat.setTimeZone(TimeZone.getTimeZone("UT1"));
-        String str_date = isoFormat.format(time.getTime());
-        System.out.println("Object " + objectId + ", " + str_date.replaceAll("%20", " "));
-        time.add(Calendar.HOUR, 1);
-        String str_date_end = isoFormat.format(time.getTime());
-        String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        callback.onDataLoaded(response, objectId);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Request", "Error");
-            }
-        });
-        return new AstroObject();
     }
 }

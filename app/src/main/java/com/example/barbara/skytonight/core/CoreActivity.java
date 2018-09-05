@@ -1,19 +1,17 @@
 package com.example.barbara.skytonight.core;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 
-public class CoreActivity extends AppCompatActivity implements TodayFragment.OnListFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener {
+public class CoreActivity extends AppCompatActivity implements TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener {
 
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
@@ -30,6 +28,8 @@ public class CoreActivity extends AppCompatActivity implements TodayFragment.OnL
         TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)),todayFragment);
         todayFragment.setPresenter(presenter);
         NewsFragment newsFragment = new NewsFragment();
+        CalendarFragment calendarFragment = new CalendarFragment();
+        pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);
         pagerAdapter.addFragments(newsFragment);
         viewPager.setAdapter(pagerAdapter);
@@ -40,13 +40,13 @@ public class CoreActivity extends AppCompatActivity implements TodayFragment.OnL
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.bottombaritem_calls:
-                                viewPager.setCurrentItem(1);
-                                return true;
-                            case R.id.bottombaritem_recents:
                                 viewPager.setCurrentItem(0);
                                 return true;
-                            case R.id.bottombaritem_trips:
+                            case R.id.bottombaritem_recents:
                                 viewPager.setCurrentItem(1);
+                                return true;
+                            case R.id.bottombaritem_trips:
+                                viewPager.setCurrentItem(2);
                                 return true;
                         }
                         return false;

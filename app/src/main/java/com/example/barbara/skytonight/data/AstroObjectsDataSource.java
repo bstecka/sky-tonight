@@ -12,5 +12,5 @@ public interface AstroObjectsDataSource {
         void onDataNotAvailable();
     }
 
-    List<AstroObject> getAstroObjects(Calendar time, GetAstroObjectsCallback callback);
+    void getAstroObject(Calendar time, int objectId, GetAstroObjectsCallback callback);
 }
