@@ -1,5 +1,6 @@
 package com.example.barbara.skytonight.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 
@@ -15,7 +16,7 @@ public class TodayContract {
         void updateList(ArrayList<AstroObject> list);
         void clearList();
         void updateList(AstroObject object);
-        Context getContext();
+        Activity getActivity();
     }
 
     interface Presenter extends BasePresenter {

@@ -29,7 +29,6 @@ public class TodayPresenter implements TodayContract.Presenter{
     private final TodayRepository mTodayRepository;
     private final TodayContract.View mTodayView;
     private Location userLocation;
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
 
     public TodayPresenter(TodayRepository mTodayRepository, TodayContract.View mTodayView) {
         Log.e("Presenter", "Presenter hello");

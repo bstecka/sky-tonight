@@ -1,5 +1,6 @@
 package com.example.barbara.skytonight.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -104,10 +105,8 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
-    public Context getContext(){
-        if (getActivity() != null)
-            return getActivity().getApplicationContext();
-        return null;
+    public Activity getActivity(){
+        return getActivity();
     }
 
     @Override

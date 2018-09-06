@@ -1,7 +1,11 @@
 package com.example.barbara.skytonight.data;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -14,7 +18,7 @@ public class TodayRepository implements TodaysDataSource {
 
     private static TodayRepository INSTANCE = null;
     private final AstroObjectsDataSource mAstroObjectsRemoteDataSource;
-    private FusedLocationProviderClient mFusedLocationClient;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
 
     public TodayRepository(AstroObjectsDataSource astroObjectsRemoteDataSource) {
         mAstroObjectsRemoteDataSource = astroObjectsRemoteDataSource;
@@ -41,16 +45,12 @@ public class TodayRepository implements TodaysDataSource {
     }
 
     @Override
-    public void getUserLocation(Context context, GetUserLocationCallback callback) {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null)
-                    createFragments(location);
-            }
-        });
+    public void getUserLocation(Activity activity, GetUserLocationCallback callback) {
+        if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+            return;
+        }
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(successListener);
     }
-
-
 }

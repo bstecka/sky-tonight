@@ -27,10 +27,14 @@ import java.util.List;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View, TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener {
 
+
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
+
     private CoreContract.Presenter mPresenter;
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,20 +115,10 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
             case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-                        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                if (location != null)
-                                    createFragments(location);
-                            }
-                        });
+                        mPresenter.start();
                     }
                 } else {
-                    Location location = new Location("dummyprovider");
-                    location.setLatitude(-27.1166662);
-                    location.setLongitude(-109.3666652);
-                    createFragments(location);
+                    mPresenter.start();
                     Toast.makeText(getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
                 }
                 return;
