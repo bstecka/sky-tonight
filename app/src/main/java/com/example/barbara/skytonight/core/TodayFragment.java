@@ -11,9 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroObject;
+import com.example.barbara.skytonight.data.TodayRepository;
 
 import java.util.ArrayList;
 
@@ -63,14 +65,20 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(final Context context) {
         super.onAttach(context);
-        double latitude = 0.0, longitude = 0.0;
-        if (getArguments().get("latitude") instanceof Double && getArguments().get("longitude") instanceof Double){
-            latitude = (double) getArguments().get("latitude");
-            longitude = (double) getArguments().get("longitude");
-        }
-        mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, latitude, longitude);
+        mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
+            @Override
+            public void onDataLoaded(Location location) {
+                mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, location.getLatitude(), location.getLongitude());
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, -27.104671, -109.360481);
+                Toast.makeText(context, R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
+            }
+        });
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
@@ -105,7 +113,7 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
-    public Activity getActivity(){
+    public Activity getCurrentActivity(){
         return getActivity();
     }
 

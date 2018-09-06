@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.TodayRepository;
+import com.example.barbara.skytonight.data.TodaysDataSource;
 import com.example.barbara.skytonight.util.AstroConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -28,19 +29,25 @@ public class TodayPresenter implements TodayContract.Presenter{
 
     private final TodayRepository mTodayRepository;
     private final TodayContract.View mTodayView;
-    private Location userLocation;
 
     public TodayPresenter(TodayRepository mTodayRepository, TodayContract.View mTodayView) {
         Log.e("Presenter", "Presenter hello");
         this.mTodayRepository = mTodayRepository;
         this.mTodayView = mTodayView;
-        this.userLocation = new Location("dummyprovider");
-        this.userLocation.setLongitude(0.0);
-        this.userLocation.setLatitude(0.0);
     }
 
-    private void getUserLocation() {
+    public void getUserLocation(final TodayContract.GetUserLocationCallback callback) {
+        mTodayRepository.getUserLocation(mTodayView.getCurrentActivity(), new TodaysDataSource.GetUserLocationCallback() {
+            @Override
+            public void onDataLoaded(Location location) {
+                callback.onDataLoaded(location);
+            }
 
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override

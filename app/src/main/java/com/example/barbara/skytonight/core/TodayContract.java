@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.core;
 
 import android.app.Activity;
-import android.content.Context;
 import android.location.Location;
 
 import com.example.barbara.skytonight.BasePresenter;
@@ -12,13 +11,20 @@ import java.util.ArrayList;
 
 public class TodayContract {
 
+    interface GetUserLocationCallback {
+
+        void onDataLoaded(Location location);
+        void onDataNotAvailable();
+    }
+
     interface View extends BaseView<Presenter> {
         void updateList(ArrayList<AstroObject> list);
         void clearList();
         void updateList(AstroObject object);
-        Activity getActivity();
+        Activity getCurrentActivity();
     }
 
     interface Presenter extends BasePresenter {
+        void getUserLocation(GetUserLocationCallback callback);
     }
 }

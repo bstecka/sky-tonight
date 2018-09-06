@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class TodayRepository implements TodaysDataSource {
 
@@ -45,12 +46,21 @@ public class TodayRepository implements TodaysDataSource {
     }
 
     @Override
-    public void getUserLocation(Activity activity, GetUserLocationCallback callback) {
-        if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void getUserLocation(Activity activity, final GetUserLocationCallback callback) {
+        if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             return;
         }
         FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(successListener);
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null)
+                    callback.onDataLoaded(location);
+                else {
+                    callback.onDataNotAvailable();
+                }
+            }
+        });
     }
 }
