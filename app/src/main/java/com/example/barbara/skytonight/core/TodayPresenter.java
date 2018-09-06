@@ -36,6 +36,10 @@ public class TodayPresenter implements TodayContract.Presenter{
         this.mTodayView = mTodayView;
     }
 
+    public void refreshLocationInView(Location location){
+        mTodayView.refreshLocation(location);
+    }
+
     public void getUserLocation(final TodayContract.GetUserLocationCallback callback) {
         mTodayRepository.getUserLocation(mTodayView.getCurrentActivity(), new TodaysDataSource.GetUserLocationCallback() {
             @Override

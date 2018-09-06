@@ -14,5 +14,6 @@ public class CoreContract {
     }
 
     interface Presenter extends BasePresenter {
+        void refreshLocation();
     }
 }

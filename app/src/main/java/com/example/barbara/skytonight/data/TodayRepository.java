@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
+import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.util.AppConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,7 +22,6 @@ public class TodayRepository implements TodaysDataSource {
 
     private static TodayRepository INSTANCE = null;
     private final AstroObjectsDataSource mAstroObjectsRemoteDataSource;
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
 
     public TodayRepository(AstroObjectsDataSource astroObjectsRemoteDataSource) {
         mAstroObjectsRemoteDataSource = astroObjectsRemoteDataSource;
@@ -46,10 +48,10 @@ public class TodayRepository implements TodaysDataSource {
     }
 
     @Override
-    public void getUserLocation(Activity activity, final GetUserLocationCallback callback) {
+    public void getUserLocation(final Activity activity, final GetUserLocationCallback callback) {
         if (ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-            return;
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+            callback.onDataNotAvailable();
         }
         FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
         mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
@@ -59,6 +61,7 @@ public class TodayRepository implements TodaysDataSource {
                     callback.onDataLoaded(location);
                 else {
                     callback.onDataNotAvailable();
+                    Toast.makeText(activity.getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
                 }
             }
         });

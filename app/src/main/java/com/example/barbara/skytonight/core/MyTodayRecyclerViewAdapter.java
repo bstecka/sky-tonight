@@ -34,11 +34,15 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         this.longitude = longitude;
     }
 
+    public void setLatLng(double latitude, double longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.fragment_today_list_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.fragment_today_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -48,6 +52,7 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         AstroObject object = mValues.get(position);
         holder.mItem = object.getId();
         holder.mNameTextView.setText(object.getName());
+        Log.e("onBindViewHolder", "Latlng: " + latitude + " " + longitude);
         holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));
         try {
             int directionStringId = context.getResources().getIdentifier("dir_" + object.getApproximateDirection().toLowerCase(), "string", context.getPackageName());
@@ -89,10 +94,10 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mNameTextView = (TextView) view.findViewById(R.id.astroObjectNameTextView);
-            mImageView = (ImageView) view.findViewById(R.id.astroObjectImageView);
-            mAltView = (TextView) view.findViewById(R.id.astroObjectAltTextView);
-            mAzView = (TextView) view.findViewById(R.id.astroObjectAzTextView);
+            mNameTextView = view.findViewById(R.id.astroObjectNameTextView);
+            mImageView = view.findViewById(R.id.astroObjectImageView);
+            mAltView = view.findViewById(R.id.astroObjectAltTextView);
+            mAzView = view.findViewById(R.id.astroObjectAzTextView);
         }
 
         @Override

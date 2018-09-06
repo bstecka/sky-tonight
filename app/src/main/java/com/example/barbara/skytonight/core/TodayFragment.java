@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,19 +65,25 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         return view;
     }
 
+    public void refreshLocation(Location location) {
+        mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
+        updateList(getList());
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onAttach(final Context context) {
         super.onAttach(context);
+        mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, -27.104671, -109.360481);
         mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
             @Override
             public void onDataLoaded(Location location) {
-                mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, location.getLatitude(), location.getLongitude());
+                Log.e("TodayFragment", "Location data loaded");
+                refreshLocation(location);
             }
 
             @Override
             public void onDataNotAvailable() {
-                mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, -27.104671, -109.360481);
-                Toast.makeText(context, R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
             }
         });
         if (context instanceof OnListFragmentInteractionListener) {
@@ -98,6 +105,13 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         this.list.clear();
         this.list.addAll(list);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public ArrayList<AstroObject> getList() {
+        ArrayList<AstroObject> copyList = new ArrayList<AstroObject>();
+        copyList.addAll(this.list);
+        return copyList;
     }
 
     @Override

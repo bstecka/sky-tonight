@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
+import com.example.barbara.skytonight.util.AppConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,14 +28,10 @@ import java.util.List;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View, TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener {
 
-
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
-
     private CoreContract.Presenter mPresenter;
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +43,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final TodayFragment todayFragment = new TodayFragment();
         final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), todayFragment);
         todayFragment.setPresenter(presenter);
+        mPresenter = new CorePresenter(presenter);
         NewsFragment newsFragment = new NewsFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
         pagerAdapter.addFragments(calendarFragment);
@@ -77,51 +75,17 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         mPresenter = presenter;
     }
 
-    public void createFragments(Location location){
-        Bundle args = new Bundle();
-        final TodayFragment todayFragment = new TodayFragment();
-        todayFragment.setArguments(args);
-        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), todayFragment);
-        todayFragment.setPresenter(presenter);
-        NewsFragment newsFragment = new NewsFragment();
-        CalendarFragment calendarFragment = new CalendarFragment();
-        pagerAdapter.addFragments(calendarFragment);
-        pagerAdapter.addFragments(todayFragment);
-        pagerAdapter.addFragments(newsFragment);
-        viewPager.setAdapter(pagerAdapter);
-        bottomNavigationView = findViewById(R.id.bottom_nav);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.bottombaritem_calendar:
-                        viewPager.setCurrentItem(0);
-                        return true;
-                    case R.id.bottombaritem_today:
-                        viewPager.setCurrentItem(1);
-                        return true;
-                    case R.id.bottombaritem_news:
-                        viewPager.setCurrentItem(2);
-                        return true;
-                }
-                return false;
-            }
-        });
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
+            case AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        mPresenter.start();
+                        mPresenter.refreshLocation();
+                        Toast.makeText(getApplicationContext(), R.string.core_yes_location_toast, Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    mPresenter.start();
+                } else
                     Toast.makeText(getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
-                }
-                return;
             }
         }
     }
