@@ -1,5 +1,6 @@
 package com.example.barbara.skytonight.core;
 
+import android.location.Location;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.AstroObject;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,11 +22,24 @@ public class TodayPresenter implements TodayContract.Presenter{
 
     private final TodayRepository mTodayRepository;
     private final TodayContract.View mTodayView;
+    private Location userLocation;
 
     public TodayPresenter(TodayRepository mTodayRepository, TodayContract.View mTodayView) {
         Log.e("Presenter", "Presenter hello");
         this.mTodayRepository = mTodayRepository;
         this.mTodayView = mTodayView;
+        this.userLocation = new Location("dummyprovider");
+        this.userLocation.setLongitude(0.0);
+        this.userLocation.setLatitude(0.0);
+    }
+
+    public void setUserLocation(Location location) {
+        this.userLocation = location;
+    }
+
+    @Override
+    public Location getUserLocation() {
+        return userLocation;
     }
 
     @Override
@@ -33,7 +48,8 @@ public class TodayPresenter implements TodayContract.Presenter{
     }
 
     private void showObjects(){
-        Calendar time = Calendar.getInstance();
+        final Calendar time = Calendar.getInstance();
+        Log.e("Presenter", time.getTime().toString());
         int [] objectIds = AstroConstants.ASTRO_OBJECT_IDS;
         Log.e("Presenter", "showObjects");
         mTodayView.clearList();
@@ -42,7 +58,8 @@ public class TodayPresenter implements TodayContract.Presenter{
                 @Override
                 public void onDataLoaded(String response, int objectId) {
                     Log.e("Presenter", "onDataLoaded");
-                    AstroObject astroObject = processString(response, objectId);
+                    Log.e("Presenter2", time.getTime().toString());
+                    AstroObject astroObject = processString(response, objectId, time);
                     mTodayView.updateList(astroObject);
                 }
                 @Override
@@ -53,7 +70,7 @@ public class TodayPresenter implements TodayContract.Presenter{
         }
     }
 
-    AstroObject processString(String str, int objectId) {
+    AstroObject processString(String str, int objectId, Calendar time) {
         AstroObject astroObject = new AstroObject();
         BufferedReader in = new BufferedReader(new StringReader(str));
         try {
@@ -70,7 +87,8 @@ public class TodayPresenter implements TodayContract.Presenter{
             List<String> splitList = Arrays.asList(content.toString().split(","));
             String RA = splitList.get(3);
             String decl = splitList.get(4);
-            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl));
+            Log.e("Presenter3", time.getTime().toString());
+            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), time);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();

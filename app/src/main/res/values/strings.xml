@@ -1,7 +1,18 @@
 <resources>
     <string name="app_name">SkyTonight</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="blank_fragment_news">This is a placeholder for the News fragment</string>
     <string name="blank_fragment_calendar">This is a placeholder for the Calendar fragment</string>
+    <string name="astro_object_alt">Altitude: %1$,.2f</string>
+    <string name="astro_object_az">Azimuth: </string>
+    <string name="dir_n">Direction: North</string>
+    <string name="dir_nw">Direction: North-West</string>
+    <string name="dir_ne">Direction: North-East</string>
+    <string name="dir_w">Direction: West</string>
+    <string name="dir_s">Direction: South</string>
+    <string name="dir_sw">Direction: South-West</string>
+    <string name="dir_se">Direction: South-East</string>
+    <string name="dir_e">Direction: East</string>
+    <string name="core_option_today">Today</string>
+    <string name="core_option_calendar">Calendar</string>
+    <string name="core_option_news">News</string>
 </resources>

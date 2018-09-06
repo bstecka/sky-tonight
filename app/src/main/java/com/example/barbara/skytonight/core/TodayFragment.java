@@ -1,6 +1,7 @@
 package com.example.barbara.skytonight.core;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,7 +33,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         list.add(new AstroObject(3, "Three"));
         list.add(new AstroObject(4, "Four"));
         list.add(new AstroObject(5, "Five"));
-        mAdapter = new MyTodayRecyclerViewAdapter(list, mListener);
     }
 
     @Override
@@ -71,6 +71,12 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        double latitude = 0.0, longitude = 0.0;
+        if (getArguments().get("latitude") instanceof Double && getArguments().get("longitude") instanceof Double){
+            latitude = (double) getArguments().get("latitude");
+            longitude = (double) getArguments().get("longitude");
+        }
+        mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, latitude, longitude);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {

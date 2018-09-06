@@ -54,8 +54,10 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
         isoFormat.setTimeZone(TimeZone.getTimeZone("UT1"));
         String str_date = isoFormat.format(time.getTime());
         System.out.println("Object " + objectId + ", " + str_date.replaceAll("%20", " "));
-        time.add(Calendar.HOUR, 1);
-        String str_date_end = isoFormat.format(time.getTime());
+        Calendar time2 = Calendar.getInstance();
+        time2.setTime(time.getTime());
+        time2.add(Calendar.HOUR, 1);
+        String str_date_end = isoFormat.format(time2.getTime());
         String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
         Log.e("RemoteDataSource", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -86,47 +88,4 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             return hours - Math.abs(minutes) - Math.abs(seconds);
     }
 
-    private double rightAscToDeg(String str) {
-        return strToDeg(str) * 15;
-    }
-
-    private AstroObject downloadContent(URL url, int objectId) throws IOException {
-        HttpURLConnection con = null;
-        AstroObject astroObject = new AstroObject();
-        try {
-            con = (HttpURLConnection) url.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            con.setRequestMethod("GET");
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        }
-        try {
-            int status = con.getResponseCode();
-            System.out.println("Status: " + status);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedReader in;
-        try {
-            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            in.readLine();
-            String objectName = Arrays.asList(in.readLine().split(" ")).get(21);
-            while ((inputLine = in.readLine()) != null && !inputLine.equals("$$SOE"));
-            if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE"))
-                content.append(inputLine);
-            List<String> splitList = Arrays.asList(content.toString().split(","));
-            String RA = splitList.get(3);
-            String decl = splitList.get(4);
-            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl));
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return astroObject;
-    }
 }
