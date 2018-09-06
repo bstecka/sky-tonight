@@ -28,11 +28,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
 
     public TodayFragment() {
         list = new ArrayList<AstroObject>();
-        list.add(new AstroObject(1, "One"));
-        list.add(new AstroObject(2, "Two"));
-        list.add(new AstroObject(3, "Three"));
-        list.add(new AstroObject(4, "Four"));
-        list.add(new AstroObject(5, "Five"));
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.example.barbara.skytonight.core;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionGroupInfo;
+import android.content.pm.PermissionInfo;
 import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.TodayRepository;
@@ -19,75 +22,98 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CoreActivity extends AppCompatActivity implements TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener {
 
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
     private FusedLocationProviderClient mFusedLocationClient;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         viewPager = findViewById(R.id.core_pager);
         viewPager.setPagingEnabled(false);
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
-        final Context context = this;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             return;
         }
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            Bundle args = new Bundle();
-                            args.putDouble("latitude", location.getLatitude());
-                            args.putDouble("longitude", location.getLongitude());
-                            final TodayFragment todayFragment = new TodayFragment();
-                            todayFragment.setArguments(args);
-                            final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(context)), todayFragment);
-                            todayFragment.setPresenter(presenter);
-                            NewsFragment newsFragment = new NewsFragment();
-                            CalendarFragment calendarFragment = new CalendarFragment();
-                            pagerAdapter.addFragments(calendarFragment);
-                            pagerAdapter.addFragments(todayFragment);
-                            pagerAdapter.addFragments(newsFragment);
-                            viewPager.setAdapter(pagerAdapter);
-                            bottomNavigationView = findViewById(R.id.bottom_nav);
-                            bottomNavigationView.setOnNavigationItemSelectedListener(
-                                    new BottomNavigationView.OnNavigationItemSelectedListener() {
-                                        @Override
-                                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                                            switch (item.getItemId()) {
-                                                case R.id.bottombaritem_calendar:
-                                                    viewPager.setCurrentItem(0);
-                                                    return true;
-                                                case R.id.bottombaritem_today:
-                                                    viewPager.setCurrentItem(1);
-                                                    return true;
-                                                case R.id.bottombaritem_news:
-                                                    viewPager.setCurrentItem(2);
-                                                    return true;
-                                            }
-                                            return false;
-                                        }
-                                    });
-
-
-                        }
-                    }
-                });
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null)
+                    createFragments(location);
             }
+        });
+    }
+
+    public void createFragments(Location location){
+        Bundle args = new Bundle();
+        args.putDouble("latitude", location.getLatitude());
+        args.putDouble("longitude", location.getLongitude());
+        final TodayFragment todayFragment = new TodayFragment();
+        todayFragment.setArguments(args);
+        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), todayFragment);
+        todayFragment.setPresenter(presenter);
+        NewsFragment newsFragment = new NewsFragment();
+        CalendarFragment calendarFragment = new CalendarFragment();
+        pagerAdapter.addFragments(calendarFragment);
+        pagerAdapter.addFragments(todayFragment);
+        pagerAdapter.addFragments(newsFragment);
+        viewPager.setAdapter(pagerAdapter);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.bottombaritem_calendar:
+                        viewPager.setCurrentItem(0);
+                        return true;
+                    case R.id.bottombaritem_today:
+                        viewPager.setCurrentItem(1);
+                        return true;
+                    case R.id.bottombaritem_news:
+                        viewPager.setCurrentItem(2);
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+                        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null)
+                                    createFragments(location);
+                            }
+                        });
+                    }
+                } else {
+                    Location location = new Location("dummyprovider");
+                    location.setLatitude(-27.1166662);
+                    location.setLongitude(-109.3666652);
+                    createFragments(location);
+                    Toast.makeText(getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
 
     @Override
     public void onListFragmentInteraction(String item) {
