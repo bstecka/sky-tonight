@@ -45,8 +45,7 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_list, container, false);
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -61,7 +60,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -103,6 +101,13 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     public void updateList(AstroObject object) {
         this.list.add(object);
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public Context getContext(){
+        if (getActivity() != null)
+            return getActivity().getApplicationContext();
+        return null;
     }
 
     @Override

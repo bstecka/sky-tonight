@@ -1,12 +1,18 @@
 package com.example.barbara.skytonight.core;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.util.AstroConstants;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +29,7 @@ public class TodayPresenter implements TodayContract.Presenter{
     private final TodayRepository mTodayRepository;
     private final TodayContract.View mTodayView;
     private Location userLocation;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
 
     public TodayPresenter(TodayRepository mTodayRepository, TodayContract.View mTodayView) {
         Log.e("Presenter", "Presenter hello");
@@ -33,13 +40,8 @@ public class TodayPresenter implements TodayContract.Presenter{
         this.userLocation.setLatitude(0.0);
     }
 
-    public void setUserLocation(Location location) {
-        this.userLocation = location;
-    }
+    private void getUserLocation() {
 
-    @Override
-    public Location getUserLocation() {
-        return userLocation;
     }
 
     @Override
