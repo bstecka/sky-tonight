@@ -12,6 +12,8 @@ public class AstroObject {
     private String name;
     private double rightAsc;
     private double decl;
+    private double illu;
+    private boolean waxing;
     private Double azimuth;
     private Double altitude;
     private Calendar time;
@@ -25,6 +27,17 @@ public class AstroObject {
         this.altitude = -1.0;
     }
 
+    public AstroObject(int id, String name, double rightAscension, double decl, double illu, boolean waxing, Calendar time) {
+        this.id = id;
+        this.name = name;
+        this.rightAsc = rightAscension;
+        this.decl = decl;
+        this.illu = illu;
+        this.waxing = waxing;
+        this.time = time;
+        Log.e("AstroObject", time.getTime().toString());
+    }
+
     public AstroObject(int id, String name, double rightAscension, double decl, Calendar time) {
         this.id = id;
         this.name = name;
@@ -34,12 +47,19 @@ public class AstroObject {
         Log.e("AstroObject", time.getTime().toString());
     }
 
+    public double getIlluPercentage() { return illu; }
+
     public String getName(){
         return name;
     }
 
     public String getId(){
         return "" + id;
+    }
+
+    public int getPhaseId() {
+        double phase = 14 * illu/10;
+        return waxing ? (int) phase : 13 + (int) phase;
     }
 
     public double getAltitude(double latitude, double longitude) {

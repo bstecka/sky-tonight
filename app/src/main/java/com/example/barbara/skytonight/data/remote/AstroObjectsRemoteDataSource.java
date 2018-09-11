@@ -81,6 +81,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
 
     private AstroObject processString(String str, int objectId, Calendar time) {
         AstroObject astroObject = new AstroObject();
+        Boolean waxing = false;
         BufferedReader in = new BufferedReader(new StringReader(str));
         try {
             in.readLine();
@@ -94,8 +95,14 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE"))
                 content.append(inputLine);
             List<String> splitList = Arrays.asList(content.toString().split(","));
-            String RA = splitList.get(3);
-            String decl = splitList.get(4);
+            String RA = splitList.get(3), decl = splitList.get(4), illu = splitList.get(21).trim();
+            if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE")) {
+                splitList = Arrays.asList(inputLine.split(","));
+                String illu2 = splitList.get(21).trim();
+                if (Double.parseDouble(illu2) - Double.parseDouble(illu) > 0)
+                    waxing = true;
+                Log.e("RemoteDataSource", objectId + " " + waxing.toString());
+            }
             Log.e("Presenter3", time.getTime().toString());
             astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), time);
             in.close();
