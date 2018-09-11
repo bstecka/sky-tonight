@@ -95,16 +95,16 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE"))
                 content.append(inputLine);
             List<String> splitList = Arrays.asList(content.toString().split(","));
-            String RA = splitList.get(3), decl = splitList.get(4), illu = splitList.get(21).trim();
+            String RA = splitList.get(3), decl = splitList.get(4);
+            double illu = Double.parseDouble(splitList.get(21).trim());
             if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE")) {
                 splitList = Arrays.asList(inputLine.split(","));
                 String illu2 = splitList.get(21).trim();
-                if (Double.parseDouble(illu2) - Double.parseDouble(illu) > 0)
+                if (Double.parseDouble(illu2) - illu > 0)
                     waxing = true;
-                Log.e("RemoteDataSource", objectId + " " + waxing.toString());
             }
             Log.e("Presenter3", time.getTime().toString());
-            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), time);
+            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), illu, waxing, time);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();

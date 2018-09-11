@@ -58,7 +58,7 @@ public class AstroObject {
     }
 
     public int getPhaseId() {
-        double phase = 14 * illu/10;
+        double phase = 14 * illu/100;
         return waxing ? (int) phase : 13 + (int) phase;
     }
 
