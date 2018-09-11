@@ -28,6 +28,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
 
@@ -64,7 +66,8 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        callback.onDataLoaded(response, objectId);
+                        AstroObject object = processString(response, objectId, Calendar.getInstance());
+                        callback.onDataLoaded(object);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -74,6 +77,32 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
         });
         queue.add(stringRequest);
         Log.e("RemoteDataSource", "Request added to queue");
+    }
+
+    private AstroObject processString(String str, int objectId, Calendar time) {
+        AstroObject astroObject = new AstroObject();
+        BufferedReader in = new BufferedReader(new StringReader(str));
+        try {
+            in.readLine();
+            String inputLine = in.readLine(), objectName = "";
+            Pattern pattern = Pattern.compile("(\\d{4})");
+            Matcher matcher = pattern.matcher(inputLine);
+            while (matcher.find())
+                objectName = inputLine.substring(matcher.end(), inputLine.length()-10).trim();
+            while ((inputLine = in.readLine()) != null && !inputLine.equals("$$SOE"));
+            StringBuilder content = new StringBuilder();
+            if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE"))
+                content.append(inputLine);
+            List<String> splitList = Arrays.asList(content.toString().split(","));
+            String RA = splitList.get(3);
+            String decl = splitList.get(4);
+            Log.e("Presenter3", time.getTime().toString());
+            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), time);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return astroObject;
     }
 
     private double strToDeg(String str) {
@@ -86,6 +115,10 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             return hours + Math.abs(minutes) + Math.abs(seconds);
         else
             return hours - Math.abs(minutes) - Math.abs(seconds);
+    }
+
+    private double rightAscToDeg(String str) {
+        return strToDeg(str) * 15;
     }
 
 }

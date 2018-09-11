@@ -31,7 +31,7 @@ public class TodayPresenter implements TodayContract.Presenter{
     private final TodayContract.View mTodayView;
 
     public TodayPresenter(TodayRepository mTodayRepository, TodayContract.View mTodayView) {
-        Log.e("Presenter", "Presenter hello");
+        Log.e("Presenter", "Presenter init");
         this.mTodayRepository = mTodayRepository;
         this.mTodayView = mTodayView;
     }
@@ -61,18 +61,14 @@ public class TodayPresenter implements TodayContract.Presenter{
 
     private void showObjects(){
         final Calendar time = Calendar.getInstance();
-        Log.e("Presenter", time.getTime().toString());
+        Log.e("Presenter", time.getTime().toString() + " - showObjects");
         int [] objectIds = AstroConstants.ASTRO_OBJECT_IDS;
-        Log.e("Presenter", "showObjects");
         mTodayView.clearList();
         for (int i = 0; i < objectIds.length; i++) {
             mTodayRepository.getAstroObject(time, objectIds[i], new AstroObjectsDataSource.GetAstroObjectsCallback() {
                 @Override
-                public void onDataLoaded(String response, int objectId) {
-                    Log.e("Presenter", "onDataLoaded");
-                    Log.e("Presenter2", time.getTime().toString());
-                    AstroObject astroObject = processString(response, objectId, time);
-                    mTodayView.updateList(astroObject);
+                public void onDataLoaded(AstroObject object) {
+                    mTodayView.updateList(object);
                 }
                 @Override
                 public void onDataNotAvailable() {
@@ -80,47 +76,5 @@ public class TodayPresenter implements TodayContract.Presenter{
                 }
             });
         }
-    }
-
-    AstroObject processString(String str, int objectId, Calendar time) {
-        AstroObject astroObject = new AstroObject();
-        BufferedReader in = new BufferedReader(new StringReader(str));
-        try {
-            StringBuilder content = new StringBuilder();
-            in.readLine();
-            String inputLine = in.readLine(), objectName = "";
-            Pattern pattern = Pattern.compile("(\\d{4})");
-            Matcher matcher = pattern.matcher(inputLine);
-            while (matcher.find())
-                objectName = inputLine.substring(matcher.end(), inputLine.length()-10).trim();
-            while ((inputLine = in.readLine()) != null && !inputLine.equals("$$SOE"));
-            if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE"))
-                content.append(inputLine);
-            List<String> splitList = Arrays.asList(content.toString().split(","));
-            String RA = splitList.get(3);
-            String decl = splitList.get(4);
-            Log.e("Presenter3", time.getTime().toString());
-            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), time);
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return astroObject;
-    }
-
-    private double strToDeg(String str) {
-        List<String> splitDegrees = Arrays.asList(str.split(" "));
-        double hours, minutes, seconds;
-        hours = Double.parseDouble(splitDegrees.get(0));
-        minutes = Double.parseDouble(splitDegrees.get(1))/60.0;
-        seconds = Double.parseDouble(splitDegrees.get(2))/3600.0;
-        if (hours >= 0)
-            return hours + Math.abs(minutes) + Math.abs(seconds);
-        else
-            return hours - Math.abs(minutes) - Math.abs(seconds);
-    }
-
-    private double rightAscToDeg(String str) {
-        return strToDeg(str) * 15;
     }
 }

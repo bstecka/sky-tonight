@@ -16,11 +16,6 @@ public class TodayContract {
         void onDataNotAvailable();
     }
 
-    interface GetAstroObjectCallback {
-        void onDataLoaded(AstroObject object);
-        void onDataNotAvailable();
-    }
-
     interface View extends BaseView<Presenter> {
         void updateList(ArrayList<AstroObject> list);
         void clearList();

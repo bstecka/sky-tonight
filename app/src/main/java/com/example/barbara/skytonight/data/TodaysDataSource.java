@@ -13,7 +13,6 @@ public interface TodaysDataSource {
     interface GetUserLocationCallback {
 
         void onDataLoaded(Location location);
-
         void onDataNotAvailable();
     }
 

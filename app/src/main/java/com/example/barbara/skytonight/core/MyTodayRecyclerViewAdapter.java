@@ -2,8 +2,6 @@ package com.example.barbara.skytonight.core;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroObject;
-import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.util.List;
 
@@ -55,7 +52,7 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         Log.e("onBindViewHolder", "Latlng: " + latitude + " " + longitude);
         holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));
         try {
-            int directionStringId = context.getResources().getIdentifier("dir_" + object.getApproximateDirection().toLowerCase(), "string", context.getPackageName());
+            int directionStringId = context.getResources().getIdentifier("dir_" + object.getApproximateDirectionString().toLowerCase(), "string", context.getPackageName());
             holder.mAzView.setText(context.getResources().getString(directionStringId));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();

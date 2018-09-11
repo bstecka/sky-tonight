@@ -25,15 +25,6 @@ public class AstroObject {
         this.altitude = -1.0;
     }
 
-    public AstroObject(int id, String name) {
-        this.id = id;
-        this.name = name;
-        this.rightAsc = -1;
-        this.decl = -1;
-        this.azimuth = -1.0;
-        this.altitude = -1.0;
-    }
-
     public AstroObject(int id, String name, double rightAscension, double decl, Calendar time) {
         this.id = id;
         this.name = name;
@@ -95,7 +86,7 @@ public class AstroObject {
         return gmst >= 0 ? gmst : gmst + 360.0;
     }
 
-    public String getApproximateDirection(){
+    public String getApproximateDirectionString(){
         if (azimuth == null)
             return "";
         if (azimuth >= 337.5 || azimuth < 22.5)

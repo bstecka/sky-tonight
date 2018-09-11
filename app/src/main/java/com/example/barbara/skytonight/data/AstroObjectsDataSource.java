@@ -7,8 +7,7 @@ public interface AstroObjectsDataSource {
 
     interface GetAstroObjectsCallback {
 
-        void onDataLoaded(String response, int objectId);
-
+        void onDataLoaded(AstroObject object);
         void onDataNotAvailable();
     }
 
