@@ -12,8 +12,12 @@ import java.util.ArrayList;
 public class TodayContract {
 
     interface GetUserLocationCallback {
-
         void onDataLoaded(Location location);
+        void onDataNotAvailable();
+    }
+
+    interface GetAstroObjectCallback {
+        void onDataLoaded(AstroObject object);
         void onDataNotAvailable();
     }
 

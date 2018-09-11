@@ -38,7 +38,7 @@ public class TodayRepository implements TodaysDataSource {
         INSTANCE = null;
     }
 
-    public void getAstroObjectFromRemoteRepository(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
+    private void getAstroObjectFromRemoteRepository(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
         mAstroObjectsRemoteDataSource.getAstroObject(time, objectId, callback);
     }
 
