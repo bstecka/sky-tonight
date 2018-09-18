@@ -10,12 +10,5 @@ import java.util.List;
 
 public interface TodaysDataSource {
 
-    interface GetUserLocationCallback {
-        void onDataLoaded(Location location);
-        void onDataNotAvailable();
-    }
-
     void getAstroObject(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback);
-
-    void getUserLocation(Activity activity, GetUserLocationCallback callback);
 }

@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.core.dummy.DummyContent;
+import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
@@ -26,7 +28,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoreActivity extends AppCompatActivity implements CoreContract.View, TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener, NewsFragment.OnFragmentInteractionListener {
+public class CoreActivity extends AppCompatActivity implements CoreContract.View,
+        TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
+        NewsFragment.OnFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
 
     private CoreContract.Presenter mPresenter;
     private BottomNavigationView bottomNavigationView;
@@ -41,14 +45,15 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         viewPager.setPagingEnabled(false);
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
-        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), todayFragment);
+        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), new CoreRepository(), todayFragment);
         todayFragment.setPresenter(presenter);
         mPresenter = new CorePresenter(presenter);
         NewsFragment newsFragment = new NewsFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
+        EventsFragment eventsFragment = new EventsFragment();
         pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);
-        pagerAdapter.addFragments(newsFragment);
+        pagerAdapter.addFragments(eventsFragment);
         viewPager.setAdapter(pagerAdapter);
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -97,6 +102,11 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
 }

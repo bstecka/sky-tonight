@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.EventsFragment.OnListFragmentInteractionListener;
 import com.example.barbara.skytonight.core.dummy.DummyContent.DummyItem;
 
@@ -28,8 +29,7 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_events2, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_events2, parent, false);
         return new ViewHolder(view);
     }
 

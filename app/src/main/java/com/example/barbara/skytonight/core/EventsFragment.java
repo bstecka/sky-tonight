@@ -3,7 +3,7 @@ package com.example.barbara.skytonight.core;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.dummy.DummyContent;
 import com.example.barbara.skytonight.core.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 public class EventsFragment extends Fragment implements EventsContract.View {
 

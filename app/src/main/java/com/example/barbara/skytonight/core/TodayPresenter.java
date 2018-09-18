@@ -1,38 +1,27 @@
 package com.example.barbara.skytonight.core;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
+import com.example.barbara.skytonight.data.CoreDataSource;
+import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.TodaysDataSource;
 import com.example.barbara.skytonight.util.AstroConstants;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class TodayPresenter implements TodayContract.Presenter{
+public class TodayPresenter implements TodayContract.Presenter {
 
     private final TodayRepository mTodayRepository;
+    private final CoreRepository mCoreRepository;
     private final TodayContract.View mTodayView;
 
-    public TodayPresenter(TodayRepository mTodayRepository, TodayContract.View mTodayView) {
+    public TodayPresenter(TodayRepository mTodayRepository, CoreRepository mCoreRepository, TodayContract.View mTodayView) {
         Log.e("Presenter", "Presenter init");
         this.mTodayRepository = mTodayRepository;
+        this.mCoreRepository = mCoreRepository;
         this.mTodayView = mTodayView;
     }
 
@@ -41,7 +30,7 @@ public class TodayPresenter implements TodayContract.Presenter{
     }
 
     public void getUserLocation(final TodayContract.GetUserLocationCallback callback) {
-        mTodayRepository.getUserLocation(mTodayView.getCurrentActivity(), new TodaysDataSource.GetUserLocationCallback() {
+        mCoreRepository.getUserLocation(mTodayView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
                 callback.onDataLoaded(location);
