@@ -17,4 +17,7 @@
     <string name="core_option_news">News</string>
     <string name="core_no_location_toast">Location not enabled - displaying the sky over the Easter Island.</string>
     <string name="core_yes_location_toast">Your location was successfully updated.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

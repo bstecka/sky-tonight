@@ -78,7 +78,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
             @Override
             public void onDataLoaded(Location location) {
-                Log.e("TodayFragment", "Location data loaded");
                 refreshLocation(location);
             }
 
