@@ -9,14 +9,16 @@ public class EventsRepository implements EventsDataSource {
 
     private static EventsRepository INSTANCE = null;
     private SolarEclipseDataSource mSolarEclipseDataSource;
+    private LunarEclipseDataSource mLunarEclipseDataSource;
 
-    public EventsRepository(SolarEclipseDataSource solarEclipseDataSource) {
+    public EventsRepository(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource) {
         mSolarEclipseDataSource = solarEclipseDataSource;
+        mLunarEclipseDataSource = lunarEclipseDataSource;
     }
 
-    public static EventsRepository getInstance(SolarEclipseDataSource solarEclipseDataSource) {
+    public static EventsRepository getInstance(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new EventsRepository(solarEclipseDataSource);
+            INSTANCE = new EventsRepository(solarEclipseDataSource, lunarEclipseDataSource);
         }
         return INSTANCE;
     }
@@ -31,6 +33,18 @@ public class EventsRepository implements EventsDataSource {
         mSolarEclipseDataSource.getSolarEclipses(latitude, longitude, new SolarEclipseDataSource.GetSolarEclipsesCallback() {
             @Override
             public void onDataLoaded(List<SolarEclipseEvent> events) {
+                eventList.addAll(events);
+                callback.onDataLoaded(eventList);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+        mLunarEclipseDataSource.getLunarEclipses(latitude, longitude, new LunarEclipseDataSource.GetLunarEclipsesCallback() {
+            @Override
+            public void onDataLoaded(List<LunarEclipseEvent> events) {
                 eventList.addAll(events);
                 callback.onDataLoaded(eventList);
             }

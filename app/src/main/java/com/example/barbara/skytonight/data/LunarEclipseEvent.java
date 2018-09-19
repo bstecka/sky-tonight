@@ -10,7 +10,7 @@ public class LunarEclipseEvent extends AstroEvent {
         super();
     }
 
-    public LunarEclipseEvent(int id, String name, Calendar startDate, int eclipseType) {
+    public LunarEclipseEvent(int id, Calendar startDate, int eclipseType) {
         super(id, "ecl_lun_" + eclipseType, startDate, startDate);
         this.eclipseType = eclipseType;
     }

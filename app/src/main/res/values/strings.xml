@@ -4,6 +4,8 @@
     <string name="blank_fragment_calendar">This is a placeholder for the Calendar fragment</string>
     <string name="astro_object_alt">Altitude: %1$.1f</string>
     <string name="astro_object_az">Azimuth: </string>
+    <string name="astro_event_peak">Peak: %1$s</string>
+    <string name="astro_event_vis">Visibility:  %1$s</string>
     <string name="dir_n">Direction: North</string>
     <string name="dir_nw">Direction: North-West</string>
     <string name="dir_ne">Direction: North-East</string>
@@ -14,7 +16,7 @@
     <string name="dir_e">Direction: East</string>
     <string name="ecl_sol_0">Eclipse invisible</string>
     <string name="ecl_sol_1">Partial Solar Eclipse</string>
-    <string name="ecl_sol_2">Annual Solar Eclipse</string>
+    <string name="ecl_sol_2">Annular Solar Eclipse</string>
     <string name="ecl_sol_3">Total Solar Eclipse</string>
     <string name="ecl_sol_4">Hybrid Solar Eclipse</string>
     <string name="ecl_sol_5">Solar Eclipse - Visibility Unknown</string>

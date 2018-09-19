@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -9,10 +8,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.barbara.skytonight.data.AstroObject;
-import com.example.barbara.skytonight.data.AstroObjectsDataSource;
+import com.example.barbara.skytonight.data.LunarEclipseDataSource;
+import com.example.barbara.skytonight.data.LunarEclipseEvent;
 import com.example.barbara.skytonight.data.SolarEclipseDataSource;
 import com.example.barbara.skytonight.data.SolarEclipseEvent;
 import com.example.barbara.skytonight.data.VolleySingleton;
@@ -21,44 +18,37 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
+public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
 
-    private static SolarEclipseRemoteDataSource INSTANCE;
+    private static LunarEclipseRemoteDataSource INSTANCE;
     private RequestQueue queue;
-    private final String url = "http://skytonight-backend.herokuapp.com/api/v1/solar-eclipses?future=1";
+    private final String url = "http://skytonight-backend.herokuapp.com/api/v1/lunar-eclipses?future=1";
 
-    private SolarEclipseRemoteDataSource() {}
+    private LunarEclipseRemoteDataSource() {}
 
-    public SolarEclipseRemoteDataSource(Context context) {
+    public LunarEclipseRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
     }
 
-    public static SolarEclipseRemoteDataSource getInstance(Context context) {
+    public static LunarEclipseRemoteDataSource getInstance(Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new SolarEclipseRemoteDataSource(context);
+            INSTANCE = new LunarEclipseRemoteDataSource(context);
         }
         return INSTANCE;
     }
 
     @Override
-    public void getSolarEclipses(final double latitude, final double longitude, final GetSolarEclipsesCallback callback) {
-        final List<SolarEclipseEvent> events = new ArrayList<>();
+    public void getLunarEclipses(final double latitude, final double longitude, final GetLunarEclipsesCallback callback) {
+        final List<LunarEclipseEvent> events = new ArrayList<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -69,9 +59,9 @@ public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
                         int id = object.getInt("id");
                         int type = object.getInt("eclipse_type");
                         Calendar cal = Calendar.getInstance();
-                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("date"));
+                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("greatest_eclipse"));
                         cal.setTime(date);
-                        SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type);
+                        LunarEclipseEvent eclipseEvent = new LunarEclipseEvent(id, cal, type);
                         events.add(eclipseEvent);
                     }
                 } catch (JSONException e) {

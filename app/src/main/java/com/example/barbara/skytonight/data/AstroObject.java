@@ -74,6 +74,12 @@ public class AstroObject {
         return azimuth;
     }
 
+    public double getAltitudeForComparator() {
+        if (altitude == null)
+            return 0.0;
+        return altitude;
+    }
+
     @Override
     public String toString() {
         String str = name + " (" + id + "), RA: " + rightAsc + ", Decl: " + decl;

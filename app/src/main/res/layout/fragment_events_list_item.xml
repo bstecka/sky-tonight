@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:id="@+id/astroEventNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Solar Eclipse"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/astroEventDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2011-01-04"
+            android:textSize="14dp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/astroEventPeakTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Peak time: 08:51:42"
+            android:textSize="12dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/astroEventVisTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Real visibility: partial"
+            android:textSize="12dp"
+            android:textStyle="normal" />
+
+    </LinearLayout>
+</LinearLayout>

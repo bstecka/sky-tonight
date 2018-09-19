@@ -10,7 +10,7 @@ public class SolarEclipseEvent extends AstroEvent {
         super();
     }
 
-    public SolarEclipseEvent(int id, String name, Calendar startDate, int eclipseType) {
+    public SolarEclipseEvent(int id, Calendar startDate, int eclipseType) {
         super(id, "ecl_sol_" + eclipseType, startDate, startDate);
         this.eclipseType = eclipseType;
     }

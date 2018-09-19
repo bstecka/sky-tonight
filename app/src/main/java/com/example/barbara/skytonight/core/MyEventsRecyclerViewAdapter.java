@@ -12,15 +12,11 @@ import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.EventsFragment.OnListFragmentInteractionListener;
 import com.example.barbara.skytonight.core.dummy.DummyContent.DummyItem;
 import com.example.barbara.skytonight.data.AstroEvent;
-import com.example.barbara.skytonight.data.SolarEclipseEvent;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRecyclerViewAdapter.ViewHolder> {
 
     private final List<AstroEvent> mValues;
@@ -35,7 +31,7 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.fragment_events2, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.fragment_events_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -45,13 +41,15 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
         AstroEvent event = mValues.get(position);
         try {
             int eclipseTypeStringId = context.getResources().getIdentifier(event.getName(), "string", context.getPackageName());
-            holder.mIdView.setText(context.getResources().getString(eclipseTypeStringId));
+            holder.mNameView.setText(context.getResources().getString(eclipseTypeStringId));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
-            holder.mIdView.setText(event.getName());
+            holder.mNameView.setText(event.getName());
         }
-        holder.mContentView.setText(event.getStartDate().toString());
-
+        String dateStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getStartDate());
+        String timeStr = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(event.getStartDate());
+        holder.mDateView.setText(dateStr);
+        holder.mPeakTimeView.setText(context.getString(R.string.astro_event_peak, timeStr));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,20 +69,22 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mNameView;
+        public final TextView mDateView;
+        public final TextView mPeakTimeView;
         public AstroEvent mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mNameView = (TextView) view.findViewById(R.id.astroEventNameTextView);
+            mDateView = (TextView) view.findViewById(R.id.astroEventDateTextView);
+            mPeakTimeView = (TextView) view.findViewById(R.id.astroEventPeakTextView);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mDateView.getText() + "'";
         }
     }
 }

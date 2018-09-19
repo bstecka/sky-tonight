@@ -23,6 +23,7 @@ import com.example.barbara.skytonight.data.EventsRepository;
 import com.example.barbara.skytonight.data.SolarEclipseDataSource;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -55,7 +56,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         NewsFragment newsFragment = new NewsFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
         EventsFragment eventsFragment = new EventsFragment();
-        EventsPresenter eventsPresenter = new EventsPresenter(new CoreRepository(), new EventsRepository(new SolarEclipseRemoteDataSource(this)), eventsFragment);
+        EventsPresenter eventsPresenter = new EventsPresenter(new CoreRepository(), new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this)), eventsFragment);
         eventsFragment.setPresenter(eventsPresenter);
         pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);

@@ -10,6 +10,8 @@ import com.example.barbara.skytonight.data.EventsDataSource;
 import com.example.barbara.skytonight.data.EventsRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EventsPresenter implements EventsContract.Presenter {
@@ -48,22 +50,30 @@ public class EventsPresenter implements EventsContract.Presenter {
         getUserLocation(new EventsContract.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
-                loadEventsForLocation(location.getLatitude(), location.getLongitude());
+                loadEvents(location.getLatitude(), location.getLongitude());
             }
 
             @Override
             public void onDataNotAvailable() {
-                loadEventsForLocation(-27.104671, -109.360481);
+                loadEvents(-27.104671, -109.360481);
             }
         });
     }
 
-    private void loadEventsForLocation(double latitude, double longitude) {
+    private void loadEvents(double latitude, double longitude) {
         mEventsView.clearList();
         mEventsRepository.getEvents(latitude, longitude, new EventsDataSource.GetEventsCallback() {
             @Override
             public void onDataLoaded(List<AstroEvent> events) {
                 ArrayList<AstroEvent> arrayList = (ArrayList<AstroEvent>) events;
+                if (arrayList.size() > 0) {
+                    Collections.sort(arrayList, new Comparator<AstroEvent>() {
+                        @Override
+                        public int compare(final AstroEvent object1, final AstroEvent object2) {
+                            return object1.getStartDate().compareTo(object2.getStartDate());
+                        }
+                    });
+                }
                 mEventsView.updateList(arrayList);
             }
 
