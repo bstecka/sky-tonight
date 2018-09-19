@@ -46,6 +46,42 @@ public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
         return INSTANCE;
     }
 
+    public void getLunarEclipses(final double latitude, final double longitude, int month, int year, final GetLunarEclipsesCallback callback) {
+        final List<LunarEclipseEvent> events = new ArrayList<>();
+        String url = this.url + "&month=" + month + "&year=" + year;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray arr = response.getJSONArray("events");
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject object = arr.getJSONObject(i);
+                        int id = object.getInt("id");
+                        int type = object.getInt("eclipse_type");
+                        Calendar cal = Calendar.getInstance();
+                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("greatest_eclipse"));
+                        cal.setTime(date);
+                        LunarEclipseEvent eclipseEvent = new LunarEclipseEvent(id, cal, type);
+                        events.add(eclipseEvent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                    Log.e("RemoteDataSource", "ParseException");
+                }
+                callback.onDataLoaded(events);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("RemoteDataSource", error.toString());
+                callback.onDataNotAvailable();
+            }
+        });
+        queue.add(jsonObjectRequest);
+    }
+
     @Override
     public void getLunarEclipses(final double latitude, final double longitude, final GetLunarEclipsesCallback callback) {
         final List<LunarEclipseEvent> events = new ArrayList<>();
