@@ -47,15 +47,18 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
             holder.mNameView.setText(event.getName());
         }
         String dateStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getStartDate());
-        String timeStr = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(event.getStartDate());
+        String peakStr = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(event.getPeakDate());
+        if (event.getStartDate().before(event.getEndDate())) {
+            dateStr += " - ";
+            dateStr += new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getEndDate());
+            peakStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getPeakDate());
+        }
         holder.mDateView.setText(dateStr);
-        holder.mPeakTimeView.setText(context.getString(R.string.astro_event_peak, timeStr));
+        holder.mPeakTimeView.setText(context.getString(R.string.astro_event_peak, peakStr));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }

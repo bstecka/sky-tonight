@@ -8,6 +8,7 @@ public class AstroEvent {
     private String name;
     private Calendar startDate;
     private Calendar endDate;
+    private Calendar peakDate;
 
     public AstroEvent() {
         this.id = -1;
@@ -19,7 +20,18 @@ public class AstroEvent {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.peakDate = startDate;
     }
+
+    public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.peakDate = peakDate;
+    }
+
+    public Date getPeakDate() { return peakDate.getTime(); }
 
     public Date getStartDate() { return startDate.getTime(); }
 

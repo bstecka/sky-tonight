@@ -10,15 +10,17 @@ public class EventsRepository implements EventsDataSource {
     private static EventsRepository INSTANCE = null;
     private SolarEclipseDataSource mSolarEclipseDataSource;
     private LunarEclipseDataSource mLunarEclipseDataSource;
+    private MeteorShowerDataSource mMeteorShowerDataSource;
 
-    public EventsRepository(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource) {
+    public EventsRepository(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource, MeteorShowerDataSource meteorShowerDataSource) {
         mSolarEclipseDataSource = solarEclipseDataSource;
         mLunarEclipseDataSource = lunarEclipseDataSource;
+        mMeteorShowerDataSource = meteorShowerDataSource;
     }
 
-    public static EventsRepository getInstance(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource) {
+    public static EventsRepository getInstance(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource, MeteorShowerDataSource meteorShowerDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new EventsRepository(solarEclipseDataSource, lunarEclipseDataSource);
+            INSTANCE = new EventsRepository(solarEclipseDataSource, lunarEclipseDataSource, meteorShowerDataSource);
         }
         return INSTANCE;
     }
@@ -45,6 +47,18 @@ public class EventsRepository implements EventsDataSource {
         mLunarEclipseDataSource.getLunarEclipses(latitude, longitude, new LunarEclipseDataSource.GetLunarEclipsesCallback() {
             @Override
             public void onDataLoaded(List<LunarEclipseEvent> events) {
+                eventList.addAll(events);
+                callback.onDataLoaded(eventList);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
+        mMeteorShowerDataSource.getMeteorShowers(latitude, longitude, new MeteorShowerDataSource.GetMeteorShowersCallback() {
+            @Override
+            public void onDataLoaded(List<MeteorShowerEvent> events) {
                 eventList.addAll(events);
                 callback.onDataLoaded(eventList);
             }
