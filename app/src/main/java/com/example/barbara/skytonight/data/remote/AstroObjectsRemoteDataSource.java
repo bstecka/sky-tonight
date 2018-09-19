@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
+import com.example.barbara.skytonight.data.VolleySingleton;
 import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.io.BufferedReader;
@@ -39,7 +40,8 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
     private AstroObjectsRemoteDataSource() {}
 
     public AstroObjectsRemoteDataSource(Context context) {
-        queue = Volley.newRequestQueue(context);
+        VolleySingleton singleton = VolleySingleton.getInstance(context);
+        queue = singleton.getRequestQueue();
     }
 
     public static AstroObjectsRemoteDataSource getInstance(Context context) {

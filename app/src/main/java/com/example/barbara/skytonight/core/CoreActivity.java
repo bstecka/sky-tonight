@@ -17,9 +17,13 @@ import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.dummy.DummyContent;
+import com.example.barbara.skytonight.data.AstroEvent;
 import com.example.barbara.skytonight.data.CoreRepository;
+import com.example.barbara.skytonight.data.EventsRepository;
+import com.example.barbara.skytonight.data.SolarEclipseDataSource;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -51,6 +55,8 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         NewsFragment newsFragment = new NewsFragment();
         CalendarFragment calendarFragment = new CalendarFragment();
         EventsFragment eventsFragment = new EventsFragment();
+        EventsPresenter eventsPresenter = new EventsPresenter(new CoreRepository(), new EventsRepository(new SolarEclipseRemoteDataSource(this)), eventsFragment);
+        eventsFragment.setPresenter(eventsPresenter);
         pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);
         pagerAdapter.addFragments(eventsFragment);
@@ -106,7 +112,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(AstroEvent event) {
 
     }
 }

@@ -14,6 +14,10 @@ import android.view.ViewGroup;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.dummy.DummyContent;
 import com.example.barbara.skytonight.core.dummy.DummyContent.DummyItem;
+import com.example.barbara.skytonight.data.AstroEvent;
+import com.example.barbara.skytonight.data.AstroObject;
+
+import java.util.ArrayList;
 
 public class EventsFragment extends Fragment implements EventsContract.View {
 
@@ -22,8 +26,17 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private MyEventsRecyclerViewAdapter mAdapter;
+    ArrayList<AstroEvent> list;
 
     public EventsFragment() {
+        list = new ArrayList<AstroEvent>();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     public static EventsFragment newInstance(int columnCount) {
@@ -53,7 +66,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyEventsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -61,12 +74,26 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mAdapter = new MyEventsRecyclerViewAdapter(list, mListener);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void clearList() {
+        this.list.clear();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateList(ArrayList<AstroEvent> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -86,6 +113,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(AstroEvent event);
     }
 }

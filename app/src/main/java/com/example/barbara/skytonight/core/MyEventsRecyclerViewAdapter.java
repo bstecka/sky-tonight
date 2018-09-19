@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.core;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.EventsFragment.OnListFragmentInteractionListener;
 import com.example.barbara.skytonight.core.dummy.DummyContent.DummyItem;
+import com.example.barbara.skytonight.data.AstroEvent;
+import com.example.barbara.skytonight.data.SolarEclipseEvent;
 
 import java.util.List;
 
@@ -19,25 +23,34 @@ import java.util.List;
  */
 public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<AstroEvent> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Context context;
 
-    public MyEventsRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public MyEventsRecyclerViewAdapter(List<AstroEvent> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_events2, parent, false);
+        context = parent.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.fragment_events2, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        AstroEvent event = mValues.get(position);
+        try {
+            int eclipseTypeStringId = context.getResources().getIdentifier(event.getName(), "string", context.getPackageName());
+            holder.mIdView.setText(context.getResources().getString(eclipseTypeStringId));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            holder.mIdView.setText(event.getName());
+        }
+        holder.mContentView.setText(event.getStartDate().toString());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +73,7 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public AstroEvent mItem;
 
         public ViewHolder(View view) {
             super(view);

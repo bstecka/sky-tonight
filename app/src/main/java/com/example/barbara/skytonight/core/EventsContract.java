@@ -5,6 +5,9 @@ import android.location.Location;
 
 import com.example.barbara.skytonight.BasePresenter;
 import com.example.barbara.skytonight.BaseView;
+import com.example.barbara.skytonight.data.AstroEvent;
+
+import java.util.ArrayList;
 
 public interface EventsContract {
 
@@ -14,6 +17,8 @@ public interface EventsContract {
     }
 
     interface View extends BaseView<Presenter> {
+        void updateList(ArrayList<AstroEvent> list);
+        void clearList();
         Activity getCurrentActivity();
     }
 
