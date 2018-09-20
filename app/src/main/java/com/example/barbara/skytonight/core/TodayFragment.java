@@ -49,6 +49,28 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public void onAttach(final Context context) {
+        super.onAttach(context);
+        mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, -27.104671, -109.360481);
+        mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
+            @Override
+            public void onDataLoaded(Location location) {
+                refreshLocation(location);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+            }
+        });
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_list, container, false);
         if (view instanceof RecyclerView) {
@@ -69,28 +91,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
         updateList(getList());
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onAttach(final Context context) {
-        super.onAttach(context);
-        mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, -27.104671, -109.360481);
-        mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
-            @Override
-            public void onDataLoaded(Location location) {
-                refreshLocation(location);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-            }
-        });
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override

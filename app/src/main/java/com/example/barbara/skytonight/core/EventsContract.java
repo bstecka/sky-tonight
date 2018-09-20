@@ -24,5 +24,7 @@ public interface EventsContract {
 
     interface Presenter extends BasePresenter {
         void getUserLocation(GetUserLocationCallback callback);
+        void showEventsForMonth(int month, int year);
+        void start(int month, int year);
     }
 }

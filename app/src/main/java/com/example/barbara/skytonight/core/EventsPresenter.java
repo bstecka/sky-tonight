@@ -46,6 +46,11 @@ public class EventsPresenter implements EventsContract.Presenter {
         showEvents();
     }
 
+    @Override
+    public void start(int month, int year) {
+        showEventsForMonth(month, year);
+    }
+
     private void showEvents(){
         getUserLocation(new EventsContract.GetUserLocationCallback() {
             @Override
@@ -56,6 +61,45 @@ public class EventsPresenter implements EventsContract.Presenter {
             @Override
             public void onDataNotAvailable() {
                 loadEvents(-27.104671, -109.360481);
+            }
+        });
+    }
+
+    @Override
+    public void showEventsForMonth(final int month, final int year){
+        getUserLocation(new EventsContract.GetUserLocationCallback() {
+            @Override
+            public void onDataLoaded(Location location) {
+                loadEventsForMonth(location.getLatitude(), location.getLongitude(), month, year);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                loadEvents(-27.104671, -109.360481);
+            }
+        });
+    }
+
+    private void loadEventsForMonth(double latitude, double longitude, int month, int year) {
+        mEventsView.clearList();
+        mEventsRepository.getEvents(latitude, longitude, month, year, new EventsDataSource.GetEventsCallback() {
+            @Override
+            public void onDataLoaded(List<AstroEvent> events) {
+                ArrayList<AstroEvent> arrayList = (ArrayList<AstroEvent>) events;
+                if (arrayList.size() > 0) {
+                    Collections.sort(arrayList, new Comparator<AstroEvent>() {
+                        @Override
+                        public int compare(final AstroEvent object1, final AstroEvent object2) {
+                            return object1.getStartDate().compareTo(object2.getStartDate());
+                        }
+                    });
+                }
+                mEventsView.updateList(arrayList);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                Log.e("EventsPresenter", "onDataNotAvailable");
             }
         });
     }

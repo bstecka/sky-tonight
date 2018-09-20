@@ -49,6 +49,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
     public void getMeteorShowers(final double latitude, final double longitude, int month, int year, final GetMeteorShowersCallback callback) {
         final List<MeteorShowerEvent> events = new ArrayList<>();
         String url = this.url + "&month=" + month + "&year=" + year;
+        Log.e("getMeteorShowers", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

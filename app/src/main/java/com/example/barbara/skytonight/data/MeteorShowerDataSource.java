@@ -11,4 +11,6 @@ public interface MeteorShowerDataSource {
     }
 
     void getMeteorShowers(double latitude, double longitude, GetMeteorShowersCallback callback);
+
+    void getMeteorShowers(double latitude, double longitude, int month, int year, GetMeteorShowersCallback callback);
 }
