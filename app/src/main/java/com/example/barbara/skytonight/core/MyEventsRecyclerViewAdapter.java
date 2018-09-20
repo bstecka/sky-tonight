@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.EventsFragment.OnListFragmentInteractionListener;
-import com.example.barbara.skytonight.core.dummy.DummyContent.DummyItem;
 import com.example.barbara.skytonight.data.AstroEvent;
 
 import java.text.SimpleDateFormat;

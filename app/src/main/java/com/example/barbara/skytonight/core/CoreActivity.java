@@ -1,11 +1,7 @@
 package com.example.barbara.skytonight.core;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.pm.PermissionGroupInfo;
-import android.content.pm.PermissionInfo;
-import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,23 +12,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.core.dummy.DummyContent;
 import com.example.barbara.skytonight.data.AstroEvent;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.EventsRepository;
-import com.example.barbara.skytonight.data.SolarEclipseDataSource;
 import com.example.barbara.skytonight.data.TodayRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
@@ -62,8 +50,10 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);
         pagerAdapter.addFragments(eventsFragment);
+        pagerAdapter.addFragments(newsFragment);
         viewPager.setAdapter(pagerAdapter);
         bottomNavigationView = findViewById(R.id.bottom_nav);
+        viewPager.setCurrentItem(1);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -74,8 +64,11 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
                     case R.id.bottombaritem_today:
                         viewPager.setCurrentItem(1);
                         return true;
-                    case R.id.bottombaritem_news:
+                    case R.id.bottombaritem_events:
                         viewPager.setCurrentItem(2);
+                        return true;
+                    case R.id.bottombaritem_news:
+                        viewPager.setCurrentItem(3);
                         return true;
                 }
                 return false;
