@@ -38,13 +38,13 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     private int currentlyDisplayedYear;
 
     public EventsFragment() {
-        list = new ArrayList<AstroEvent>();
+        list = new ArrayList<>();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start(currentlyDisplayedMonth, currentlyDisplayedYear);
+        mPresenter.start(Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR));
         int itemCount = mAdapter.getItemCount();
         if (itemCount < 1)
             displayNoEventsText();
@@ -60,7 +60,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         noEventsTextView.setVisibility(View.INVISIBLE);
     }
 
-    private void goForwards() {
+    private boolean goForwards() {
         if (currentlyDisplayedMonth < 11) {
             currentlyDisplayedMonth++;
         }
@@ -68,15 +68,20 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             currentlyDisplayedMonth = 0;
             currentlyDisplayedYear++;
         }
+        return true;
     }
 
-    private void goBackwards() {
-        if (currentlyDisplayedMonth > 0 && !(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH) ))
+    private boolean goBackwards() {
+        if (currentlyDisplayedMonth > 0 && !(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH) )) {
             currentlyDisplayedMonth--;
+            return true;
+        }
         else if (currentlyDisplayedYear > Calendar.getInstance().get(Calendar.YEAR)){
             currentlyDisplayedMonth = 11;
             currentlyDisplayedYear--;
+            return true;
         }
+        return false;
     }
 
     public static EventsFragment newInstance(int columnCount) {
@@ -149,9 +154,11 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         previousMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBackwards();
-                setCurrentMonthTextView();
-                mPresenter.showEventsForMonth(currentlyDisplayedMonth+1, currentlyDisplayedYear);
+                if (!(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH))) {
+                    goBackwards();
+                    setCurrentMonthTextView();
+                    mPresenter.showEventsForMonth(currentlyDisplayedMonth + 1, currentlyDisplayedYear);
+                }
             }
         });
         previousMonthButton.setLongClickable(true);
@@ -160,6 +167,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             public boolean onLongClick(View v) {
                 currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
                 currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
+                setCurrentMonthTextView();
                 mPresenter.showEventsForMonth(currentlyDisplayedMonth+1, currentlyDisplayedYear);
                 return false;
             }
@@ -175,6 +183,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
 
     @Override
     public void updateList(ArrayList<AstroEvent> list) {
+        Log.e("EventsFragment", "updateList");
         this.list.clear();
         this.list.addAll(list);
         if (list.size() < 1)
