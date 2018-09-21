@@ -96,8 +96,8 @@ public class TodayFragment extends Fragment implements TodayContract.View {
 
     @Override
     public ArrayList<AstroObject> getList() {
-        ArrayList<AstroObject> copyList = new ArrayList<>();
-        copyList.addAll(this.list);
+        ArrayList<AstroObject> copyList = (ArrayList<AstroObject>) list.clone();
+        //copyList.addAll(this.list);
         return copyList;
     }
 
