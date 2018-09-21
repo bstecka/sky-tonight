@@ -20,7 +20,7 @@ public class AstroObject {
 
     public AstroObject() {
         this.id = -1;
-        this.name = "Empty";
+        this.name = "";
         this.rightAsc = -1;
         this.decl = -1;
         this.azimuth = -1.0;
@@ -44,10 +44,11 @@ public class AstroObject {
         this.rightAsc = rightAscension;
         this.decl = decl;
         this.time = time;
-        Log.e("AstroObject", time.getTime().toString());
     }
 
     public double getIlluPercentage() { return illu; }
+
+    public String getShortName() { return "astr_obj_" + id; }
 
     public String getName(){
         return name;
@@ -109,8 +110,7 @@ public class AstroObject {
     }
 
     private void calculateAzAlt(double latitude, double longitude, Calendar date) {
-        Log.e("AstroObject", name + " " + date.getTime().toString());
-        Log.e("AstroObject", name + " " + latitude + " " + longitude);
+        Log.e("AstroObject", name + " " + latitude + " " + longitude + " " + date.getTime().toString());
         double julianDateAdj = getJulianDateAdj(date);
         double LST = getLocalSiderealTime(julianDateAdj, longitude);
         double HA = LST - this.rightAsc + 360;
@@ -152,7 +152,6 @@ public class AstroObject {
     }
 
     private double getJulianDateAdj(Calendar date){
-        Log.e("AstroObject", name + " JULIAN: " + getJulianDate(date));
         return getJulianDate(date) - AstroConstants.JDminusMJD;
     }
 }

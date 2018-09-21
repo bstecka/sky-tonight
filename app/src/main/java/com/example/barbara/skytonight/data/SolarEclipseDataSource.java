@@ -5,7 +5,6 @@ import java.util.List;
 public interface SolarEclipseDataSource {
 
     interface GetSolarEclipsesCallback {
-
         void onDataLoaded(List<SolarEclipseEvent> events);
         void onDataNotAvailable();
     }

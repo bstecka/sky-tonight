@@ -13,6 +13,7 @@ import com.example.barbara.skytonight.data.LunarEclipseEvent;
 import com.example.barbara.skytonight.data.SolarEclipseDataSource;
 import com.example.barbara.skytonight.data.SolarEclipseEvent;
 import com.example.barbara.skytonight.data.VolleySingleton;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +31,7 @@ public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
 
     private static LunarEclipseRemoteDataSource INSTANCE;
     private RequestQueue queue;
-    private final String url = "http://skytonight-backend.herokuapp.com/api/v1/lunar-eclipses?future=1";
+    private final String url = AppConstants.API_URL + "lunar-eclipses?future=1";
 
     private LunarEclipseRemoteDataSource() {}
 

@@ -2,6 +2,7 @@ package com.example.barbara.skytonight.core;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
         mListener = listener;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
@@ -35,7 +37,7 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         AstroEvent event = mValues.get(position);
         try {
@@ -70,18 +72,18 @@ public class MyEventsRecyclerViewAdapter extends RecyclerView.Adapter<MyEventsRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mNameView;
-        public final TextView mDateView;
-        public final TextView mPeakTimeView;
+        final View mView;
+        final TextView mNameView;
+        final TextView mDateView;
+        final TextView mPeakTimeView;
         public AstroEvent mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mNameView = (TextView) view.findViewById(R.id.astroEventNameTextView);
-            mDateView = (TextView) view.findViewById(R.id.astroEventDateTextView);
-            mPeakTimeView = (TextView) view.findViewById(R.id.astroEventPeakTextView);
+            mNameView = view.findViewById(R.id.astroEventNameTextView);
+            mDateView = view.findViewById(R.id.astroEventDateTextView);
+            mPeakTimeView = view.findViewById(R.id.astroEventPeakTextView);
         }
 
         @Override

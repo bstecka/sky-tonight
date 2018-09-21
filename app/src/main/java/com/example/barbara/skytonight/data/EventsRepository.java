@@ -31,7 +31,6 @@ public class EventsRepository implements EventsDataSource {
 
     private void getEventsFromRemoteRepository(final double latitude, final double longitude, int month, int year, final GetEventsCallback callback) {
         final List<AstroEvent> eventList = new ArrayList<>();
-        Log.e("EventsRepository", "getSolarEclipses");
         mSolarEclipseDataSource.getSolarEclipses(latitude, longitude, month, year, new SolarEclipseDataSource.GetSolarEclipsesCallback() {
             @Override
             public void onDataLoaded(List<SolarEclipseEvent> events) {
@@ -72,7 +71,6 @@ public class EventsRepository implements EventsDataSource {
 
     private void getEventsFromRemoteRepository(final double latitude, final double longitude, final GetEventsCallback callback) {
         final List<AstroEvent> eventList = new ArrayList<>();
-        Log.e("EventsRepository", "getSolarEclipses");
         mSolarEclipseDataSource.getSolarEclipses(latitude, longitude, new SolarEclipseDataSource.GetSolarEclipsesCallback() {
             @Override
             public void onDataLoaded(List<SolarEclipseEvent> events) {

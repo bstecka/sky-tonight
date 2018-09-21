@@ -12,7 +12,7 @@ public class AstroEvent {
 
     public AstroEvent() {
         this.id = -1;
-        this.name = "Empty";
+        this.name = "";
     }
 
     public AstroEvent(int id, String name, Calendar startDate, Calendar endDate) {

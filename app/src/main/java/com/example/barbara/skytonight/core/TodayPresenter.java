@@ -8,7 +8,6 @@ import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.CoreDataSource;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.TodayRepository;
-import com.example.barbara.skytonight.data.TodaysDataSource;
 import com.example.barbara.skytonight.util.AstroConstants;
 import java.util.Calendar;
 
@@ -19,7 +18,6 @@ public class TodayPresenter implements TodayContract.Presenter {
     private final TodayContract.View mTodayView;
 
     public TodayPresenter(TodayRepository mTodayRepository, CoreRepository mCoreRepository, TodayContract.View mTodayView) {
-        Log.e("Presenter", "Presenter init");
         this.mTodayRepository = mTodayRepository;
         this.mCoreRepository = mCoreRepository;
         this.mTodayView = mTodayView;
@@ -53,15 +51,15 @@ public class TodayPresenter implements TodayContract.Presenter {
         Log.e("Presenter", time.getTime().toString() + " - showObjects");
         int [] objectIds = AstroConstants.ASTRO_OBJECT_IDS;
         mTodayView.clearList();
-        for (int i = 0; i < objectIds.length; i++) {
-            mTodayRepository.getAstroObject(time, objectIds[i], new AstroObjectsDataSource.GetAstroObjectsCallback() {
+        for (int id: objectIds){
+            mTodayRepository.getAstroObject(time, id, new AstroObjectsDataSource.GetAstroObjectsCallback() {
                 @Override
                 public void onDataLoaded(AstroObject object) {
                     mTodayView.updateList(object);
                 }
                 @Override
                 public void onDataNotAvailable() {
-                    Log.e("Presenter", "onDataNotAvailable");
+                    Log.e("Presenter", "DataNotAvailable");
                 }
             });
         }

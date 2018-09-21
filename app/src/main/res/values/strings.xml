@@ -38,7 +38,7 @@
     <string name="month_9">October %1$d</string>
     <string name="month_10">November %1$d</string>
     <string name="month_11">December %1$d</string>
-    <string name="month_unknown">Unknown %1$d</string>
+    <string name="month_unknown">Unknown</string>
     <string name="ms_quadrantids">Quadrantids</string>
     <string name="ms_lyrids">Lyrids</string>
     <string name="ms_eta_aquariids">Eta Aquariids</string>
@@ -58,7 +58,13 @@
     <string name="core_option_events">Events</string>
     <string name="core_no_location_toast">Location not enabled - displaying the sky over the Easter Island.</string>
     <string name="core_yes_location_toast">Your location was successfully updated.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="astr_obj_301">Moon</string>
+    <string name="astr_obj_199">Mercury</string>
+    <string name="astr_obj_299">Venus</string>
+    <string name="astr_obj_499">Mars</string>
+    <string name="astr_obj_599">Jupiter</string>
+    <string name="astr_obj_699">Saturn</string>
+    <string name="astr_obj_799">Uranus</string>
+    <string name="astr_obj_899">Neptune</string>
 </resources>

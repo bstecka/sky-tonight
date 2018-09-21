@@ -25,8 +25,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
 
     private EventsContract.Presenter mPresenter;
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private MyEventsRecyclerViewAdapter mAdapter;
     private Context context;
@@ -44,7 +42,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start(Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR));
+        mPresenter.start();
         int itemCount = mAdapter.getItemCount();
         if (itemCount < 1)
             displayNoEventsText();
@@ -60,7 +58,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         noEventsTextView.setVisibility(View.INVISIBLE);
     }
 
-    private boolean goForwards() {
+    private void goForwards() {
         if (currentlyDisplayedMonth < 11) {
             currentlyDisplayedMonth++;
         }
@@ -68,26 +66,21 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             currentlyDisplayedMonth = 0;
             currentlyDisplayedYear++;
         }
-        return true;
     }
 
-    private boolean goBackwards() {
+    private void goBackwards() {
         if (currentlyDisplayedMonth > 0 && !(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH) )) {
             currentlyDisplayedMonth--;
-            return true;
         }
         else if (currentlyDisplayedYear > Calendar.getInstance().get(Calendar.YEAR)){
             currentlyDisplayedMonth = 11;
             currentlyDisplayedYear--;
-            return true;
         }
-        return false;
     }
 
-    public static EventsFragment newInstance(int columnCount) {
+    public static EventsFragment newInstance() {
         EventsFragment fragment = new EventsFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,9 +88,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -105,7 +95,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         super.onAttach(context);
         this.currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
         this.currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
-        Log.e("onAttach","Set currently displayed month");
         mAdapter = new MyEventsRecyclerViewAdapter(list, mListener);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -116,7 +105,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     }
 
     private void setCurrentMonthTextView(){
-        Log.e("SetCurrentMont", currentlyDisplayedMonth + " " + currentlyDisplayedYear);
+        Log.e("SetCurrentMonth", currentlyDisplayedMonth + " " + currentlyDisplayedYear);
         try {
             String resourceString = "month_" + currentlyDisplayedMonth;
             int resourceStringId = context.getResources().getIdentifier(resourceString, "string", context.getPackageName());
@@ -130,17 +119,12 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_events_list2, container, false);
+        context = view.getContext();
         noEventsTextView = view.findViewById(R.id.noEventsTextView);
         monthTextView = view.findViewById(R.id.monthTextView);
         recyclerView = view.findViewById(R.id.event_recycler_view);
-        context = view.getContext();
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mAdapter);
-        setCurrentMonthTextView();
         Button nextMonthButton = view.findViewById(R.id.nextMonthButton);
         nextMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +141,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
                 if (!(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH))) {
                     goBackwards();
                     setCurrentMonthTextView();
-                    mPresenter.showEventsForMonth(currentlyDisplayedMonth + 1, currentlyDisplayedYear);
+                    mPresenter.showEventsForMonth(currentlyDisplayedMonth+1, currentlyDisplayedYear);
                 }
             }
         });
@@ -172,6 +156,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
                 return false;
             }
         });
+        setCurrentMonthTextView();
         return view;
     }
 
@@ -183,7 +168,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
 
     @Override
     public void updateList(ArrayList<AstroEvent> list) {
-        Log.e("EventsFragment", "updateList");
         this.list.clear();
         this.list.addAll(list);
         if (list.size() < 1)

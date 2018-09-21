@@ -8,8 +8,10 @@ import com.example.barbara.skytonight.data.CoreDataSource;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.EventsDataSource;
 import com.example.barbara.skytonight.data.EventsRepository;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -43,12 +45,7 @@ public class EventsPresenter implements EventsContract.Presenter {
 
     @Override
     public void start() {
-        showEvents();
-    }
-
-    @Override
-    public void start(int month, int year) {
-        showEventsForMonth(month, year);
+        showEventsForMonth(Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR));
     }
 
     private void showEvents(){
@@ -75,7 +72,7 @@ public class EventsPresenter implements EventsContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                loadEvents(-27.104671, -109.360481);
+                loadEvents(AppConstants.DEFAULT_LATITUDE, AppConstants.DEFAULT_LONGITUDE);
             }
         });
     }
@@ -99,7 +96,7 @@ public class EventsPresenter implements EventsContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                Log.e("EventsPresenter", "onDataNotAvailable");
+                Log.e("EventsPresenter", "DataNotAvailable");
             }
         });
     }
@@ -123,7 +120,7 @@ public class EventsPresenter implements EventsContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                Log.e("EventsPresenter", "onDataNotAvailable");
+                Log.e("EventsPresenter", "DataNotAvailable");
             }
         });
     }

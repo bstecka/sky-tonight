@@ -5,7 +5,6 @@ import java.util.List;
 public interface MeteorShowerDataSource {
 
     interface GetMeteorShowersCallback {
-
         void onDataLoaded(List<MeteorShowerEvent> events);
         void onDataNotAvailable();
     }

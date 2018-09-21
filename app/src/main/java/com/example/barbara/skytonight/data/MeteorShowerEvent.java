@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class MeteorShowerEvent extends AstroEvent {
 
-    Calendar peakDate;
+    private Calendar peakDate;
 
     public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
         super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate);

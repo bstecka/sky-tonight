@@ -6,7 +6,6 @@ import java.util.List;
 public interface AstroObjectsDataSource {
 
     interface GetAstroObjectsCallback {
-
         void onDataLoaded(AstroObject object);
         void onDataNotAvailable();
     }

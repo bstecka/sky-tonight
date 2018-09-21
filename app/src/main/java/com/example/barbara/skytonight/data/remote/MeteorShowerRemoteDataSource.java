@@ -13,6 +13,7 @@ import com.example.barbara.skytonight.data.LunarEclipseEvent;
 import com.example.barbara.skytonight.data.MeteorShowerDataSource;
 import com.example.barbara.skytonight.data.MeteorShowerEvent;
 import com.example.barbara.skytonight.data.VolleySingleton;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +31,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
 
     private static MeteorShowerRemoteDataSource INSTANCE;
     private RequestQueue queue;
-    private final String url = "http://skytonight-backend.herokuapp.com/api/v1/meteor-showers?future=1";
+    private final String url = AppConstants.API_URL + "meteor-showers?future=1";
 
     private MeteorShowerRemoteDataSource() {}
 

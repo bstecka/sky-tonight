@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.VolleySingleton;
+import com.example.barbara.skytonight.util.AppConstants;
 import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.io.BufferedReader;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,17 +55,15 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
 
     @Override
     public void getAstroObject(Calendar time, final int objectId, final GetAstroObjectsCallback callback) {
-        String RA, decl;
-        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'%20'HH:mm:ss");
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'%20'HH:mm:ss", Locale.getDefault());
         isoFormat.setTimeZone(TimeZone.getTimeZone("UT1"));
-        String str_date = isoFormat.format(time.getTime());
-        System.out.println("Object " + objectId + ", " + str_date.replaceAll("%20", " "));
+        String startDate = isoFormat.format(time.getTime());
         Calendar time2 = Calendar.getInstance();
         time2.setTime(time.getTime());
         time2.add(Calendar.HOUR, 1);
-        String str_date_end = isoFormat.format(time2.getTime());
-        String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
-        Log.e("RemoteDataSource", url);
+        String endDate = isoFormat.format(time2.getTime());
+        String url = String.format(AppConstants.ASTRO_OBJECT_API_URL, objectId, startDate, endDate);
+        //String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -78,7 +78,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             }
         });
         queue.add(stringRequest);
-        Log.e("RemoteDataSource", "Request added to queue");
+        Log.e("RemoteDataSource", url + " request added to queue");
     }
 
     private AstroObject processString(String str, int objectId, Calendar time) {
@@ -101,11 +101,10 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             double illu = Double.parseDouble(splitList.get(21).trim());
             if ((inputLine = in.readLine()) != null && !inputLine.equals("$$EOE")) {
                 splitList = Arrays.asList(inputLine.split(","));
-                String illu2 = splitList.get(21).trim();
-                if (Double.parseDouble(illu2) - illu > 0)
+                String laterIllu = splitList.get(21).trim();
+                if (Double.parseDouble(laterIllu) - illu > 0)
                     waxing = true;
             }
-            Log.e("Presenter3", time.getTime().toString());
             astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), illu, waxing, time);
             in.close();
         } catch (IOException e) {

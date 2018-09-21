@@ -39,12 +39,12 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         viewPager.setPagingEnabled(false);
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
+        final NewsFragment newsFragment = new NewsFragment();
+        final CalendarFragment calendarFragment = new CalendarFragment();
+        final EventsFragment eventsFragment = new EventsFragment();
         final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), new CoreRepository(), todayFragment);
         todayFragment.setPresenter(presenter);
         mPresenter = new CorePresenter(presenter);
-        NewsFragment newsFragment = new NewsFragment();
-        CalendarFragment calendarFragment = new CalendarFragment();
-        EventsFragment eventsFragment = new EventsFragment();
         EventsPresenter eventsPresenter = new EventsPresenter(new CoreRepository(), new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this), new MeteorShowerRemoteDataSource(this)), eventsFragment);
         eventsFragment.setPresenter(eventsPresenter);
         pagerAdapter.addFragments(calendarFragment);
@@ -52,8 +52,8 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter.addFragments(eventsFragment);
         pagerAdapter.addFragments(newsFragment);
         viewPager.setAdapter(pagerAdapter);
-        bottomNavigationView = findViewById(R.id.bottom_nav);
         viewPager.setCurrentItem(1);
+        bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
