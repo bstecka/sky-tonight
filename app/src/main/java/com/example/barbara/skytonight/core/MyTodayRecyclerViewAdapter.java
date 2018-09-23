@@ -33,6 +33,7 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
     }
 
     public void setLatLng(double latitude, double longitude) {
+        Log.e("CoreRepository", "mFusedLocationClient success " + latitude + " " + longitude);
         this.latitude = latitude;
         this.longitude = longitude;
     }

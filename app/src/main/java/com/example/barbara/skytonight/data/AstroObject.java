@@ -35,7 +35,7 @@ public class AstroObject {
         this.illu = illu;
         this.waxing = waxing;
         this.time = time;
-        Log.e("AstroObject", time.getTime().toString());
+        //Log.e("AstroObject", time.getTime().toString());
     }
 
     public AstroObject(int id, String name, double rightAscension, double decl, Calendar time) {
@@ -110,7 +110,7 @@ public class AstroObject {
     }
 
     private void calculateAzAlt(double latitude, double longitude, Calendar date) {
-        Log.e("AstroObject", name + " " + latitude + " " + longitude + " " + date.getTime().toString());
+        //Log.e("AstroObject", name + " " + latitude + " " + longitude + " " + date.getTime().toString());
         double julianDateAdj = getJulianDateAdj(date);
         double LST = getLocalSiderealTime(julianDateAdj, longitude);
         double HA = LST - this.rightAsc + 360;

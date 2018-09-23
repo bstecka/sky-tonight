@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
     }
 
     @Override
@@ -44,14 +44,20 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     public void onAttach(final Context context) {
         super.onAttach(context);
         mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, AppConstants.DEFAULT_LATITUDE, AppConstants.DEFAULT_LONGITUDE);
+        Log.e("TodayFragment", "Call mFusedLocationClient");
         mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
             @Override
             public void onDataLoaded(Location location) {
+                Log.e("TodayFragment", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                 refreshLocation(location);
+                mPresenter.start();
+                Log.e("TodayFragment", "Location refreshed");
             }
 
             @Override
             public void onDataNotAvailable() {
+                Log.e("TodayFragment", "onDataNotAvailable");
+                mPresenter.start();
             }
         });
         if (context instanceof OnListFragmentInteractionListener) {
@@ -76,6 +82,7 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     public void refreshLocation(Location location) {
+        Log.e("refreshLocation", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
         updateList(getList());
         mAdapter.notifyDataSetChanged();
@@ -97,7 +104,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     @Override
     public ArrayList<AstroObject> getList() {
         ArrayList<AstroObject> copyList = (ArrayList<AstroObject>) list.clone();
-        //copyList.addAll(this.list);
         return copyList;
     }
 

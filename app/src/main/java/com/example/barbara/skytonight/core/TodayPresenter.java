@@ -28,15 +28,23 @@ public class TodayPresenter implements TodayContract.Presenter {
     }
 
     public void getUserLocation(final TodayContract.GetUserLocationCallback callback) {
+        System.out.println("PRINTLN getUserLocation");
+        Log.e("TodayPresenter", "Call mFusedLocationClient");
         mCoreRepository.getUserLocation(mTodayView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
+                Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
+                System.out.println("Today Presenter onDataLoaded mFusedLocationClient success " + location.getLongitude() + " " + location.getLongitude());
                 callback.onDataLoaded(location);
+                Log.e("TodayPresenter", "Callback fired");
             }
 
             @Override
             public void onDataNotAvailable() {
+                Log.e("TodayPresenter", "onDataNotAvailable mFusedLocationClient failure");
+                System.out.print("Today Presenter onDataNotAvailable");
                 callback.onDataNotAvailable();
+                Log.e("TodayPresenter", "Callback fired");
             }
         });
     }

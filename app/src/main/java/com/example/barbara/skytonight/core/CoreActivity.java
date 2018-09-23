@@ -21,6 +21,7 @@ import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.google.android.gms.location.LocationRequest;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
