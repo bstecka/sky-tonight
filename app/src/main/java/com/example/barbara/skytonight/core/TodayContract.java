@@ -11,11 +11,6 @@ import java.util.ArrayList;
 
 public class TodayContract {
 
-    interface GetUserLocationCallback {
-        void onDataLoaded(Location location);
-        void onDataNotAvailable();
-    }
-
     interface View extends BaseView<Presenter> {
         void clearList();
         void updateList(AstroObject object);
@@ -24,6 +19,5 @@ public class TodayContract {
     }
 
     interface Presenter extends BasePresenter {
-        //void getUserLocation(GetUserLocationCallback callback);
     }
 }

@@ -28,60 +28,32 @@ public class EventsPresenter implements EventsContract.Presenter {
         this.mEventsView = mEventsView;
     }
 
-    private void getUserLocation(final EventsContract.GetUserLocationCallback callback) {
-        mCoreRepository.getUserLocation(mEventsView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
-            @Override
-            public void onDataLoaded(Location location) {
-                callback.onDataLoaded(location);
-            }
-
-            @Override
-            public void onRequestForPermission() {
-                Log.e("TodayPresenter", "Waiting for response to request for permission @ CoreActivity");
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
-            }
-        });
-    }
-
     @Override
     public void start() {
         showEventsForMonth(Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR));
     }
 
-    private void showEvents(){
-        getUserLocation(new EventsContract.GetUserLocationCallback() {
-            @Override
-            public void onDataLoaded(Location location) {
-                loadEvents(location.getLatitude(), location.getLongitude());
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                loadEvents(-27.104671, -109.360481);
-            }
-        });
-    }
-
     @Override
     public void showEventsForMonth(final int month, final int year){
-        getUserLocation(new EventsContract.GetUserLocationCallback() {
+        mCoreRepository.getUserLocation(mEventsView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback()  {
             @Override
             public void onDataLoaded(Location location) {
-                loadEventsForMonth(location.getLatitude(), location.getLongitude(), month, year);
+                getEventsForMonth(location.getLatitude(), location.getLongitude(), month, year);
+            }
+
+            @Override
+            public void onRequestForPermission() {
+                Log.e("EventsPresenter", "Waiting for response to request for permission @ CoreActivity (NOOP)");
             }
 
             @Override
             public void onDataNotAvailable() {
-                loadEvents(AppConstants.DEFAULT_LATITUDE, AppConstants.DEFAULT_LONGITUDE);
+                getEventsForMonth(AppConstants.DEFAULT_LATITUDE, AppConstants.DEFAULT_LONGITUDE, month, year);
             }
         });
     }
 
-    private void loadEventsForMonth(double latitude, double longitude, int month, int year) {
+    private void getEventsForMonth(double latitude, double longitude, int month, int year) {
         mEventsView.clearList();
         mEventsRepository.getEvents(latitude, longitude, month, year, new EventsDataSource.GetEventsCallback() {
             @Override
@@ -105,7 +77,7 @@ public class EventsPresenter implements EventsContract.Presenter {
         });
     }
 
-    private void loadEvents(double latitude, double longitude) {
+    private void getEvents(double latitude, double longitude) {
         mEventsView.clearList();
         mEventsRepository.getEvents(latitude, longitude, new EventsDataSource.GetEventsCallback() {
             @Override

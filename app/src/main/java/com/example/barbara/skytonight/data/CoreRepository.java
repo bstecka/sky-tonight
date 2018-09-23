@@ -20,13 +20,18 @@ public class CoreRepository implements CoreDataSource {
 
     @Override
     public void getUserLocation(final Activity activity, final CoreDataSource.GetUserLocationCallback callback) {
-        Log.e("CoreRepository", "getUserLocation");
+        Log.e("CoreRepository", "getUserLocation, boolean: " + requestedPermission);
         boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean noCoarseLocationPermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-        if (noFineLocationPermission && noCoarseLocationPermission && !requestedPermission) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-            requestedPermission = true;
-            callback.onRequestForPermission();
+        if (noFineLocationPermission && noCoarseLocationPermission) {
+            if (!requestedPermission) {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+                requestedPermission = true;
+                callback.onRequestForPermission();
+            }
+            else {
+                callback.onDataNotAvailable();
+            }
         } else {
             FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
             Log.e("CoreRepository", "mFusedLocationClient getLastLocation");

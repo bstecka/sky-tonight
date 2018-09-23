@@ -11,11 +11,6 @@ import java.util.ArrayList;
 
 public interface EventsContract {
 
-    interface GetUserLocationCallback {
-        void onDataLoaded(Location location);
-        void onDataNotAvailable();
-    }
-
     interface View extends BaseView<Presenter> {
         void updateList(ArrayList<AstroEvent> list);
         void clearList();

@@ -44,10 +44,11 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final NewsFragment newsFragment = new NewsFragment();
         final CalendarFragment calendarFragment = new CalendarFragment();
         final EventsFragment eventsFragment = new EventsFragment();
-        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), new CoreRepository(), todayFragment);
+        final CoreRepository coreRepository = new CoreRepository();
+        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), coreRepository, todayFragment);
         todayFragment.setPresenter(presenter);
         mCorePresenter = new CorePresenter(presenter);
-        EventsPresenter eventsPresenter = new EventsPresenter(new CoreRepository(), new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this), new MeteorShowerRemoteDataSource(this)), eventsFragment);
+        EventsPresenter eventsPresenter = new EventsPresenter(coreRepository, new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this), new MeteorShowerRemoteDataSource(this)), eventsFragment);
         eventsFragment.setPresenter(eventsPresenter);
         pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);
@@ -91,10 +92,14 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         Log.e("onRequestPermission", "refreshLocationInCorePresenter");
                         mCorePresenter.refreshLocation();
+                        mCorePresenter.refreshLocation();
                         Toast.makeText(getApplicationContext(), R.string.core_yes_location_toast, Toast.LENGTH_LONG).show();
                     }
-                } else
+                } else {
+                    Log.e("onRequestPermission", "Permission denied");
                     Toast.makeText(getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
+                    mCorePresenter.refreshLocation();
+                }
             }
         }
     }
