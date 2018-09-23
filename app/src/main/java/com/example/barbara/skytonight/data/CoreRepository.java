@@ -27,24 +27,24 @@ public class CoreRepository implements CoreDataSource {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             requestedPermission = true;
             callback.onDataNotAvailable();
+        } else {
+            //callback.onDataLoaded(new Location("dummyprovider"));
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
+            Log.e("CoreRepository", "mFusedLocationClient getLastLocation");
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        Log.e("CoreRepository", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
+                        callback.onDataLoaded(location);
+                        Log.e("CoreRepository", "Callback fired");
+                    } else {
+                        Log.e("CoreRepository", "mFusedLocationClient returned null");
+                        callback.onDataNotAvailable();
+                        Toast.makeText(activity.getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
-        //callback.onDataLoaded(new Location("dummyprovider"));
-        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
-        Log.e("CoreRepository", "mFusedLocationClient getLastLocation");
-        mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    Log.e("CoreRepository", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
-                    callback.onDataLoaded(location);
-                    Log.e("CoreRepository", "Callback fired");
-                }
-                else {
-                    Log.e("CoreRepository", "mFusedLocationClient returned null");
-                    callback.onDataNotAvailable();
-                    Toast.makeText(activity.getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 }

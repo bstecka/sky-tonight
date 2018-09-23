@@ -57,7 +57,7 @@ public class TodayFragment extends Fragment implements TodayContract.View {
             @Override
             public void onDataNotAvailable() {
                 Log.e("TodayFragment", "onDataNotAvailable");
-                mPresenter.start();
+               // mPresenter.start();
             }
         });
         if (context instanceof OnListFragmentInteractionListener) {
@@ -83,8 +83,9 @@ public class TodayFragment extends Fragment implements TodayContract.View {
 
     public void refreshLocation(Location location) {
         Log.e("refreshLocation", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
+        Log.e("refreshLocation", "LIST SIZE " + list.size());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
-        updateList(getList());
+        updateList(list);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -96,8 +97,12 @@ public class TodayFragment extends Fragment implements TodayContract.View {
 
     @Override
     public void updateList(ArrayList<AstroObject> list) {
+        ArrayList<AstroObject> copyList = new ArrayList<>();
+        copyList.addAll(list);
         this.list.clear();
-        this.list.addAll(list);
+        Log.e("updateList", "LIST SIZE " + list.size());
+        this.list.addAll(copyList);
+        Log.e("updateList", "LIST SIZE " + list.size());
         mAdapter.notifyDataSetChanged();
     }
 

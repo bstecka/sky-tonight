@@ -24,6 +24,7 @@ public class TodayPresenter implements TodayContract.Presenter {
     }
 
     public void refreshLocationInView(Location location){
+        showObjects();
         mTodayView.refreshLocation(location);
     }
 
