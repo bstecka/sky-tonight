@@ -105,7 +105,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     }
 
     private void setCurrentMonthTextView(){
-        Log.e("SetCurrentMonth", currentlyDisplayedMonth + " " + currentlyDisplayedYear);
         try {
             String resourceString = "month_" + currentlyDisplayedMonth;
             int resourceStringId = context.getResources().getIdentifier(resourceString, "string", context.getPackageName());

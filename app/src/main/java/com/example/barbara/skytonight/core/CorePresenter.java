@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class CorePresenter implements CoreContract.Presenter {
 
-    TodayPresenter mTodayPresenter;
+    private TodayPresenter mTodayPresenter;
 
     public CorePresenter(TodayPresenter todayPresenter) {
         mTodayPresenter = todayPresenter;

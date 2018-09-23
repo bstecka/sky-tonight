@@ -16,13 +16,12 @@ import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroEvent;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.EventsRepository;
-import com.example.barbara.skytonight.data.TodayRepository;
+import com.example.barbara.skytonight.data.AstroObjectRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
-import com.google.android.gms.location.LocationRequest;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
@@ -45,7 +44,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final CalendarFragment calendarFragment = new CalendarFragment();
         final EventsFragment eventsFragment = new EventsFragment();
         final CoreRepository coreRepository = new CoreRepository();
-        final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), coreRepository, todayFragment);
+        final TodayPresenter presenter = new TodayPresenter(new AstroObjectRepository(new AstroObjectsRemoteDataSource(this)), coreRepository, todayFragment);
         todayFragment.setPresenter(presenter);
         mCorePresenter = new CorePresenter(presenter);
         EventsPresenter eventsPresenter = new EventsPresenter(coreRepository, new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this), new MeteorShowerRemoteDataSource(this)), eventsFragment);

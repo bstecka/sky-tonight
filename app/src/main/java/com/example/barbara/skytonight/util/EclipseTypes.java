@@ -1,6 +1,6 @@
 package com.example.barbara.skytonight.util;
 
-public class EclipseType {
+public class EclipseTypes {
     public final static int NO_ECLIPSE = 0;
     public final static int SOLAR_PARTIAL = 1;
     public final static int SOLAR_ANNULAR = 2;

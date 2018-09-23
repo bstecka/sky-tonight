@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.util.AppConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -34,14 +33,12 @@ public class CoreRepository implements CoreDataSource {
             }
         } else {
             FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
-            Log.e("CoreRepository", "mFusedLocationClient getLastLocation");
             mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
                         Log.e("CoreRepository", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                         callback.onDataLoaded(location);
-                        Log.e("CoreRepository", "Callback fired");
                     } else {
                         Log.e("CoreRepository", "mFusedLocationClient returned null");
                         callback.onDataNotAvailable();

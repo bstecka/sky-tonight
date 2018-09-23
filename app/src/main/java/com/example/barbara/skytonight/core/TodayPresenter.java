@@ -7,18 +7,18 @@ import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.CoreDataSource;
 import com.example.barbara.skytonight.data.CoreRepository;
-import com.example.barbara.skytonight.data.TodayRepository;
+import com.example.barbara.skytonight.data.AstroObjectRepository;
 import com.example.barbara.skytonight.util.AstroConstants;
 import java.util.Calendar;
 
 public class TodayPresenter implements TodayContract.Presenter {
 
-    private final TodayRepository mTodayRepository;
+    private final AstroObjectRepository mAstroObjectRepository;
     private final CoreRepository mCoreRepository;
     private final TodayContract.View mTodayView;
 
-    public TodayPresenter(TodayRepository mTodayRepository, CoreRepository mCoreRepository, TodayContract.View mTodayView) {
-        this.mTodayRepository = mTodayRepository;
+    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, TodayContract.View mTodayView) {
+        this.mAstroObjectRepository = mAstroObjectRepository;
         this.mCoreRepository = mCoreRepository;
         this.mTodayView = mTodayView;
     }
@@ -35,7 +35,7 @@ public class TodayPresenter implements TodayContract.Presenter {
 
             @Override
             public void onRequestForPermission() {
-                Log.e("TodayPresenter", "Waiting for response to request for permission @ CoreActivity (NOOP)");
+                Log.e("TodayPresenter", "Waiting for response to request for permission @ CoreActivity");
             }
 
             @Override
@@ -48,11 +48,10 @@ public class TodayPresenter implements TodayContract.Presenter {
 
     private void showObjects(){
         final Calendar time = Calendar.getInstance();
-        Log.e("TodayPresenter", time.getTime().toString() + " - showObjects");
         int [] objectIds = AstroConstants.ASTRO_OBJECT_IDS;
         mTodayView.clearList();
         for (int id: objectIds){
-            mTodayRepository.getAstroObject(time, id, new AstroObjectsDataSource.GetAstroObjectsCallback() {
+            mAstroObjectRepository.getAstroObject(time, id, new AstroObjectsDataSource.GetAstroObjectsCallback() {
                 @Override
                 public void onDataLoaded(AstroObject object) {
                     mTodayView.updateList(object);
