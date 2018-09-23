@@ -28,7 +28,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
         NewsFragment.OnFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
 
-    private CoreContract.Presenter mPresenter;
+    private CoreContract.Presenter mCorePresenter;
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
@@ -46,7 +46,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final EventsFragment eventsFragment = new EventsFragment();
         final TodayPresenter presenter = new TodayPresenter(new TodayRepository(new AstroObjectsRemoteDataSource(this)), new CoreRepository(), todayFragment);
         todayFragment.setPresenter(presenter);
-        mPresenter = new CorePresenter(presenter);
+        mCorePresenter = new CorePresenter(presenter);
         EventsPresenter eventsPresenter = new EventsPresenter(new CoreRepository(), new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this), new MeteorShowerRemoteDataSource(this)), eventsFragment);
         eventsFragment.setPresenter(eventsPresenter);
         pagerAdapter.addFragments(calendarFragment);
@@ -80,7 +80,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
 
     @Override
     public void setPresenter(CoreContract.Presenter presenter) {
-        mPresenter = presenter;
+        mCorePresenter = presenter;
     }
 
     @Override
@@ -89,8 +89,8 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
             case AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        Log.e("onRequestPermission", "refreshLocation");
-                        mPresenter.refreshLocation();
+                        Log.e("onRequestPermission", "refreshLocationInCorePresenter");
+                        mCorePresenter.refreshLocation();
                         Toast.makeText(getApplicationContext(), R.string.core_yes_location_toast, Toast.LENGTH_LONG).show();
                     }
                 } else

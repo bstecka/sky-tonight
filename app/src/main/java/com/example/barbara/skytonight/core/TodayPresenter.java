@@ -23,41 +23,27 @@ public class TodayPresenter implements TodayContract.Presenter {
         this.mTodayView = mTodayView;
     }
 
-    public void refreshLocationInView(Location location){
-        showObjects();
-        mTodayView.refreshLocation(location);
-    }
-
-    public void getUserLocation(final TodayContract.GetUserLocationCallback callback) {
-        System.out.println("PRINTLN getUserLocation");
-        Log.e("TodayPresenter", "Call mFusedLocationClient");
+    @Override
+    public void start() {
         mCoreRepository.getUserLocation(mTodayView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
                 Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
-                System.out.println("Today Presenter onDataLoaded mFusedLocationClient success " + location.getLongitude() + " " + location.getLongitude());
-                callback.onDataLoaded(location);
-                Log.e("TodayPresenter", "Callback fired");
+                mTodayView.refreshLocationInAdapter(location);
+                showObjects(); //objects are shown asynchronously
             }
 
             @Override
             public void onDataNotAvailable() {
                 Log.e("TodayPresenter", "onDataNotAvailable mFusedLocationClient failure");
-                System.out.print("Today Presenter onDataNotAvailable");
-                callback.onDataNotAvailable();
-                Log.e("TodayPresenter", "Callback fired");
+                //showObjects();
             }
         });
     }
 
-    @Override
-    public void start() {
-        showObjects();
-    }
-
     private void showObjects(){
         final Calendar time = Calendar.getInstance();
-        Log.e("Presenter", time.getTime().toString() + " - showObjects");
+        Log.e("TodayPresenter", time.getTime().toString() + " - showObjects");
         int [] objectIds = AstroConstants.ASTRO_OBJECT_IDS;
         mTodayView.clearList();
         for (int id: objectIds){
@@ -68,7 +54,7 @@ public class TodayPresenter implements TodayContract.Presenter {
                 }
                 @Override
                 public void onDataNotAvailable() {
-                    Log.e("Presenter", "DataNotAvailable");
+                    Log.e("TodayPresenter", "AstroObject not available");
                 }
             });
         }

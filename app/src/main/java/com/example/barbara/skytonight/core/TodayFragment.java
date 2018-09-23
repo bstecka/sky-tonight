@@ -45,21 +45,7 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         super.onAttach(context);
         mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, AppConstants.DEFAULT_LATITUDE, AppConstants.DEFAULT_LONGITUDE);
         Log.e("TodayFragment", "Call mFusedLocationClient");
-        mPresenter.getUserLocation(new TodayContract.GetUserLocationCallback(){
-            @Override
-            public void onDataLoaded(Location location) {
-                Log.e("TodayFragment", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
-                refreshLocation(location);
-                mPresenter.start();
-                Log.e("TodayFragment", "Location refreshed");
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                Log.e("TodayFragment", "onDataNotAvailable");
-               // mPresenter.start();
-            }
-        });
+        mPresenter.start();
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
@@ -81,12 +67,10 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         return view;
     }
 
-    public void refreshLocation(Location location) {
-        Log.e("refreshLocation", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
-        Log.e("refreshLocation", "LIST SIZE " + list.size());
+    public void refreshLocationInAdapter(Location location) {
+        Log.e("refreshLocationInAdapter", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
+        Log.e("refreshLocationInAdapter", "LIST SIZE " + list.size());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
-        updateList(list);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -104,12 +88,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         this.list.addAll(copyList);
         Log.e("updateList", "LIST SIZE " + list.size());
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public ArrayList<AstroObject> getList() {
-        ArrayList<AstroObject> copyList = (ArrayList<AstroObject>) list.clone();
-        return copyList;
     }
 
     @Override

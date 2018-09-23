@@ -20,13 +20,11 @@ public class TodayContract {
         void updateList(ArrayList<AstroObject> list);
         void clearList();
         void updateList(AstroObject object);
-        void refreshLocation(Location location);
-        ArrayList<AstroObject> getList();
+        void refreshLocationInAdapter(Location location);
         Activity getCurrentActivity();
     }
 
     interface Presenter extends BasePresenter {
-        void getUserLocation(GetUserLocationCallback callback);
-        void refreshLocationInView(Location location);
+        //void getUserLocation(GetUserLocationCallback callback);
     }
 }
