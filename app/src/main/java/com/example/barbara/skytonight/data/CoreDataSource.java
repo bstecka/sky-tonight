@@ -8,6 +8,7 @@ public interface CoreDataSource {
 
     interface GetUserLocationCallback {
         void onDataLoaded(Location location);
+        void onRequestForPermission();
         void onDataNotAvailable();
     }
 

@@ -28,12 +28,16 @@ public class EventsPresenter implements EventsContract.Presenter {
         this.mEventsView = mEventsView;
     }
 
-    @Override
-    public void getUserLocation(final EventsContract.GetUserLocationCallback callback) {
+    private void getUserLocation(final EventsContract.GetUserLocationCallback callback) {
         mCoreRepository.getUserLocation(mEventsView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
                 callback.onDataLoaded(location);
+            }
+
+            @Override
+            public void onRequestForPermission() {
+                Log.e("TodayPresenter", "Waiting for response to request for permission @ CoreActivity");
             }
 
             @Override

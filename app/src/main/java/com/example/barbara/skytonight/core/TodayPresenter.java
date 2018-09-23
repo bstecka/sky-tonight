@@ -34,9 +34,14 @@ public class TodayPresenter implements TodayContract.Presenter {
             }
 
             @Override
+            public void onRequestForPermission() {
+                Log.e("TodayPresenter", "Waiting for response to request for permission @ CoreActivity");
+            }
+
+            @Override
             public void onDataNotAvailable() {
                 Log.e("TodayPresenter", "onDataNotAvailable mFusedLocationClient failure");
-                //showObjects();
+                showObjects();
             }
         });
     }

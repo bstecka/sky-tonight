@@ -1,6 +1,5 @@
 package com.example.barbara.skytonight.core;
 
-import android.location.Location;
 import android.util.Log;
 
 public class CorePresenter implements CoreContract.Presenter {

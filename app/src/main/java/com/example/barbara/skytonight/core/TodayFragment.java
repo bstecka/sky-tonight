@@ -31,6 +31,11 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public void setPresenter(TodayContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
     }
@@ -44,7 +49,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     public void onAttach(final Context context) {
         super.onAttach(context);
         mAdapter = new MyTodayRecyclerViewAdapter(list, mListener, AppConstants.DEFAULT_LATITUDE, AppConstants.DEFAULT_LONGITUDE);
-        Log.e("TodayFragment", "Call mFusedLocationClient");
         mPresenter.start();
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -69,7 +73,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
 
     public void refreshLocationInAdapter(Location location) {
         Log.e("refreshLocationInAdapter", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
-        Log.e("refreshLocationInAdapter", "LIST SIZE " + list.size());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
     }
 
@@ -77,17 +80,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void updateList(ArrayList<AstroObject> list) {
-        ArrayList<AstroObject> copyList = new ArrayList<>();
-        copyList.addAll(list);
-        this.list.clear();
-        Log.e("updateList", "LIST SIZE " + list.size());
-        this.list.addAll(copyList);
-        Log.e("updateList", "LIST SIZE " + list.size());
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -107,10 +99,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         return getActivity();
     }
 
-    @Override
-    public void setPresenter(TodayContract.Presenter presenter) {
-        mPresenter = presenter;
-    }
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(String item);

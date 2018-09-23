@@ -17,7 +17,6 @@ public class TodayContract {
     }
 
     interface View extends BaseView<Presenter> {
-        void updateList(ArrayList<AstroObject> list);
         void clearList();
         void updateList(AstroObject object);
         void refreshLocationInAdapter(Location location);

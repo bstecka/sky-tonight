@@ -26,9 +26,8 @@ public class CoreRepository implements CoreDataSource {
         if (noFineLocationPermission && noCoarseLocationPermission && !requestedPermission) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, AppConstants.MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
             requestedPermission = true;
-            callback.onDataNotAvailable();
+            callback.onRequestForPermission();
         } else {
-            //callback.onDataLoaded(new Location("dummyprovider"));
             FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity.getApplicationContext());
             Log.e("CoreRepository", "mFusedLocationClient getLastLocation");
             mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
