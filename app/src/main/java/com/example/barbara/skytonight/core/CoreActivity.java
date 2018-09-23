@@ -92,7 +92,6 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         Log.e("onRequestPermission", "refreshLocationInCorePresenter");
                         mCorePresenter.refreshLocation();
-                        mCorePresenter.refreshLocation();
                         Toast.makeText(getApplicationContext(), R.string.core_yes_location_toast, Toast.LENGTH_LONG).show();
                     }
                 } else {
