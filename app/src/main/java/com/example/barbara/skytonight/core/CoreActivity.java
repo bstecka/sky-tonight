@@ -43,11 +43,10 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final NewsFragment newsFragment = new NewsFragment();
         final CalendarFragment calendarFragment = new CalendarFragment();
         final EventsFragment eventsFragment = new EventsFragment();
-        final CoreRepository coreRepository = new CoreRepository();
-        final TodayPresenter presenter = new TodayPresenter(new AstroObjectRepository(new AstroObjectsRemoteDataSource(this)), coreRepository, todayFragment);
+        final TodayPresenter presenter = new TodayPresenter(AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(this)), CoreRepository.getInstance(), todayFragment);
         todayFragment.setPresenter(presenter);
         mCorePresenter = new CorePresenter(presenter);
-        EventsPresenter eventsPresenter = new EventsPresenter(coreRepository, new EventsRepository(new SolarEclipseRemoteDataSource(this), new LunarEclipseRemoteDataSource(this), new MeteorShowerRemoteDataSource(this)), eventsFragment);
+        EventsPresenter eventsPresenter = new EventsPresenter(CoreRepository.getInstance(), EventsRepository.getInstance(SolarEclipseRemoteDataSource.getInstance(this), LunarEclipseRemoteDataSource.getInstance(this), MeteorShowerRemoteDataSource.getInstance(this)), eventsFragment);
         eventsFragment.setPresenter(eventsPresenter);
         pagerAdapter.addFragments(calendarFragment);
         pagerAdapter.addFragments(todayFragment);

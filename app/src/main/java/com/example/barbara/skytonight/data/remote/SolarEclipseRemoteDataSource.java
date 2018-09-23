@@ -45,7 +45,7 @@ public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
 
     private SolarEclipseRemoteDataSource() {}
 
-    public SolarEclipseRemoteDataSource(Context context) {
+    private SolarEclipseRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
     }

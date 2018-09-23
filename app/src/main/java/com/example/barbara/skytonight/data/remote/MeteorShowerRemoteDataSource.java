@@ -35,7 +35,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
 
     private MeteorShowerRemoteDataSource() {}
 
-    public MeteorShowerRemoteDataSource(Context context) {
+    private MeteorShowerRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
     }

@@ -35,7 +35,7 @@ public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
 
     private LunarEclipseRemoteDataSource() {}
 
-    public LunarEclipseRemoteDataSource(Context context) {
+    private LunarEclipseRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
     }

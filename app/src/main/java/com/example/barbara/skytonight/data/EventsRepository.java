@@ -10,7 +10,7 @@ public class EventsRepository implements EventsDataSource {
     private LunarEclipseDataSource mLunarEclipseDataSource;
     private MeteorShowerDataSource mMeteorShowerDataSource;
 
-    public EventsRepository(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource, MeteorShowerDataSource meteorShowerDataSource) {
+    private EventsRepository(SolarEclipseDataSource solarEclipseDataSource, LunarEclipseDataSource lunarEclipseDataSource, MeteorShowerDataSource meteorShowerDataSource) {
         mSolarEclipseDataSource = solarEclipseDataSource;
         mLunarEclipseDataSource = lunarEclipseDataSource;
         mMeteorShowerDataSource = meteorShowerDataSource;

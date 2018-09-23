@@ -41,7 +41,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
 
     private AstroObjectsRemoteDataSource() {}
 
-    public AstroObjectsRemoteDataSource(Context context) {
+    private AstroObjectsRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
     }

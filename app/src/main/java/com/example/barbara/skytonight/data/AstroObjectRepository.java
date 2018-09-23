@@ -7,7 +7,7 @@ public class AstroObjectRepository implements TodaysDataSource {
     private static AstroObjectRepository INSTANCE = null;
     private final AstroObjectsDataSource mAstroObjectsRemoteDataSource;
 
-    public AstroObjectRepository(AstroObjectsDataSource astroObjectsRemoteDataSource) {
+    private AstroObjectRepository(AstroObjectsDataSource astroObjectsRemoteDataSource) {
         mAstroObjectsRemoteDataSource = astroObjectsRemoteDataSource;
     }
 

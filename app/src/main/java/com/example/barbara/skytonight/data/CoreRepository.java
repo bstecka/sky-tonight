@@ -15,7 +15,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 public class CoreRepository implements CoreDataSource {
 
+    private static CoreRepository INSTANCE;
     private boolean requestedPermission = false;
+
+    private CoreRepository(){}
+
+    public static CoreRepository getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CoreRepository();
+        }
+        return INSTANCE;
+    }
 
     @Override
     public void getUserLocation(final Activity activity, final CoreDataSource.GetUserLocationCallback callback) {
