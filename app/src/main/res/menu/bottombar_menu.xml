@@ -6,18 +6,24 @@
         android:id="@+id/bottombaritem_calendar"
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:title="@string/core_option_calendar"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="withText" />
 
     <item
         android:id="@+id/bottombaritem_today"
         android:icon="@android:drawable/ic_menu_view"
         android:title="@string/core_option_today"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="withText" />
+
+    <item
+        android:id="@+id/bottombaritem_events"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/core_option_events"
+        app:showAsAction="withText" />
 
     <item
         android:id="@+id/bottombaritem_news"
         android:icon="@android:drawable/ic_menu_mapmode"
         android:title="@string/core_option_news"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="withText" />
 
 </menu>

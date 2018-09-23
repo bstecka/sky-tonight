@@ -1,7 +1,5 @@
 package com.example.barbara.skytonight.data;
 
-import android.util.Log;
-
 import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.util.Calendar;
@@ -12,17 +10,29 @@ public class AstroObject {
     private String name;
     private double rightAsc;
     private double decl;
+    private double illu;
+    private boolean waxing;
     private Double azimuth;
     private Double altitude;
     private Calendar time;
 
     public AstroObject() {
         this.id = -1;
-        this.name = "Empty";
+        this.name = "";
         this.rightAsc = -1;
         this.decl = -1;
         this.azimuth = -1.0;
         this.altitude = -1.0;
+    }
+
+    public AstroObject(int id, String name, double rightAscension, double decl, double illu, boolean waxing, Calendar time) {
+        this.id = id;
+        this.name = name;
+        this.rightAsc = rightAscension;
+        this.decl = decl;
+        this.illu = illu;
+        this.waxing = waxing;
+        this.time = time;
     }
 
     public AstroObject(int id, String name, double rightAscension, double decl, Calendar time) {
@@ -31,8 +41,11 @@ public class AstroObject {
         this.rightAsc = rightAscension;
         this.decl = decl;
         this.time = time;
-        Log.e("AstroObject", time.getTime().toString());
     }
+
+    public double getIlluPercentage() { return illu; }
+
+    public String getShortName() { return "astr_obj_" + id; }
 
     public String getName(){
         return name;
@@ -40,6 +53,11 @@ public class AstroObject {
 
     public String getId(){
         return "" + id;
+    }
+
+    public int getPhaseId() {
+        double phase = 14 * illu/100;
+        return waxing ? (int) phase : 13 + (int) phase;
     }
 
     public double getAltitude(double latitude, double longitude) {
@@ -54,21 +72,10 @@ public class AstroObject {
         return azimuth;
     }
 
-    public void calculateAzAlt(double latitude, double longitude, Calendar date) {
-        Log.e("AstroObject", name + " " + date.getTime().toString());
-        Log.e("AstroObject", name + " " + latitude + " " + longitude);
-        double julianDateAdj = getJulianDateAdj(date);
-        double LST = getLocalSiderealTime(julianDateAdj, longitude);
-        double HA = LST - this.rightAsc + 360;
-        double x, y, z, xhor, yhor, zhor;
-        x = Math.cos(Math.toRadians(HA)) * Math.cos(Math.toRadians(this.decl));
-        y = Math.sin(Math.toRadians(HA)) * Math.cos(Math.toRadians(this.decl));
-        z = Math.sin(Math.toRadians(this.decl));
-        xhor = x * Math.sin(Math.toRadians(latitude)) - z * Math.cos(Math.toRadians(latitude));
-        yhor = y;
-        zhor = x * Math.cos(Math.toRadians(latitude)) + z * Math.sin(Math.toRadians(latitude));
-        this.azimuth = Math.toDegrees(Math.atan2(yhor, xhor)) + 180;
-        this.altitude = Math.toDegrees(Math.asin(zhor));
+    public double getAltitudeForComparator() {
+        if (altitude == null)
+            return 0.0;
+        return altitude;
     }
 
     @Override
@@ -77,13 +84,6 @@ public class AstroObject {
         if (azimuth != null && altitude != null)
             str += ", Azimuth: " + azimuth + ", Alt: " + altitude;
         return str;
-    }
-
-    private double getGMST(double julianDateAdj)
-    {
-        double T = (julianDateAdj - 51544.5) / 36525.0;
-        double gmst = ((280.46061837 + 360.98564736629 * (julianDateAdj - 51544.5)) + 0.000387933 * T*T - T*T*T/38710000.0) % 360.0;
-        return gmst >= 0 ? gmst : gmst + 360.0;
     }
 
     public String getApproximateDirectionString(){
@@ -106,6 +106,28 @@ public class AstroObject {
         return "nw";
     }
 
+    private void calculateAzAlt(double latitude, double longitude, Calendar date) {
+        double julianDateAdj = getJulianDateAdj(date);
+        double LST = getLocalSiderealTime(julianDateAdj, longitude);
+        double HA = LST - this.rightAsc + 360;
+        double x, y, z, xhor, yhor, zhor;
+        x = Math.cos(Math.toRadians(HA)) * Math.cos(Math.toRadians(this.decl));
+        y = Math.sin(Math.toRadians(HA)) * Math.cos(Math.toRadians(this.decl));
+        z = Math.sin(Math.toRadians(this.decl));
+        xhor = x * Math.sin(Math.toRadians(latitude)) - z * Math.cos(Math.toRadians(latitude));
+        yhor = y;
+        zhor = x * Math.cos(Math.toRadians(latitude)) + z * Math.sin(Math.toRadians(latitude));
+        this.azimuth = Math.toDegrees(Math.atan2(yhor, xhor)) + 180;
+        this.altitude = Math.toDegrees(Math.asin(zhor));
+    }
+
+    private double getGMST(double julianDateAdj)
+    {
+        double T = (julianDateAdj - 51544.5) / 36525.0;
+        double gmst = ((280.46061837 + 360.98564736629 * (julianDateAdj - 51544.5)) + 0.000387933 * T*T - T*T*T/38710000.0) % 360.0;
+        return gmst >= 0 ? gmst : gmst + 360.0;
+    }
+
     private double getLocalSiderealTime(double julianDateAdj, double longitudeDeg)
     {
         return (getGMST(julianDateAdj) + longitudeDeg) % 360.0;
@@ -126,7 +148,6 @@ public class AstroObject {
     }
 
     private double getJulianDateAdj(Calendar date){
-        Log.e("AstroObject", name + " JULIAN: " + getJulianDate(date));
         return getJulianDate(date) - AstroConstants.JDminusMJD;
     }
 }

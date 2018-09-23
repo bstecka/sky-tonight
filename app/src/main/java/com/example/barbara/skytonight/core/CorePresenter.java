@@ -1,10 +1,10 @@
 package com.example.barbara.skytonight.core;
 
-import android.location.Location;
+import android.util.Log;
 
 public class CorePresenter implements CoreContract.Presenter {
 
-    TodayPresenter mTodayPresenter;
+    private TodayPresenter mTodayPresenter;
 
     public CorePresenter(TodayPresenter todayPresenter) {
         mTodayPresenter = todayPresenter;
@@ -16,16 +16,7 @@ public class CorePresenter implements CoreContract.Presenter {
     }
 
     public void refreshLocation() {
-        mTodayPresenter.getUserLocation(new TodayContract.GetUserLocationCallback() {
-            @Override
-            public void onDataLoaded(Location location) {
-                mTodayPresenter.refreshLocationInView(location);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
+        Log.e("CorePresenter", "refresh Location");
+        mTodayPresenter.start();
     }
 }

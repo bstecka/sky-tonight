@@ -2,6 +2,7 @@ package com.example.barbara.skytonight.core;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,8 +22,8 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
     private final List<AstroObject> mValues;
     private final TodayFragment.OnListFragmentInteractionListener mListener;
     private Context context;
-    double latitude;
-    double longitude;
+    private double latitude;
+    private double longitude;
 
     public MyTodayRecyclerViewAdapter(List<AstroObject> items, TodayFragment.OnListFragmentInteractionListener listener, double latitude, double longitude) {
         mValues = items;
@@ -32,25 +33,32 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
     }
 
     public void setLatLng(double latitude, double longitude) {
+        Log.e("CoreRepository", "mFusedLocationClient success " + latitude + " " + longitude);
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.fragment_today_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.e("Adapter", latitude + " " + longitude);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        Log.e("MyTodayRecyclerViewAdapter", "Latlng: " + latitude + " " + longitude);
         AstroObject object = mValues.get(position);
         holder.mItem = object.getId();
-        holder.mNameTextView.setText(object.getName());
-        Log.e("onBindViewHolder", "Latlng: " + latitude + " " + longitude);
         holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));
+        try {
+            int nameStringId = context.getResources().getIdentifier(object.getShortName(), "string", context.getPackageName());
+            holder.mNameTextView.setText(context.getResources().getString(nameStringId));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            holder.mNameTextView.setText(object.getName());
+        }
         try {
             int directionStringId = context.getResources().getIdentifier("dir_" + object.getApproximateDirectionString().toLowerCase(), "string", context.getPackageName());
             holder.mAzView.setText(context.getResources().getString(directionStringId));
@@ -67,8 +75,6 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -81,11 +87,11 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mNameTextView;
-        public final ImageView mImageView;
-        public final TextView mAltView;
-        public final TextView mAzView;
+        final View mView;
+        final TextView mNameTextView;
+        final ImageView mImageView;
+        final TextView mAltView;
+        final TextView mAzView;
         public String mItem;
 
         public ViewHolder(View view) {
