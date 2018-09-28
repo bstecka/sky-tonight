@@ -51,13 +51,13 @@ public class AstroObject {
         return name;
     }
 
-    public String getId(){
-        return "" + id;
+    public int getId(){
+        return id;
     }
 
     public int getPhaseId() {
         double phase = 14 * illu/100;
-        return waxing ? (int) phase : 13 + (int) phase;
+        return waxing ? (int) phase : 14 + (int) phase;
     }
 
     public double getAltitude(double latitude, double longitude) {

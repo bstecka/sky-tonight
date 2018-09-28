@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroObject;
+import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecyclerViewAdapter.ViewHolder> {
 
@@ -50,7 +52,7 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Log.e("MyTodayRecyclerViewAdapter", "Latlng: " + latitude + " " + longitude);
         AstroObject object = mValues.get(position);
-        holder.mItem = object.getId();
+        holder.mItem = String.valueOf(object.getId());
         holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));
         try {
             int nameStringId = context.getResources().getIdentifier(object.getShortName(), "string", context.getPackageName());
@@ -66,8 +68,14 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
             e.printStackTrace();
         }
         try {
-            int drawableId = context.getResources().getIdentifier("icon_" + object.getName().toLowerCase(), "drawable", context.getPackageName());
-            holder.mImageView.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), drawableId, null));
+            if (object.getId() == AstroConstants.ID_MOON) {
+                int drawableId = context.getResources().getIdentifier("moon_" + object.getPhaseId(), "drawable", context.getPackageName());
+                holder.mImageView.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), drawableId, null));
+            }
+            else {
+                int drawableId = context.getResources().getIdentifier("icon_" + object.getName().toLowerCase(), "drawable", context.getPackageName());
+                holder.mImageView.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), drawableId, null));
+            }
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
