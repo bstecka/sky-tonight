@@ -9,4 +9,25 @@
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
     </style>
 
+    <style name="DateLabel">
+        <item name="android:textSize">14sp</item>
+        <item name="android:lineSpacingMultiplier">1.0</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="PrimaryButton" parent="Theme.AppCompat">
+        <item name="colorButtonNormal">@color/colorTextLight</item>
+        <item name="colorControlHighlight">@color/materialGrey4</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorTextLight</item>
+    </style>
+
+    <style name="WeekDayTextStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
 </resources>
