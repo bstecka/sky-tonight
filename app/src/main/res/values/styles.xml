@@ -9,4 +9,8 @@
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
     </style>
 
+    <style name="WeekDayTextStyle" parent="android:TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
 </resources>
