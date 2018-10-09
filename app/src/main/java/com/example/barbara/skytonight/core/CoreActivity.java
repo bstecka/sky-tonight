@@ -1,6 +1,7 @@
 package com.example.barbara.skytonight.core;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.MyContextWrapper;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
@@ -31,6 +33,11 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(MyContextWrapper.wrap(newBase,"en"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

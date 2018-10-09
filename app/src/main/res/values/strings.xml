@@ -53,7 +53,7 @@
     <string name="ms_ursids">Urids</string>
     <string name="event_unknown">Unknown Event</string>
     <string name="core_option_today">Today</string>
-    <string name="core_option_calendar">Calendar</string>
+    <string name="core_option_calendar">Journal</string>
     <string name="core_option_news">News</string>
     <string name="core_option_events">Events</string>
     <string name="core_no_location_toast">Location not enabled - displaying the sky over the Easter Island.</string>
@@ -67,4 +67,7 @@
     <string name="astr_obj_699">Saturn</string>
     <string name="astr_obj_799">Uranus</string>
     <string name="astr_obj_899">Neptune</string>
+    <string name="cal_detail_text">1 note, 0 photos</string>
+    <string name="cal_button_notes">Notes</string>
+    <string name="cal_button_photos">Photos</string>
 </resources>
