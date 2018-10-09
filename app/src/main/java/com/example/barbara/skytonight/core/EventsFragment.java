@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -124,7 +125,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         recyclerView = view.findViewById(R.id.event_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mAdapter);
-        Button nextMonthButton = view.findViewById(R.id.nextMonthButton);
+        AppCompatImageButton nextMonthButton = view.findViewById(R.id.nextMonthButton);
         nextMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +134,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
                 mPresenter.showEventsForMonth(currentlyDisplayedMonth+1, currentlyDisplayedYear);
             }
         });
-        Button previousMonthButton = view.findViewById(R.id.previousMonthButton);
+        AppCompatImageButton previousMonthButton = view.findViewById(R.id.previousMonthButton);
         previousMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
