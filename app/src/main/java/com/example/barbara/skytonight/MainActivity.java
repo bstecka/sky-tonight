@@ -17,10 +17,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Intent myIntent = new Intent(MainActivity.this, CoreActivity.class);
         MainActivity.this.startActivity(myIntent);
-        Configuration configuration = new Configuration();
-        configuration.setLocale(Locale.US);
-        getApplicationContext().createConfigurationContext(configuration);
-
     }
 
 }
