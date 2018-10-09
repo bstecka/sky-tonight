@@ -43,7 +43,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Context context = view.getContext();
-                Toast.makeText(context, R.string.blank_fragment_calendar, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, R.string.blank_fragment_calendar, Toast.LENGTH_SHORT).show();
             }
         });
         return view;
