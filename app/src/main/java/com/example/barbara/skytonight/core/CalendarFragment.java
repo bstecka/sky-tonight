@@ -1,18 +1,18 @@
 package com.example.barbara.skytonight.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
 import com.example.barbara.skytonight.R;
 
 public class CalendarFragment extends Fragment {
@@ -38,12 +38,18 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         CalendarView calendarView = view.findViewById(R.id.calendarView);
-
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 Context context = view.getContext();
                 //Toast.makeText(context, R.string.blank_fragment_calendar, Toast.LENGTH_SHORT).show();
+            }
+        });
+        AppCompatButton photosButton = view.findViewById(R.id.buttonPhotos);
+        photosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPhotosButtonClick();
             }
         });
         return view;
@@ -58,6 +64,11 @@ public class CalendarFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    private void onPhotosButtonClick() {
+        Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
+        startActivity(intent);
     }
 
     @Override

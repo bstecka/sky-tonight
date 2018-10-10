@@ -70,4 +70,5 @@
     <string name="cal_detail_text">1 note, 0 photos</string>
     <string name="cal_button_notes">Notes</string>
     <string name="cal_button_photos">Photos</string>
+    <string name="title_activity_photo_gallery">PhotoGalleryActivity</string>
 </resources>
