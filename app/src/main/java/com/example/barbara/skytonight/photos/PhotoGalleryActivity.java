@@ -2,6 +2,7 @@ package com.example.barbara.skytonight.photos;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,8 +32,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
     static final int REQUEST_TAKE_PHOTO = 1;
     private MyPhotoRecyclerViewAdapter mAdapter;
     private RecyclerView recyclerView;
-
-    ArrayList<Bitmap> photoList;
+    private ArrayList<Bitmap> photoList;
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -44,6 +44,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        photoList = new ArrayList<>();
         setContentView(R.layout.activity_photo_gallery);
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,17 +55,27 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
-        ArrayList<Bitmap> list = new ArrayList<>();
-        int w = 10, h = 10;
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        for (int i = 0; i < 10; i++) {
-            Bitmap bmp = Bitmap.createBitmap(w, h, conf);
-            list.add(bmp);
-        }
-        mAdapter = new MyPhotoRecyclerViewAdapter(list);
+        readFiles();
+        mAdapter = new MyPhotoRecyclerViewAdapter(photoList);
         recyclerView = findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
+    }
+
+    private void readFiles(){
+        photoList.clear();
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (storageDir != null) {
+            File[] allFilesInDir = storageDir.listFiles();
+            for (int i = 0; i < allFilesInDir.length; i++) {
+                File file = allFilesInDir[i];
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                if (bitmap != null) {
+                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
+                    photoList.add(scaled);
+                }
+            }
+        }
     }
 
     private void dispatchTakePictureIntent() {

@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data;
 
+import java.util.ArrayList;
+
 public class PhotosRepository implements PhotosDataSource {
 
     private static PhotosRepository INSTANCE = null;

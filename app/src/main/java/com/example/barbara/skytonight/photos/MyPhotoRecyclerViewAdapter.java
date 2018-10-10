@@ -31,6 +31,7 @@ public class MyPhotoRecyclerViewAdapter extends RecyclerView.Adapter<MyPhotoRecy
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         Bitmap object = mValues.get(position);
         holder.mItem = String.valueOf(object.toString());
+        holder.mImageView.setImageBitmap(object);
     }
 
     @Override
