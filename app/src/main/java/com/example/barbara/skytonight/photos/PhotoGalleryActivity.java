@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -33,12 +34,15 @@ public class PhotoGalleryActivity extends AppCompatActivity {
     private MyPhotoRecyclerViewAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<Bitmap> photoList;
+    private String lastSavedFilePath;
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
+        File file = File.createTempFile(imageFileName, ".jpg", storageDir);
+        lastSavedFilePath = file.getAbsolutePath();
+        return file;
     }
 
     @Override
@@ -69,10 +73,15 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             File[] allFilesInDir = storageDir.listFiles();
             for (int i = 0; i < allFilesInDir.length; i++) {
                 File file = allFilesInDir[i];
-                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                if (bitmap != null) {
-                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
-                    photoList.add(scaled);
+                Calendar modificationTime = Calendar.getInstance();
+                modificationTime.setTime(new Date(file.lastModified()));
+                Calendar now = Calendar.getInstance();
+                if (now.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && now.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR)) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    if (bitmap != null) {
+                        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
+                        photoList.add(scaled);
+                    }
                 }
             }
         }
@@ -105,6 +114,12 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 ImageView imageView = findViewById(R.id.imageView);
                 imageView.setImageBitmap(imageBitmap);
+            }
+            if (lastSavedFilePath != null) {
+                Bitmap bitmap = BitmapFactory.decodeFile(lastSavedFilePath);
+                photoList.add(0, bitmap);
+                mAdapter.notifyDataSetChanged();
+                Log.e("PhotoGallery", "Notify dataset changed");
             }
         }
     }
