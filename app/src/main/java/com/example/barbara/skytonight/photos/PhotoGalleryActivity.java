@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Activity;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -21,6 +21,7 @@ import com.example.barbara.skytonight.R;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,6 +29,10 @@ public class PhotoGalleryActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
+    private MyPhotoRecyclerViewAdapter mAdapter;
+    private RecyclerView recyclerView;
+
+    ArrayList<Bitmap> photoList;
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -49,6 +54,17 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
+        ArrayList<Bitmap> list = new ArrayList<>();
+        int w = 10, h = 10;
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        for (int i = 0; i < 10; i++) {
+            Bitmap bmp = Bitmap.createBitmap(w, h, conf);
+            list.add(bmp);
+        }
+        mAdapter = new MyPhotoRecyclerViewAdapter(list);
+        recyclerView = findViewById(R.id.photoRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(mAdapter);
     }
 
     private void dispatchTakePictureIntent() {
