@@ -70,7 +70,7 @@
     <string name="cal_detail_text">1 note, 0 photos</string>
     <string name="cal_button_notes">Notes</string>
     <string name="cal_button_photos">Photos</string>
-    <string name="title_activity_photo_gallery">PhotoGalleryActivity</string>
+    <string name="title_activity_photo_gallery">Photo Gallery</string>
     <string name="photo_saved">Your photo has been saved</string>
-    <string name="title_activity_photo_gallery2">PhotoGalleryActivity2</string>
+    <string name="title_activity_photo_gallery2">Photo Gallery</string>
 </resources>

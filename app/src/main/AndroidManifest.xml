@@ -42,14 +42,6 @@
         <activity android:name=".core.CoreActivity" />
         <activity
             android:name=".photos.PhotoGalleryActivity"
-            android:label="@string/title_activity_photo_gallery"
-            android:parentActivityName=".core.CoreActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
-        </activity>
-        <activity
-            android:name=".photos.PhotoGalleryActivity2"
             android:label="@string/title_activity_photo_gallery2"
             android:parentActivityName=".core.CoreActivity">
             <meta-data

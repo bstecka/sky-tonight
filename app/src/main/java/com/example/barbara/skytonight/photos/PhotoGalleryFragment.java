@@ -4,39 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.core.MyTodayRecyclerViewAdapter;
-import com.example.barbara.skytonight.core.TodayContract;
-import com.example.barbara.skytonight.data.AstroObject;
-import com.example.barbara.skytonight.util.AppConstants;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -48,7 +28,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     private MyPhotoRecyclerViewAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<Bitmap> photoList;
-    private String lastSavedFilePath;
+    private Calendar selectedDate;
     private View view;
 
     @Override
@@ -57,16 +37,21 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.activity_photo_gallery, container, false);
+        this.view = inflater.inflate(R.layout.fragment_photo_gallery, container, false);
         photoList = new ArrayList<>();
         android.support.design.widget.FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                dispatchTakePictureIntent();
+                mPresenter.dispatchTakePhotoIntent();
             }
         });
-        readFilesAsync();
         mAdapter = new MyPhotoRecyclerViewAdapter(photoList);
         recyclerView = view.findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -75,109 +60,39 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     }
 
     @Override
+    public Context getContext() { return view.getContext(); }
+
+    @Override
+    public ArrayList<Bitmap> getPhotoList() { return photoList; }
+
+    @Override
+    public Calendar getSelectedDate() { return selectedDate; }
+
+    @Override
+    public void setSelectedDate(Calendar selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+
+    @Override
+    public Activity getViewActivity() { return getActivity(); }
+
+    @Override
+    public void clearListInView() {
+        photoList.clear();
+    }
+
+    @Override
     public void refreshListInView() {
         mAdapter.notifyDataSetChanged();
     }
 
-    private void readFilesAsync() {
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (storageDir != null) {
-            File[] allFilesInDir = storageDir.listFiles();
-            for (int i = 0; i < allFilesInDir.length; i++) {
-                File file = allFilesInDir[i];
-                Calendar modificationTime = Calendar.getInstance();
-                modificationTime.setTime(new Date(file.lastModified()));
-                Calendar now = Calendar.getInstance();
-                if (now.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && now.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR)) {
-                    new DisplaySingleImageTask(file, photoList, this).execute(file);
-                }
-            }
-        }
-    }
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File file = File.createTempFile(imageFileName, ".jpg", storageDir);
-        lastSavedFilePath = file.getAbsolutePath();
-        return file;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                Log.e("PhotoGallery", "IOException");
-            }
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(view.getContext(), "com.example.barbara.skytonight.fileprovider", photoFile);
-                Log.e("PhotoGallery", photoURI.getPath());
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
+    @Override
+    public void startPhotoActivity(Intent intent) { startActivityForResult(intent, REQUEST_TAKE_PHOTO); }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Toast.makeText(view.getContext(), R.string.photo_saved, Toast.LENGTH_SHORT).show();
-            if (data != null) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                ImageView imageView = view.findViewById(R.id.imageView);
-                imageView.setImageBitmap(imageBitmap);
-            }
-            if (lastSavedFilePath != null) {
-                Bitmap bitmap = BitmapFactory.decodeFile(lastSavedFilePath);
-                photoList.add(0, bitmap);
-                mAdapter.notifyDataSetChanged();
-            }
         }
     }
-
-    private static class DisplaySingleImageTask extends AsyncTask<File, Void, Boolean> {
-        PhotoGalleryContract.View view;
-        ArrayList<Bitmap> list;
-        File file;
-
-        DisplaySingleImageTask(File file, ArrayList<Bitmap> list, PhotoGalleryContract.View view){
-            this.file = file;
-            this.list = list;
-            this.view = view;
-        }
-
-        @Override
-        protected Boolean doInBackground(File... params) {
-            return readFiles(params[0], list);
-        }
-
-        private Boolean readFiles(File file, ArrayList<Bitmap> list){
-            boolean shouldRefresh = false;
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            if (bitmap != null) {
-                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
-                list.add(scaled);
-                shouldRefresh = true;
-            }
-            return shouldRefresh;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean shouldRefresh) {
-            if (shouldRefresh)
-                view.refreshListInView();
-        }
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
-    }
-
 }
