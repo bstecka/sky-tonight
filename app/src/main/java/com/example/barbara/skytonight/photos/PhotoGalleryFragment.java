@@ -1,24 +1,34 @@
 package com.example.barbara.skytonight.photos;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.core.MyTodayRecyclerViewAdapter;
+import com.example.barbara.skytonight.core.TodayContract;
+import com.example.barbara.skytonight.data.AstroObject;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +38,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGalleryContract.View {
+import static android.app.Activity.RESULT_OK;
+
+public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContract.View {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -37,6 +49,7 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
     private RecyclerView recyclerView;
     private ArrayList<Bitmap> photoList;
     private String lastSavedFilePath;
+    private View view;
 
     @Override
     public void setPresenter(PhotoGalleryContract.Presenter presenter) {
@@ -44,14 +57,10 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.view = inflater.inflate(R.layout.activity_photo_gallery, container, false);
         photoList = new ArrayList<>();
-        setContentView(R.layout.activity_photo_gallery);
-        if (getActionBar() != null) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        android.support.design.widget.FloatingActionButton button = findViewById(R.id.floatingActionButton);
+        android.support.design.widget.FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dispatchTakePictureIntent();
@@ -59,9 +68,10 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
         });
         readFilesAsync();
         mAdapter = new MyPhotoRecyclerViewAdapter(photoList);
-        recyclerView = findViewById(R.id.photoRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = view.findViewById(R.id.photoRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
+        return view;
     }
 
     @Override
@@ -70,7 +80,7 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
     }
 
     private void readFilesAsync() {
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (storageDir != null) {
             File[] allFilesInDir = storageDir.listFiles();
             for (int i = 0; i < allFilesInDir.length; i++) {
@@ -88,7 +98,7 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File file = File.createTempFile(imageFileName, ".jpg", storageDir);
         lastSavedFilePath = file.getAbsolutePath();
         return file;
@@ -96,7 +106,7 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
@@ -104,7 +114,7 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
                 Log.e("PhotoGallery", "IOException");
             }
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "com.example.barbara.skytonight.fileprovider", photoFile);
+                Uri photoURI = FileProvider.getUriForFile(view.getContext(), "com.example.barbara.skytonight.fileprovider", photoFile);
                 Log.e("PhotoGallery", photoURI.getPath());
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
@@ -113,13 +123,13 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Toast.makeText(this, R.string.photo_saved, Toast.LENGTH_SHORT).show();
+            Toast.makeText(view.getContext(), R.string.photo_saved, Toast.LENGTH_SHORT).show();
             if (data != null) {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
-                ImageView imageView = findViewById(R.id.imageView);
+                ImageView imageView = view.findViewById(R.id.imageView);
                 imageView.setImageBitmap(imageBitmap);
             }
             if (lastSavedFilePath != null) {
@@ -127,17 +137,6 @@ public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGall
                 photoList.add(0, bitmap);
                 mAdapter.notifyDataSetChanged();
             }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 

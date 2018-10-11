@@ -72,4 +72,5 @@
     <string name="cal_button_photos">Photos</string>
     <string name="title_activity_photo_gallery">PhotoGalleryActivity</string>
     <string name="photo_saved">Your photo has been saved</string>
+    <string name="title_activity_photo_gallery2">PhotoGalleryActivity2</string>
 </resources>

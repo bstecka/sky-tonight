@@ -14,6 +14,7 @@ import android.widget.CalendarView;
 
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.photos.PhotoGalleryActivity2;
 
 public class CalendarFragment extends Fragment {
 
@@ -67,7 +68,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void onPhotosButtonClick() {
-        Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
+        Intent intent = new Intent(getActivity(), PhotoGalleryActivity2.class);
         startActivity(intent);
     }
 
