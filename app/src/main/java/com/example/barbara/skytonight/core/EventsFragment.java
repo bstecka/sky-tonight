@@ -6,14 +6,11 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
@@ -122,7 +119,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         context = view.getContext();
         noEventsTextView = view.findViewById(R.id.noEventsTextView);
         monthTextView = view.findViewById(R.id.monthTextView);
-        recyclerView = view.findViewById(R.id.event_recycler_view);
+        recyclerView = view.findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mAdapter);
         AppCompatImageButton nextMonthButton = view.findViewById(R.id.nextMonthButton);
