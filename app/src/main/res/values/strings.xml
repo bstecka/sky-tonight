@@ -73,4 +73,5 @@
     <string name="title_activity_photo_gallery">Photo Gallery</string>
     <string name="photo_saved">Your photo has been saved</string>
     <string name="title_activity_photo_gallery2">Photo Gallery</string>
+    <string name="day_info_text">%1$d notes, %2$d photos</string>
 </resources>

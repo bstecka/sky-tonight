@@ -55,14 +55,12 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
         File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (storageDir != null) {
             File[] allFilesInDir = storageDir.listFiles();
-            for (int i = 0; i < allFilesInDir.length; i++) {
-                File file = allFilesInDir[i];
+            for (File file : allFilesInDir) {
                 Calendar modificationTime = Calendar.getInstance();
                 modificationTime.setTime(new Date(file.lastModified()));
-                Calendar now = Calendar.getInstance();
-                if (now.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && now.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR)) {
+                Calendar date = mPhotoGalleryView.getSelectedDate();
+                if (date.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && date.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR))
                     new DisplaySingleImageTask(file, mPhotoGalleryView.getPhotoList(), mPhotoGalleryView).execute(file);
-                }
             }
         }
     }

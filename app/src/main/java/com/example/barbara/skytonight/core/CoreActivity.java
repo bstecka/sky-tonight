@@ -49,6 +49,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
         final CalendarFragment calendarFragment = new CalendarFragment();
+        calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         final EventsFragment eventsFragment = new EventsFragment();
         final TodayPresenter presenter = new TodayPresenter(AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(this)), CoreRepository.getInstance(), todayFragment);
         todayFragment.setPresenter(presenter);
