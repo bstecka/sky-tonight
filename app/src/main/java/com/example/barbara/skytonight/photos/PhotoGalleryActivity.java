@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,7 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class PhotoGalleryActivity extends AppCompatActivity {
+public class PhotoGalleryActivity extends AppCompatActivity implements PhotoGalleryContract.View {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -59,15 +60,14 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
-        readFiles();
+        readFilesAsync();
         mAdapter = new MyPhotoRecyclerViewAdapter(photoList);
         recyclerView = findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void readFiles(){
-        photoList.clear();
+    private void readFilesAsync() {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (storageDir != null) {
             File[] allFilesInDir = storageDir.listFiles();
@@ -77,11 +77,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 modificationTime.setTime(new Date(file.lastModified()));
                 Calendar now = Calendar.getInstance();
                 if (now.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && now.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR)) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    if (bitmap != null) {
-                        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
-                        photoList.add(scaled);
-                    }
+                    new DisplaySingleImageTask(file, photoList, this).execute(file);
                 }
             }
         }
@@ -103,6 +99,10 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
+    }
+
+    public void refreshListInView() {
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -134,4 +134,51 @@ public class PhotoGalleryActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void setPresenter(PhotoGalleryContract.Presenter presenter) {
+
+    }
+
+    private static class DisplaySingleImageTask extends AsyncTask<File, Void, Boolean> {
+
+        PhotoGalleryContract.View view;
+        ArrayList<Bitmap> list;
+        File file;
+
+        DisplaySingleImageTask(File file, ArrayList<Bitmap> list, PhotoGalleryContract.View view){
+            this.file = file;
+            this.list = list;
+            this.view = view;
+        }
+
+        @Override
+        protected Boolean doInBackground(File... params) {
+            return readFiles(params[0], list);
+        }
+
+        private Boolean readFiles(File file, ArrayList<Bitmap> list){
+            boolean shouldRefresh = false;
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            if (bitmap != null) {
+                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
+                list.add(scaled);
+                shouldRefresh = true;
+            }
+            return shouldRefresh;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean shouldRefresh) {
+            if (shouldRefresh)
+                view.refreshListInView();
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
+    }
+
 }
