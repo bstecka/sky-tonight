@@ -27,7 +27,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     private PhotoGalleryContract.Presenter mPresenter;
     private MyPhotoRecyclerViewAdapter mAdapter;
     private RecyclerView recyclerView;
-    private ArrayList<Bitmap> photoList;
+    private ArrayList<ImageFile> photoList;
     private Calendar selectedDate;
     private View view;
 
@@ -63,7 +63,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     public Context getContext() { return view.getContext(); }
 
     @Override
-    public ArrayList<Bitmap> getPhotoList() { return photoList; }
+    public ArrayList<ImageFile> getPhotoList() { return photoList; }
 
     @Override
     public Calendar getSelectedDate() { return selectedDate; }

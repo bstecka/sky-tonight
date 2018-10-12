@@ -74,10 +74,10 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
 
     private static class DisplaySingleImageTask extends AsyncTask<File, Void, Boolean> {
         PhotoGalleryContract.View view;
-        ArrayList<Bitmap> list;
+        ArrayList<ImageFile> list;
         File file;
 
-        DisplaySingleImageTask(File file, ArrayList<Bitmap> list, PhotoGalleryContract.View view){
+        DisplaySingleImageTask(File file, ArrayList<ImageFile> list, PhotoGalleryContract.View view){
             this.file = file;
             this.list = list;
             this.view = view;
@@ -88,12 +88,12 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
             return readFiles(params[0], list);
         }
 
-        private Boolean readFiles(File file, ArrayList<Bitmap> list){
+        private Boolean readFiles(File file, ArrayList<ImageFile> list){
             boolean shouldRefresh = false;
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             if (bitmap != null) {
                 Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
-                list.add(scaled);
+                list.add(new ImageFile(scaled, file));
                 shouldRefresh = true;
             }
             return shouldRefresh;
