@@ -8,14 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.notes.NotesActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
@@ -95,8 +92,9 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     @Override
     public void updateDayInfoText(Calendar selectedDate) {
         int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
+        int numberOfWords = mPresenter.getNumberOfWords(selectedDate);
         TextView textView = view.findViewById(R.id.dayInfoTextView);
-        textView.setText(context.getString(R.string.day_info_text, 0, numberOfPhotos));
+        textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : ""));
     }
 
     @Override
