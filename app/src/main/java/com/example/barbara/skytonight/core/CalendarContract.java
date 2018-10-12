@@ -16,5 +16,6 @@ public class CalendarContract {
 
     interface Presenter extends BasePresenter {
         int getNumberOfPhotos(Calendar date);
+        int getNumberOfWords(Calendar date);
     }
 }
