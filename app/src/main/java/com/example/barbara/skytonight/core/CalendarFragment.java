@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.notes.NotesActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
 
 import java.util.Calendar;
@@ -81,6 +82,13 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                 onPhotosButtonClick();
             }
         });
+        AppCompatButton notesButton = view.findViewById(R.id.buttonNotes);
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNotesButtonClick();
+            }
+        });
         return view;
     }
 
@@ -104,6 +112,13 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
 
     private void onPhotosButtonClick() {
         Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
+        intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
+        intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
+        startActivity(intent);
+    }
+
+    private void onNotesButtonClick() {
+        Intent intent = new Intent(getActivity(), NotesActivity.class);
         intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
         intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
         startActivity(intent);
