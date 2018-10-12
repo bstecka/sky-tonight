@@ -8,16 +8,14 @@ import com.example.barbara.skytonight.BasePresenter;
 import com.example.barbara.skytonight.BaseView;
 import com.example.barbara.skytonight.photos.ImageFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class NotesContract {
 
     interface View extends BaseView<Presenter> {
-        void refreshListInView();
-        void clearListInView();
-        void startPhotoActivity(Intent intent);
-        void setSelectedDate(Calendar selectedDate);
+        void setText(String text);
         ArrayList<ImageFile> getPhotoList();
         Context getContext();
         Activity getViewActivity();
@@ -25,6 +23,6 @@ public class NotesContract {
     }
 
     interface Presenter extends BasePresenter {
-        void dispatchTakePhotoIntent();
+        void saveFile(String text);
     }
 }

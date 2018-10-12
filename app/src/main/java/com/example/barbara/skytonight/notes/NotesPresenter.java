@@ -1,6 +1,7 @@
 package com.example.barbara.skytonight.notes;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,12 +16,18 @@ import com.example.barbara.skytonight.photos.ImageFile;
 import com.example.barbara.skytonight.photos.PhotoGalleryContract;
 
 import java.io.File;
+import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class NotesPresenter implements NotesContract.Presenter {
 
@@ -32,80 +39,98 @@ public class NotesPresenter implements NotesContract.Presenter {
 
     @Override
     public void start() {
-        mNotesView.clearListInView();
-        readPhotosAsync();
+        readFilesAsync();
     }
 
-    @Override
-    public void dispatchTakePhotoIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(mNotesView.getViewActivity().getPackageManager()) != null) {
-            File photoFile = null;
-            try {
-                photoFile = createImageFile(mNotesView.getViewActivity());
-            } catch (IOException ex) {
-                Log.e("PhotoGallery", "IOException");
-            }
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(mNotesView.getContext(), "com.example.barbara.skytonight.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                mNotesView.startPhotoActivity(takePictureIntent);
-            }
-        }
-    }
-
-    private void readPhotosAsync() {
-        File storageDir = mNotesView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    private void readFilesAsync() {
+        File storageDir = mNotesView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        Calendar date = mNotesView.getSelectedDate();
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
         if (storageDir != null) {
-            File[] allFilesInDir = storageDir.listFiles();
-            for (File file : allFilesInDir) {
-                Calendar modificationTime = Calendar.getInstance();
-                modificationTime.setTime(new Date(file.lastModified()));
-                Calendar date = mNotesView.getSelectedDate();
-                if (date.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && date.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR))
-                    new DisplaySingleImageTask(file, mNotesView.getPhotoList(), mNotesView).execute(file);
-            }
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+            });
+            for (File file : filteredFiles)
+                new ReadTextFileTask(file, mNotesView).execute(file);
         }
     }
 
-    private File createImageFile(Activity activity) throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(imageFileName, ".jpg", storageDir);
+    private void writeStringAsFile(File file, String fileContents) {
+        try {
+            FileWriter out = new FileWriter(file);
+            out.write(fileContents);
+            out.close();
+            mNotesView.setText(fileContents);
+        } catch (IOException e) {
+            Log.e("NotesPresenter", "IOException");
+        }
     }
 
-    private static class DisplaySingleImageTask extends AsyncTask<File, Void, Boolean> {
+    public void saveFile(String text) {
+        File storageDir = mNotesView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        Calendar date = mNotesView.getSelectedDate();
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
+        if (storageDir != null) {
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+            });
+            for (File file : filteredFiles)
+                file.delete();
+        }
+        try {
+            File file = createTextFile(mNotesView.getViewActivity());
+            writeStringAsFile(file, text);
+        } catch (IOException e) {
+            Log.e("NotesPresenter", "IOException");
+        }
+    }
+
+    private File createTextFile(Activity activity) throws IOException {
+        Calendar date = mNotesView.getSelectedDate();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date.getTime());
+        String imageFileName = "TXT_" + timeStamp + "_";
+        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        return File.createTempFile(imageFileName, ".txt", storageDir);
+    }
+
+    private static class ReadTextFileTask extends AsyncTask<File, Void, String> {
         NotesContract.View view;
-        ArrayList<ImageFile> list;
         File file;
 
-        DisplaySingleImageTask(File file, ArrayList<ImageFile> list, NotesContract.View view){
+        ReadTextFileTask(File file, NotesContract.View view){
             this.file = file;
-            this.list = list;
             this.view = view;
         }
 
         @Override
-        protected Boolean doInBackground(File... params) {
-            return readFiles(params[0], list);
+        protected String doInBackground(File... params) {
+            return readFile(params[0]);
         }
 
-        private Boolean readFiles(File file, ArrayList<ImageFile> list){
-            boolean shouldRefresh = false;
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            if (bitmap != null) {
-                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 4, bitmap.getHeight() / 4, false);
-                list.add(new ImageFile(scaled, file));
-                shouldRefresh = true;
+        private String readFile(File file){
+            StringBuilder stringBuilder = new StringBuilder((int)file.length());
+            Scanner scanner = null;
+            try {
+                scanner = new Scanner(file);
+                String lineSeparator = System.getProperty("line.separator");
+                try {
+                    while(scanner.hasNextLine())
+                        stringBuilder.append(scanner.nextLine() + lineSeparator);
+                    return stringBuilder.toString();
+                } finally {
+                    scanner.close();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
-            return shouldRefresh;
+            return "";
         }
 
         @Override
-        protected void onPostExecute(Boolean shouldRefresh) {
-            if (shouldRefresh)
-                view.refreshListInView();
+        protected void onPostExecute(String result) {
+            view.setText(result);
         }
 
         @Override

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ import static android.app.Activity.RESULT_OK;
 public class NotesFragment extends Fragment implements NotesContract.View {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
     private NotesContract.Presenter mPresenter;
     private ArrayList<ImageFile> photoList;
     private Calendar selectedDate;
@@ -44,8 +44,7 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     @Override
     public void onResume() {
         super.onResume();
-        if (photoList.isEmpty())
-            mPresenter.start();
+        mPresenter.start();
     }
 
     @Override
@@ -68,6 +67,8 @@ public class NotesFragment extends Fragment implements NotesContract.View {
                     EditText editText = view.findViewById(R.id.editText);
                     textView.setVisibility(View.VISIBLE);
                     editText.setVisibility(View.INVISIBLE);
+                    Log.e("NotesFragment", editText.getText().toString());
+                    mPresenter.saveFile(editText.getText().toString());
                     button.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                     editModeEnabled = false;
                 }
@@ -85,31 +86,27 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     @Override
     public Calendar getSelectedDate() { return selectedDate; }
 
-    @Override
     public void setSelectedDate(Calendar selectedDate) {
         this.selectedDate = selectedDate;
+    }
+
+    public void setText(String text) {
+        Log.e("setText", text);
+        TextView textView = view.findViewById(R.id.textView);
+        EditText editText = view.findViewById(R.id.editText);
+        textView.setText(text);
+        editText.setText(text);
+        textView.refreshDrawableState();
+        editText.refreshDrawableState();
     }
 
     @Override
     public Activity getViewActivity() { return getActivity(); }
 
     @Override
-    public void clearListInView() {
-        photoList.clear();
-    }
-
-    @Override
-    public void refreshListInView() {
-    }
-
-    @Override
-    public void startPhotoActivity(Intent intent) { startActivityForResult(intent, REQUEST_TAKE_PHOTO); }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Toast.makeText(view.getContext(), R.string.photo_saved, Toast.LENGTH_SHORT).show();
-            photoList.clear();
         }
     }
 }
