@@ -39,7 +39,8 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
+        if (photoList.isEmpty())
+            mPresenter.start();
     }
 
     @Override
@@ -93,6 +94,8 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Toast.makeText(view.getContext(), R.string.photo_saved, Toast.LENGTH_SHORT).show();
+            photoList.clear();
+            mAdapter.notifyDataSetChanged();
         }
     }
 }
