@@ -18,7 +18,7 @@ public class PhotoGalleryContract {
         void clearListInView();
         void startPhotoActivity(Intent intent);
         void setSelectedDate(Calendar selectedDate);
-        ArrayList<Bitmap> getPhotoList();
+        ArrayList<ImageFile> getPhotoList();
         Context getContext();
         Activity getViewActivity();
         Calendar getSelectedDate();
