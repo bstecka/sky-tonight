@@ -32,6 +32,7 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         mListener = listener;
         this.latitude = latitude;
         this.longitude = longitude;
+        Log.e("MyTodayRecyclerViewAdapter", "Constructor");
     }
 
     public void setLatLng(double latitude, double longitude) {

@@ -61,9 +61,10 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_list, container, false);
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+        View rView = view.findViewById(R.id.astroObjectRecyclerView);
+        if (rView instanceof RecyclerView) {
+            Context context = rView.getContext();
+            RecyclerView recyclerView = (RecyclerView) rView;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
