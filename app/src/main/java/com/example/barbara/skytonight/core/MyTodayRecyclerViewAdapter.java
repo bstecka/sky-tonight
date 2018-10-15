@@ -32,11 +32,9 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         mListener = listener;
         this.latitude = latitude;
         this.longitude = longitude;
-        Log.e("MyTodayRecyclerViewAdapter", "Constructor");
     }
 
     public void setLatLng(double latitude, double longitude) {
-        Log.e("CoreRepository", "mFusedLocationClient success " + latitude + " " + longitude);
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -51,7 +49,6 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Log.e("MyTodayRecyclerViewAdapter", "Latlng: " + latitude + " " + longitude);
         AstroObject object = mValues.get(position);
         holder.mItem = String.valueOf(object.getId());
         holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));

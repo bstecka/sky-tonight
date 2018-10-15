@@ -2,6 +2,7 @@ package com.example.barbara.skytonight.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,8 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroObject;
+import com.example.barbara.skytonight.data.WeatherObject;
 import com.example.barbara.skytonight.util.AppConstants;
 
 import java.util.ArrayList;
@@ -72,9 +77,29 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         return view;
     }
 
+    @Override
     public void refreshLocationInAdapter(Location location) {
         Log.e("refreshLocationInAdapter", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public void updateWeatherView(WeatherObject currentWeather) {
+        Log.e("TodayFragment", currentWeather.toString());
+        if (getView() != null && getContext() != null) {
+            ImageView imageView = getView().findViewById(R.id.weatherImageView);
+            imageView.setVisibility(View.VISIBLE);
+            TextView cloudCoverage = getView().findViewById(R.id.cloudCoverageTextView);
+            cloudCoverage.setText(getContext().getString(R.string.weather_cloud_coverage, currentWeather.getCloudCoverage()));
+            TextView conditions = getView().findViewById(R.id.conditionsTextView);
+            try {
+                int weatherStringId = getContext().getResources().getIdentifier(currentWeather.getWeatherIdString(), "string", getContext().getPackageName());
+                conditions.setText(getContext().getResources().getString(weatherStringId));
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
+                conditions.setText(R.string.weather_condition_unknown);
+            }
+        }
     }
 
     @Override

@@ -18,10 +18,12 @@ import com.example.barbara.skytonight.data.AstroEvent;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.EventsRepository;
 import com.example.barbara.skytonight.data.AstroObjectRepository;
+import com.example.barbara.skytonight.data.WeatherRepository;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
 import com.example.barbara.skytonight.util.MyContextWrapper;
 
@@ -51,7 +53,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         final EventsFragment eventsFragment = new EventsFragment();
-        final TodayPresenter presenter = new TodayPresenter(AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(this)), CoreRepository.getInstance(), todayFragment);
+        final TodayPresenter presenter = new TodayPresenter(AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(this)), CoreRepository.getInstance(), WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(this)), todayFragment);
         todayFragment.setPresenter(presenter);
         mCorePresenter = new CorePresenter(presenter);
         EventsPresenter eventsPresenter = new EventsPresenter(CoreRepository.getInstance(), EventsRepository.getInstance(SolarEclipseRemoteDataSource.getInstance(this), LunarEclipseRemoteDataSource.getInstance(this), MeteorShowerRemoteDataSource.getInstance(this)), eventsFragment);
