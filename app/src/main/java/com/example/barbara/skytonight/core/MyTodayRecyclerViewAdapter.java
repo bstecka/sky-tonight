@@ -1,9 +1,12 @@
 package com.example.barbara.skytonight.core;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.ImageViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +17,19 @@ import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroObject;
+import com.example.barbara.skytonight.data.ISSObject;
 import com.example.barbara.skytonight.util.AstroConstants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecyclerViewAdapter.ViewHolder> {
 
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
     private final List<AstroObject> mValues;
     private final TodayFragment.OnListFragmentInteractionListener mListener;
     private Context context;
@@ -47,10 +56,7 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
         return new ViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        AstroObject object = mValues.get(position);
-        holder.mItem = String.valueOf(object.getId());
+    private void handlePlanetObject(ViewHolder holder, AstroObject object) {
         holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));
         try {
             int nameStringId = context.getResources().getIdentifier(object.getShortName(), "string", context.getPackageName());
@@ -76,6 +82,31 @@ public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecy
             }
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleISSObject(ViewHolder holder, ISSObject object) {
+        DateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        holder.mNameTextView.setText(R.string.astr_obj_1000);
+        if (object.getNextFlyby().get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR))
+            holder.mAltView.setText(context.getString(R.string.iss_risetime_today, sdf.format(object.getNextFlyby().getTime())));
+        else if (object.getNextFlyby().get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR) + 1)
+            holder.mAltView.setText(context.getString(R.string.iss_risetime_tomorrow, sdf.format(object.getNextFlyby().getTime())));
+        else
+            holder.mAltView.setText(context.getString(R.string.iss_risetime, sdf.format(object.getNextFlyby().getTime())));
+        holder.mAzView.setText(context.getString(R.string.iss_duration, object.getNextDuration()/60, object.getNextDuration()%60));
+        holder.mImageView.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.icon_iss_2, null));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        AstroObject object = mValues.get(position);
+        holder.mItem = String.valueOf(object.getId());
+        if (object instanceof ISSObject) {
+            ISSObject issObject = (ISSObject) object;
+            handleISSObject(holder, issObject);
+        } else {
+            handlePlanetObject(holder, object);
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

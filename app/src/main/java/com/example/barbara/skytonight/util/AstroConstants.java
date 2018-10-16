@@ -12,6 +12,7 @@ public class AstroConstants {
     public final static int ID_SATURN = 699;
     public final static int ID_URANUS = 799;
     public final static int ID_NEPTUNE = 899;
+    public final static int ID_ISS = 1000;
     public final static int[] ASTRO_OBJECT_IDS = {ID_MOON, ID_MERCURY, ID_VENUS, ID_MARS, ID_JUPITER, ID_SATURN, ID_URANUS, ID_NEPTUNE};
 
 }

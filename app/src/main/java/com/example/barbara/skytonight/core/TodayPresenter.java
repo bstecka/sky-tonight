@@ -8,6 +8,9 @@ import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.CoreDataSource;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.AstroObjectRepository;
+import com.example.barbara.skytonight.data.ISSDataSource;
+import com.example.barbara.skytonight.data.ISSObject;
+import com.example.barbara.skytonight.data.ISSRepository;
 import com.example.barbara.skytonight.data.WeatherDataSource;
 import com.example.barbara.skytonight.data.WeatherObject;
 import com.example.barbara.skytonight.data.WeatherRepository;
@@ -22,13 +25,15 @@ public class TodayPresenter implements TodayContract.Presenter {
     private final AstroObjectRepository mAstroObjectRepository;
     private final CoreRepository mCoreRepository;
     private final WeatherRepository mWeatherRepository;
+    private final ISSRepository mISSRepository;
     private final TodayContract.View mTodayView;
     private ArrayList<WeatherObject> weatherObjects;
 
-    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, WeatherRepository mWeatherRepository, TodayContract.View mTodayView) {
+    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, WeatherRepository mWeatherRepository, ISSRepository mISSRepository, TodayContract.View mTodayView) {
         this.mAstroObjectRepository = mAstroObjectRepository;
         this.mCoreRepository = mCoreRepository;
         this.mWeatherRepository = mWeatherRepository;
+        this.mISSRepository = mISSRepository;
         this.mTodayView = mTodayView;
     }
 
@@ -39,6 +44,7 @@ public class TodayPresenter implements TodayContract.Presenter {
             public void onDataLoaded(Location location) {
                 Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                 mTodayView.refreshLocationInAdapter(location);
+                loadISS(location);
                 loadWeather(location);
                 showObjects(); //objects are shown asynchronously
             }
@@ -52,6 +58,21 @@ public class TodayPresenter implements TodayContract.Presenter {
             public void onDataNotAvailable() {
                 Log.e("TodayPresenter", "onDataNotAvailable mFusedLocationClient failure");
                 showObjects();
+            }
+        });
+    }
+
+    private void loadISS(Location location){
+        mISSRepository.getISSObject(location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObject() {
+            @Override
+            public void onDataLoaded(ISSObject issObject) {
+                issObject.displayLists();
+                mTodayView.updateList(issObject);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                Log.e("TodayPresenter", "ISS station not available");
             }
         });
     }
