@@ -77,7 +77,6 @@ public class WeatherRemoteDataSource implements WeatherDataSource {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("WeatherRemoteDataSource", error.toString());
                 callback.onDataNotAvailable();
             }
         });

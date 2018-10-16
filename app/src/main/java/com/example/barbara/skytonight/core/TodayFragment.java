@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,6 +88,8 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     public void updateWeatherView(WeatherObject currentWeather) {
         Log.e("TodayFragment", currentWeather.toString());
         if (getView() != null && getContext() != null) {
+            ConstraintLayout layout = getView().findViewById(R.id.weatherLayout);
+            layout.setVisibility(View.VISIBLE);
             ImageView imageView = getView().findViewById(R.id.weatherImageView);
             imageView.setVisibility(View.VISIBLE);
             TextView cloudCoverage = getView().findViewById(R.id.cloudCoverageTextView);
