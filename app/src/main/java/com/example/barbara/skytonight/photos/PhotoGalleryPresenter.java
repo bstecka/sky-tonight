@@ -12,6 +12,7 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,20 +54,21 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
 
     private void readPhotosAsync() {
         File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(selectedDate.getTime());
         if (storageDir != null) {
-            File[] allFilesInDir = storageDir.listFiles();
-            for (File file : allFilesInDir) {
-                Calendar modificationTime = Calendar.getInstance();
-                modificationTime.setTime(new Date(file.lastModified()));
-                Calendar date = mPhotoGalleryView.getSelectedDate();
-                if (date.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && date.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR))
-                    new DisplaySingleImageTask(file, mPhotoGalleryView.getPhotoList(), mPhotoGalleryView).execute(file);
-            }
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+            });
+            for (File file : filteredFiles)
+                new DisplaySingleImageTask(file, mPhotoGalleryView.getPhotoList(), mPhotoGalleryView).execute(file);
         }
     }
 
     private File createImageFile(Activity activity) throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);

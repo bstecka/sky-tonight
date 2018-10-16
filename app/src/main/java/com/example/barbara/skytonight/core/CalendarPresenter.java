@@ -38,15 +38,15 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     @Override
     public int getNumberOfPhotos(Calendar date) {
         File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
         int count = 0;
         if (storageDir != null) {
-            File[] allFilesInDir = storageDir.listFiles();
-            for (File file : allFilesInDir) {
-                Calendar modificationTime = Calendar.getInstance();
-                modificationTime.setTime(new Date(file.lastModified()));
-                if (date.get(Calendar.DAY_OF_YEAR) == modificationTime.get(Calendar.DAY_OF_YEAR) && date.get(Calendar.YEAR) == modificationTime.get(Calendar.YEAR))
-                    count++;
-            }
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+            });
+            for (File file : filteredFiles)
+                count++;
         }
         return count;
     }

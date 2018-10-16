@@ -77,6 +77,8 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         return view;
     }
 
+    public boolean isEditModeEnabled() { return editModeEnabled; }
+
     @Override
     public Context getContext() { return view.getContext(); }
 
