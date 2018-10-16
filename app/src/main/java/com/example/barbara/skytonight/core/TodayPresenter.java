@@ -8,18 +8,27 @@ import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.CoreDataSource;
 import com.example.barbara.skytonight.data.CoreRepository;
 import com.example.barbara.skytonight.data.AstroObjectRepository;
+import com.example.barbara.skytonight.data.WeatherDataSource;
+import com.example.barbara.skytonight.data.WeatherObject;
+import com.example.barbara.skytonight.data.WeatherRepository;
 import com.example.barbara.skytonight.util.AstroConstants;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class TodayPresenter implements TodayContract.Presenter {
 
     private final AstroObjectRepository mAstroObjectRepository;
     private final CoreRepository mCoreRepository;
+    private final WeatherRepository mWeatherRepository;
     private final TodayContract.View mTodayView;
+    private ArrayList<WeatherObject> weatherObjects;
 
-    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, TodayContract.View mTodayView) {
+    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, WeatherRepository mWeatherRepository, TodayContract.View mTodayView) {
         this.mAstroObjectRepository = mAstroObjectRepository;
         this.mCoreRepository = mCoreRepository;
+        this.mWeatherRepository = mWeatherRepository;
         this.mTodayView = mTodayView;
     }
 
@@ -30,6 +39,7 @@ public class TodayPresenter implements TodayContract.Presenter {
             public void onDataLoaded(Location location) {
                 Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                 mTodayView.refreshLocationInAdapter(location);
+                loadWeather(location);
                 showObjects(); //objects are shown asynchronously
             }
 
@@ -42,6 +52,22 @@ public class TodayPresenter implements TodayContract.Presenter {
             public void onDataNotAvailable() {
                 Log.e("TodayPresenter", "onDataNotAvailable mFusedLocationClient failure");
                 showObjects();
+            }
+        });
+    }
+
+    private void loadWeather(Location location){
+        mWeatherRepository.getWeatherObjects(location.getLatitude(), location.getLongitude(), new WeatherDataSource.GetWeatherObjectsCallback() {
+            @Override
+            public void onDataLoaded(List<WeatherObject> weatherObjectList) {
+                weatherObjects = (ArrayList<WeatherObject>) weatherObjectList;
+                WeatherObject first = weatherObjectList.get(0);
+                mTodayView.updateWeatherView(first);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                Log.e("TodayPresenter", "Weather not available");
             }
         });
     }
