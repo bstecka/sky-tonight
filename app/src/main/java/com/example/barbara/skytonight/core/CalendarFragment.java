@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.view.LayoutInflater;
@@ -16,6 +18,9 @@ import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.notes.NotesActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
+import com.ramotion.circlemenu.CircleMenuView;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.Calendar;
 
@@ -24,6 +29,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     private CalendarContract.Presenter mPresenter;
     private OnFragmentInteractionListener mListener;
     private Calendar currentlySelectedDate = Calendar.getInstance();
+    private ExpandableLayout expandableLayout;
     private View view;
     private Context context;
 
@@ -62,6 +68,17 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
         context = view.getContext();
+        expandableLayout = view.findViewById(R.id.expandableLayout);
+        expandableLayout.collapse();
+        final CircleMenuView circleMenuView = view.findViewById(R.id.circleMenu);
+        circleMenuView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandableLayout.collapse();
+            }
+        });
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        setUpTabLayout(tabLayout);
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -72,7 +89,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                 currentlySelectedDate = selectedDate;
             }
         });
-        AppCompatButton photosButton = view.findViewById(R.id.buttonPhotos);
+        /*AppCompatButton photosButton = view.findViewById(R.id.buttonPhotos);
         photosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,8 +102,35 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             public void onClick(View v) {
                 onNotesButtonClick();
             }
-        });
+        });*/
         return view;
+    }
+
+    private void setUpTabLayout(TabLayout tabLayout) {
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_day));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_week));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_month));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    expandableLayout.expand();
+                }
+                else {
+                    expandableLayout.collapse();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -109,10 +153,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void onPhotosButtonClick() {
-        Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
+        expandableLayout.toggle();
+        /*Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
         intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
         intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     private void onNotesButtonClick() {
