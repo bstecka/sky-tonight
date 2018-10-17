@@ -67,6 +67,11 @@
     <string name="astr_obj_699">Saturn</string>
     <string name="astr_obj_799">Uranus</string>
     <string name="astr_obj_899">Neptune</string>
+    <string name="astr_obj_1000">International Space Station</string>
+    <string name="iss_risetime">Next appearance: %1$s</string>
+    <string name="iss_risetime_today">Next appearance: %1$s (today)</string>
+    <string name="iss_risetime_tomorrow">Next appearance: %1$s (tomorrow)</string>
+    <string name="iss_duration">Duration: %1$d minutes %2$d seconds</string>
     <string name="cal_button_notes">Notes</string>
     <string name="cal_button_photos">Photos</string>
     <string name="title_activity_photo_gallery">Photos</string>
