@@ -3,17 +3,22 @@ package com.example.barbara.skytonight.core;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.notes.NotesActivity;
@@ -30,6 +35,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     private OnFragmentInteractionListener mListener;
     private Calendar currentlySelectedDate = Calendar.getInstance();
     private ExpandableLayout expandableLayout;
+    private ExpandableLayout expandableLayout2;
+    private TextView monthTextView;
+    private int currentlyDisplayedMonth;
+    private int currentlyDisplayedYear;
     private View view;
     private Context context;
 
@@ -68,13 +77,26 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_calendar, container, false);
         context = view.getContext();
+        monthTextView = view.findViewById(R.id.monthTextView);
         expandableLayout = view.findViewById(R.id.expandableLayout);
         expandableLayout.collapse();
+        expandableLayout2 = view.findViewById(R.id.expandableLayout2);
+        expandableLayout2.collapse();
         final CircleMenuView circleMenuView = view.findViewById(R.id.circleMenu);
-        circleMenuView.setOnClickListener(new View.OnClickListener() {
+        circleMenuView.setDurationRing(200);
+        circleMenuView.setEventListener(new CircleMenuView.EventListener() {
             @Override
-            public void onClick(View v) {
-                expandableLayout.collapse();
+            public void onButtonClickAnimationEnd(@NonNull CircleMenuView view, int index) {
+                switch (index) {
+                    case 0:
+                        break;
+                    case 1: onPhotosButtonClick();
+                        break;
+                    case 2: onNotesButtonClick();
+                        break;
+                    default:
+                        break;
+                }
             }
         });
         hideButton();
@@ -99,26 +121,34 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                 currentlySelectedDate = selectedDate;
             }
         });
-        /*AppCompatButton photosButton = view.findViewById(R.id.buttonPhotos);
-        photosButton.setOnClickListener(new View.OnClickListener() {
+        setPreviousNextButtons();
+        return view;
+    }
+
+    private void setPreviousNextButtons(){
+        AppCompatImageButton nextMonthButton = view.findViewById(R.id.nextMonthButton);
+        nextMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onPhotosButtonClick();
+                goForwards();
+                setCurrentMonthTextView();
             }
         });
-        AppCompatButton notesButton = view.findViewById(R.id.buttonNotes);
-        notesButton.setOnClickListener(new View.OnClickListener() {
+        AppCompatImageButton previousMonthButton = view.findViewById(R.id.previousMonthButton);
+        previousMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onNotesButtonClick();
+                goBackwards();
+                setCurrentMonthTextView();
             }
-        });*/
-        return view;
+        });
+        setCurrentMonthTextView();
     }
 
     private void hideCircleMenu() {
         CircleMenuView circleMenuView = view.findViewById(R.id.circleMenu);
         circleMenuView.setVisibility(View.INVISIBLE);
+        Log.e("CalendarFragment", "hide");
     }
 
     private void showCircleMenu() {
@@ -147,12 +177,20 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
                     hideCircleMenu();
+                    expandableLayout2.collapse();
                     expandableLayout.expand();
                     showButton();
+                }
+                else if (tab.getPosition() == 2) {
+                    showCircleMenu();
+                    expandableLayout.collapse();
+                    expandableLayout2.expand();
+                    hideButton();
                 }
                 else {
                     showCircleMenu();
                     expandableLayout.collapse();
+                    expandableLayout2.collapse();
                     hideButton();
                 }
             }
@@ -173,6 +211,38 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
         });
     }
 
+    private void goForwards() {
+        if (currentlyDisplayedMonth < 11) {
+            currentlyDisplayedMonth++;
+        }
+        else {
+            currentlyDisplayedMonth = 0;
+            currentlyDisplayedYear++;
+        }
+    }
+
+    private void goBackwards() {
+        if (currentlyDisplayedMonth > 0 && !(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH) )) {
+            currentlyDisplayedMonth--;
+        }
+        else if (currentlyDisplayedYear > Calendar.getInstance().get(Calendar.YEAR)){
+            currentlyDisplayedMonth = 11;
+            currentlyDisplayedYear--;
+        }
+    }
+
+    private void setCurrentMonthTextView(){
+        try {
+            String resourceString = "month_" + currentlyDisplayedMonth;
+            int resourceStringId = context.getResources().getIdentifier(resourceString, "string", context.getPackageName());
+            monthTextView.setText(context.getResources().getString(resourceStringId, currentlyDisplayedYear));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            monthTextView.setText(R.string.month_unknown);
+        }
+    }
+
+
     @Override
     public void updateDayInfoText(Calendar selectedDate) {
         int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
@@ -184,6 +254,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
+        this.currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -193,11 +265,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void onPhotosButtonClick() {
-        expandableLayout.toggle();
-        /*Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
+        Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
         intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
         intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
-        startActivity(intent);*/
+        startActivity(intent);
     }
 
     private void onNotesButtonClick() {
