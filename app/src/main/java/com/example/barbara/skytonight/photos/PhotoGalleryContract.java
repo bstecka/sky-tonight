@@ -17,11 +17,12 @@ public class PhotoGalleryContract {
         void refreshListInView();
         void clearListInView();
         void startPhotoActivity(Intent intent);
-        void setSelectedDate(Calendar selectedDate);
         ArrayList<ImageFile> getPhotoList();
         Context getContext();
         Activity getViewActivity();
         Calendar getSelectedDate();
+        Integer getSelectedMonth();
+        Integer getSelectedYear();
     }
 
     interface Presenter extends BasePresenter {

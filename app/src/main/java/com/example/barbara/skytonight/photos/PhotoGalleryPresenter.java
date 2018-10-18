@@ -12,10 +12,12 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.widget.CalendarView;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,23 +56,81 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
         }
     }
 
-    private void readPhotosAsync() {
+    private void readPhotosAsyncForDay(Calendar selectedDate) {
         File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
         final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(selectedDate.getTime());
         if (storageDir != null) {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
-                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+                public boolean accept(File dir, String name) {
+                    return name.contains(timeStamp);
+                }
             });
             for (File file : filteredFiles)
                 new DisplaySingleImageTask(file, mPhotoGalleryView.getPhotoList(), mPhotoGalleryView).execute(file);
         }
     }
 
+    private void readPhotosAsyncForWeek() {
+        File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (storageDir != null) {
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    Calendar now = Calendar.getInstance();
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+                    try {
+                        Date date = sdf.parse(name.substring(5, 13));
+                        calendar.setTime(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                    return now.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+                }
+            });
+            for (File file : filteredFiles)
+                new DisplaySingleImageTask(file, mPhotoGalleryView.getPhotoList(), mPhotoGalleryView).execute(file);
+        }
+    }
+
+    private void readPhotosAsyncForMonth(int month, int year) {
+        File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        Calendar selectedDate = Calendar.getInstance();
+        selectedDate.set(Calendar.MONTH, month);
+        selectedDate.set(Calendar.YEAR, year);
+        final String timeStamp = new SimpleDateFormat("yyyyMM", Locale.getDefault()).format(selectedDate.getTime());
+        if (storageDir != null) {
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.contains(timeStamp);
+                }
+            });
+            for (File file : filteredFiles)
+                new DisplaySingleImageTask(file, mPhotoGalleryView.getPhotoList(), mPhotoGalleryView).execute(file);
+        }
+    }
+
+    private void readPhotosAsync() {
+        Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
+        if (selectedDate != null) {
+            readPhotosAsyncForDay(selectedDate);
+        } else if (mPhotoGalleryView.getSelectedMonth() != null) {
+            readPhotosAsyncForMonth(mPhotoGalleryView.getSelectedMonth(), mPhotoGalleryView.getSelectedYear());
+        } else {
+            readPhotosAsyncForWeek();
+        }
+    }
+
     private File createImageFile(Activity activity) throws IOException {
         Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
+        String timeStamp;
+        if (selectedDate != null)
+            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
+        else
+            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return File.createTempFile(imageFileName, ".jpg", storageDir);
