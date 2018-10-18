@@ -77,6 +77,16 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                 expandableLayout.collapse();
             }
         });
+        hideButton();
+        final FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expandableLayout.collapse();
+                floatingActionButton.hide();
+                circleMenuView.setVisibility(View.VISIBLE);
+            }
+        });
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         setUpTabLayout(tabLayout);
         CalendarView calendarView = view.findViewById(R.id.calendarView);
@@ -106,18 +116,44 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
         return view;
     }
 
+    private void hideCircleMenu() {
+        CircleMenuView circleMenuView = view.findViewById(R.id.circleMenu);
+        circleMenuView.setVisibility(View.INVISIBLE);
+    }
+
+    private void showCircleMenu() {
+        final CircleMenuView circleMenuView = view.findViewById(R.id.circleMenu);
+        circleMenuView.setVisibility(View.VISIBLE);
+    }
+
+    private void showButton() {
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
+        floatingActionButton.show();
+    }
+
+    private void hideButton() {
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
+        floatingActionButton.hide();
+    }
+
     private void setUpTabLayout(TabLayout tabLayout) {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_day));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_week));
+        TabLayout.Tab weekTab = tabLayout.newTab().setText(R.string.tab_week);
+        tabLayout.addTab(weekTab);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_month));
+        weekTab.select();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    hideCircleMenu();
                     expandableLayout.expand();
+                    showButton();
                 }
                 else {
+                    showCircleMenu();
                     expandableLayout.collapse();
+                    hideButton();
                 }
             }
 
@@ -128,7 +164,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+                if (tab.getPosition() == 0) {
+                    hideCircleMenu();
+                    expandableLayout.expand();
+                    showButton();
+                }
             }
         });
     }
