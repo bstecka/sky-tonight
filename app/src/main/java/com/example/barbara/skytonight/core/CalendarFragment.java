@@ -11,14 +11,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.notes.NotesActivity;
+import com.example.barbara.skytonight.notes.NoteActivity;
 import com.example.barbara.skytonight.notes.NotesListActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
 import com.ramotion.circlemenu.CircleMenuView;
@@ -26,7 +25,6 @@ import com.ramotion.circlemenu.CircleMenuView;
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class CalendarFragment extends Fragment implements CalendarContract.View {
 
@@ -285,7 +283,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         Intent intent;
         if (tabLayout.getSelectedTabPosition() == 0)
-            intent = new Intent(getActivity(), NotesActivity.class);
+            intent = new Intent(getActivity(), NoteActivity.class);
         else
             intent = new Intent(getActivity(), NotesListActivity.class);
         startActivityOnMenuButton(intent);

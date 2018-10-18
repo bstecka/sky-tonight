@@ -2,38 +2,27 @@ package com.example.barbara.skytonight.notes;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.photos.ImageFile;
-import java.util.ArrayList;
 import java.util.Calendar;
 
-import static android.app.Activity.RESULT_OK;
+public class NoteFragment extends Fragment implements NoteContract.View {
 
-public class NotesFragment extends Fragment implements NotesContract.View {
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    private NotesContract.Presenter mPresenter;
-    private ArrayList<ImageFile> photoList;
+    private NoteContract.Presenter mPresenter;
     private Calendar selectedDate;
     private View view;
     private boolean editModeEnabled = false;
 
     @Override
-    public void setPresenter(NotesContract.Presenter presenter) {
+    public void setPresenter(NoteContract.Presenter presenter) {
         mPresenter = presenter;
     }
 
@@ -45,8 +34,7 @@ public class NotesFragment extends Fragment implements NotesContract.View {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_notes, container, false);
-        photoList = new ArrayList<>();
+        this.view = inflater.inflate(R.layout.fragment_note, container, false);
         final android.support.design.widget.FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -63,7 +51,6 @@ public class NotesFragment extends Fragment implements NotesContract.View {
                     EditText editText = view.findViewById(R.id.editText);
                     textView.setVisibility(View.VISIBLE);
                     editText.setVisibility(View.INVISIBLE);
-                    Log.e("NotesFragment", editText.getText().toString());
                     mPresenter.saveFile(editText.getText().toString());
                     button.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_edit));
                     editModeEnabled = false;
@@ -77,9 +64,6 @@ public class NotesFragment extends Fragment implements NotesContract.View {
 
     @Override
     public Context getContext() { return view.getContext(); }
-
-    @Override
-    public ArrayList<ImageFile> getPhotoList() { return photoList; }
 
     @Override
     public Calendar getSelectedDate() { return selectedDate; }
@@ -100,10 +84,4 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     @Override
     public Activity getViewActivity() { return getActivity(); }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Toast.makeText(view.getContext(), R.string.photo_saved, Toast.LENGTH_SHORT).show();
-        }
-    }
 }

@@ -37,7 +37,7 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
     @Override
     public void onResume() {
         super.onResume();
-            mPresenter.start();
+        mPresenter.start();
     }
 
     @Override

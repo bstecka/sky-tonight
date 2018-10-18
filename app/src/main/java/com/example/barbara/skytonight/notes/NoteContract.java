@@ -12,11 +12,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class NotesContract {
+public class NoteContract {
 
     interface View extends BaseView<Presenter> {
         void setText(String text);
-        ArrayList<ImageFile> getPhotoList();
         Context getContext();
         Activity getViewActivity();
         Calendar getSelectedDate();

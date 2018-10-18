@@ -57,8 +57,8 @@
                 android:value="com.example.barbara.skytonight.core.CoreActivity" />
         </activity>
         <activity
-            android:name=".notes.NotesActivity"
-            android:label="@string/title_activity_notes"
+            android:name=".notes.NoteActivity"
+            android:label="@string/title_activity_note"
             android:parentActivityName=".core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
