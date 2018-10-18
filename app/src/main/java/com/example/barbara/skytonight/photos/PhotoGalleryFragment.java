@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     private ArrayList<ImageFile> photoList;
     private Calendar selectedDate;
     private View view;
+    private Integer selectedYear = null;
+    private Integer selectedMonth = null;
 
     @Override
     public void setPresenter(PhotoGalleryContract.Presenter presenter) {
@@ -70,8 +73,23 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     public Calendar getSelectedDate() { return selectedDate; }
 
     @Override
+    public Integer getSelectedMonth() {
+        return selectedMonth;
+    }
+
+    @Override
+    public Integer getSelectedYear() {
+        return selectedYear;
+    }
+
     public void setSelectedDate(Calendar selectedDate) {
         this.selectedDate = selectedDate;
+    }
+
+    public void setSelectedMonthYear(int month, int year) {
+        selectedDate = null;
+        selectedMonth = month;
+        selectedYear = year;
     }
 
     @Override

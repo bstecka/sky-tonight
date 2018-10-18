@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
@@ -18,9 +19,20 @@ public class PhotoGalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
+        Integer selectedMonth = null, selectedYear = null;
         if (bundle != null) {
-            selectedDate.set(Calendar.YEAR, bundle.getInt("year"));
-            selectedDate.set(Calendar.DAY_OF_YEAR, bundle.getInt("dayOfYear"));
+            if (bundle.getInt("dayOfYear") != 0) {
+                selectedDate.set(Calendar.YEAR, bundle.getInt("year"));
+                selectedDate.set(Calendar.DAY_OF_YEAR, bundle.getInt("dayOfYear"));
+            }
+            else if (bundle.getInt("year") != 0) {
+                selectedDate = null;
+                selectedYear = bundle.getInt("year");
+                selectedMonth = bundle.getInt("month");
+            }
+            else {
+                selectedDate = null;
+            }
         }
         setContentView(R.layout.activity_photo_gallery);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -30,6 +42,8 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             photoGalleryFragment = new PhotoGalleryFragment();
             photoGalleryFragment.setPresenter(new PhotoGalleryPresenter(photoGalleryFragment));
             photoGalleryFragment.setSelectedDate(selectedDate);
+            if (selectedMonth != null)
+                photoGalleryFragment.setSelectedMonthYear(selectedMonth, selectedYear);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.photoGalleryFragment, photoGalleryFragment);
             transaction.commit();
@@ -37,6 +51,8 @@ public class PhotoGalleryActivity extends AppCompatActivity {
         else {
             photoGalleryFragment.setPresenter(new PhotoGalleryPresenter(photoGalleryFragment));
             photoGalleryFragment.setSelectedDate(selectedDate);
+            if (selectedMonth != null)
+                photoGalleryFragment.setSelectedMonthYear(selectedMonth, selectedYear);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

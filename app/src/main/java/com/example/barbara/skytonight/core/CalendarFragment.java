@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.ramotion.circlemenu.CircleMenuView;
 import net.cachapa.expandablelayout.ExpandableLayout;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class CalendarFragment extends Fragment implements CalendarContract.View {
 
@@ -32,8 +34,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     private Calendar currentlySelectedDate = Calendar.getInstance();
     private ExpandableLayout exLayoutDay;
     private ExpandableLayout exLayoutMonth;
-    private int currentlyDisplayedMonth;
-    private int currentlyDisplayedYear;
+    private int monthTabMonth;
+    private int monthTabYear;
     private View view;
     private Context context;
 
@@ -123,6 +125,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    CalendarView calendarView = view.findViewById(R.id.calendarView);
+                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
+                    currentlySelectedDate = Calendar.getInstance();
+                    updateDayInfoText(currentlySelectedDate);
                     hideCircleMenu();
                     exLayoutMonth.collapse();
                     if (!exLayoutDay.isExpanded()) {
@@ -217,31 +223,31 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void goForwards() {
-        if (currentlyDisplayedMonth < 11) {
-            currentlyDisplayedMonth++;
+        if (monthTabMonth < 11) {
+            monthTabMonth++;
         }
         else {
-            currentlyDisplayedMonth = 0;
-            currentlyDisplayedYear++;
+            monthTabMonth = 0;
+            monthTabYear++;
         }
     }
 
     private void goBackwards() {
-        if (currentlyDisplayedMonth > 0) {
-            currentlyDisplayedMonth--;
+        if (monthTabMonth > 0) {
+            monthTabMonth--;
         }
-        else if (currentlyDisplayedYear > 2000){
-            currentlyDisplayedMonth = 11;
-            currentlyDisplayedYear--;
+        else if (monthTabYear > 2000){
+            monthTabMonth = 11;
+            monthTabYear--;
         }
     }
 
     private void setCurrentMonthTextView(){
         TextView monthTextView = view.findViewById(R.id.monthTextView);
         try {
-            String resourceString = "month_" + currentlyDisplayedMonth;
+            String resourceString = "month_" + monthTabMonth;
             int resourceStringId = context.getResources().getIdentifier(resourceString, "string", context.getPackageName());
-            monthTextView.setText(context.getResources().getString(resourceStringId, currentlyDisplayedYear));
+            monthTextView.setText(context.getResources().getString(resourceStringId, monthTabYear));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
             monthTextView.setText(R.string.month_unknown);
@@ -259,8 +265,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
-        this.currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
+        this.monthTabMonth = Calendar.getInstance().get(Calendar.MONTH);
+        this.monthTabYear = Calendar.getInstance().get(Calendar.YEAR);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -271,15 +277,29 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
 
     private void onPhotosButtonClick() {
         Intent intent = new Intent(getActivity(), PhotoGalleryActivity.class);
-        intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
-        intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
-        startActivity(intent);
+        startActivityOnMenuButton(intent);
     }
 
     private void onNotesButtonClick() {
         Intent intent = new Intent(getActivity(), NotesActivity.class);
-        intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
-        intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
+        startActivityOnMenuButton(intent);
+    }
+
+    private void startActivityOnMenuButton(Intent intent) {
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            intent.putExtra("type", "day");
+            intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
+            intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
+        }
+        else if (tabLayout.getSelectedTabPosition() == 2) {
+            intent.putExtra("type", "month");
+            intent.putExtra("year", monthTabYear);
+            intent.putExtra("month", monthTabMonth);
+        }
+        else {
+            intent.putExtra("type", "week");
+        }
         startActivity(intent);
     }
 
