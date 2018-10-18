@@ -7,11 +7,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class NotesActivity extends AppCompatActivity {
 
@@ -23,8 +28,20 @@ public class NotesActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         if (bundle != null) {
-            selectedDate.set(Calendar.YEAR, bundle.getInt("year"));
-            selectedDate.set(Calendar.DAY_OF_YEAR, bundle.getInt("dayOfYear"));
+            if (bundle.getInt("dayOfYear") != 0) {
+                selectedDate.set(Calendar.YEAR, bundle.getInt("year"));
+                selectedDate.set(Calendar.DAY_OF_YEAR, bundle.getInt("dayOfYear"));
+            }
+            else if (bundle.getString("filePath") != null) {
+                String filePath = bundle.getString("filePath");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+                try {
+                    Date date = sdf.parse(filePath.substring(4, 13));
+                    selectedDate.setTime(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         setContentView(R.layout.activity_notes);
         FragmentManager fragmentManager = getSupportFragmentManager();

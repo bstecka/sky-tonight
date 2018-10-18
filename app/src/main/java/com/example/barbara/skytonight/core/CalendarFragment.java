@@ -19,6 +19,7 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.notes.NotesActivity;
+import com.example.barbara.skytonight.notes.NotesListActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
 import com.ramotion.circlemenu.CircleMenuView;
 
@@ -164,6 +165,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
+                    CalendarView calendarView = view.findViewById(R.id.calendarView);
+                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
+                    currentlySelectedDate = Calendar.getInstance();
+                    updateDayInfoText(currentlySelectedDate);
                     hideCircleMenu();
                     exLayoutDay.expand();
                     showButton();
@@ -178,16 +183,12 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
         circleMenuView.setEventListener(new CircleMenuView.EventListener() {
             @Override
             public void onButtonClickAnimationEnd(@NonNull CircleMenuView view, int index) {
-                switch (index) {
-                    case 0:
-                        break;
-                    case 1: onPhotosButtonClick();
-                        break;
-                    case 2: onNotesButtonClick();
-                        break;
-                    default:
-                        break;
-                }
+                if (index == 0)
+                    onPhotosButtonClick();
+                else if (index == 1)
+                    onPhotosButtonClick();
+                else if (index == 2)
+                    onNotesButtonClick();
             }
         });
         hideButton();
@@ -281,7 +282,12 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void onNotesButtonClick() {
-        Intent intent = new Intent(getActivity(), NotesActivity.class);
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        Intent intent;
+        if (tabLayout.getSelectedTabPosition() == 0)
+            intent = new Intent(getActivity(), NotesActivity.class);
+        else
+            intent = new Intent(getActivity(), NotesListActivity.class);
         startActivityOnMenuButton(intent);
     }
 

@@ -16,12 +16,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.photos.ImageFile;
-import com.example.barbara.skytonight.photos.MyPhotoRecyclerViewAdapter;
-import com.example.barbara.skytonight.photos.PhotoGalleryContract;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -93,7 +89,6 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     }
 
     public void setText(String text) {
-        Log.e("setText", text);
         TextView textView = view.findViewById(R.id.textView);
         EditText editText = view.findViewById(R.id.editText);
         textView.setText(text);
