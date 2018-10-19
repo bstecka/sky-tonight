@@ -28,6 +28,7 @@ public class AudioFragment extends Fragment implements AudioContract.View {
     private View view;
     private Integer selectedYear = null;
     private Integer selectedMonth = null;
+    private boolean isRecording = false;
 
     @Override
     public void setPresenter(com.example.barbara.skytonight.audio.AudioContract.Presenter presenter) {
@@ -45,10 +46,20 @@ public class AudioFragment extends Fragment implements AudioContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_audio, container, false);
         fileList = new ArrayList<>();
-        FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
+        final FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //mPresenter.dispatchTakePhotoIntent();
+                if (!isRecording) {
+                    isRecording = true;
+                    mPresenter.startRecording();
+                    button.setImageResource(R.drawable.ic_baseline_stop_24px);
+                }
+                else {
+                    isRecording = false;
+                    mPresenter.stopRecording();
+                    button.setImageResource(R.drawable.ic_voice);
+                    mPresenter.start();
+                }
             }
         });
         mAdapter = new MyAudioRecyclerViewAdapter(fileList);

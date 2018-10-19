@@ -84,7 +84,6 @@ public class AudioRecordTest extends AppCompatActivity {
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mRecorder.setOutputFile(mFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
         try {
             mRecorder.prepare();
         } catch (IOException e) {

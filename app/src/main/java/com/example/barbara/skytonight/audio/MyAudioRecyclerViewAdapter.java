@@ -18,7 +18,11 @@ import com.example.barbara.skytonight.photos.FullPhotoActivity;
 import com.example.barbara.skytonight.photos.ImageFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 
 public class MyAudioRecyclerViewAdapter extends RecyclerView.Adapter<MyAudioRecyclerViewAdapter.ViewHolder> {
@@ -47,13 +51,16 @@ public class MyAudioRecyclerViewAdapter extends RecyclerView.Adapter<MyAudioRecy
                 if (holder.mediaPlayer == null) {
                     holder.mediaPlayer = new MediaPlayer();
                     try {
-                        holder.mediaPlayer.setDataSource(file.getAbsolutePath());
+                        FileInputStream fis = null;
+                        fis = new FileInputStream(file.getAbsolutePath());
+                        holder.mediaPlayer.setDataSource(fis.getFD());
                         holder.mediaPlayer.prepare();
                         holder.mediaPlayer.start();
                         holder.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mp) {
                                 holder.mButton.setImageResource(R.drawable.ic_play);
+                                holder.mediaPlayer.release();
                             }
                         });
                     } catch (IOException e) {
@@ -68,15 +75,6 @@ public class MyAudioRecyclerViewAdapter extends RecyclerView.Adapter<MyAudioRecy
                 }
             }
         });
-        /* final Context context = holder.mTextView.getContext();
-        holder.mImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, FullPhotoActivity.class);
-                intent.putExtra(FILE_PATH, imageFile.getFile().getAbsolutePath());
-                context.startActivity(intent);
-            }
-        });*/
     }
 
     @Override

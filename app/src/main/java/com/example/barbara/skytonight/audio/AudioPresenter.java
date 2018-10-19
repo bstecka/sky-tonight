@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -28,6 +29,7 @@ import java.util.Locale;
 public class AudioPresenter implements AudioContract.Presenter {
 
     private final AudioContract.View mAudioView;
+    private MediaRecorder mRecorder = null;
 
     public AudioPresenter(AudioContract.View mAudioView) {
         this.mAudioView = mAudioView;
@@ -35,9 +37,35 @@ public class AudioPresenter implements AudioContract.Presenter {
 
     @Override
     public void start() {
-        Log.e("Presenter", "start");
         mAudioView.clearListInView();
         readFiles();
+    }
+
+    public void startRecording() {
+        File file = null;
+        try {
+            file = createFile(mAudioView.getViewActivity());
+            String fileName = file.getAbsolutePath();
+            mRecorder = new MediaRecorder();
+            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mRecorder.setOutputFile(fileName);
+            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            try {
+                mRecorder.prepare();
+            } catch (IOException e) {
+                Log.e("AudioPresenter", "prepare() failed");
+            }
+            mRecorder.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopRecording() {
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
     }
 
     private void readFilesForDay(Calendar selectedDate) {
@@ -48,7 +76,6 @@ public class AudioPresenter implements AudioContract.Presenter {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    Log.e("Presenter", name);
                     return name.contains(timeStamp);
                 }
             });
@@ -59,7 +86,6 @@ public class AudioPresenter implements AudioContract.Presenter {
     }
 
     private void readFilesForWeek() {
-        Log.e("Presenter", "Read week");
         ArrayList<File> list = mAudioView.getFileList();
         File storageDir = mAudioView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DCIM);
         if (storageDir != null) {
@@ -70,22 +96,17 @@ public class AudioPresenter implements AudioContract.Presenter {
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
                     try {
-                        Log.e("Presenter", name + " " + name.substring(4, 13));
                         Date date = sdf.parse(name.substring(4, 13));
                         calendar.setTime(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        Log.e("Presenter", "error");
                         return false;
                     }
-                    Log.e("Presenter",now.get(Calendar.WEEK_OF_YEAR) + " " + calendar.get(Calendar.WEEK_OF_YEAR));
                     return now.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
                 }
             });
-            for (File file : filteredFiles) {
+            for (File file : filteredFiles)
                 list.add(file);
-                Log.e("Presenter", file.getName() + " " + list.size());
-            }
             mAudioView.refreshListInView();
         }
     }

@@ -26,5 +26,7 @@ public class AudioContract {
     }
 
     interface Presenter extends BasePresenter {
+        void startRecording();
+        void stopRecording();
     }
 }
