@@ -8,21 +8,22 @@ import com.example.barbara.skytonight.BasePresenter;
 import com.example.barbara.skytonight.BaseView;
 import com.example.barbara.skytonight.photos.ImageFile;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class NotesContract {
+public class NotesListContract {
 
     interface View extends BaseView<Presenter> {
-        void setText(String text);
-        ArrayList<ImageFile> getPhotoList();
-        Context getContext();
+        void refreshListInView();
+        void clearListInView();
+        ArrayList<NoteFile> getNotesList();
         Activity getViewActivity();
         Calendar getSelectedDate();
+        Integer getSelectedMonth();
+        Integer getSelectedYear();
     }
 
     interface Presenter extends BasePresenter {
-        void saveFile(String text);
+
     }
 }

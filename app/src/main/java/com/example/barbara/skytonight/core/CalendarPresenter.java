@@ -1,24 +1,12 @@
 package com.example.barbara.skytonight.core;
 
-import android.location.Location;
 import android.os.Environment;
-import android.util.Log;
-
-import com.example.barbara.skytonight.data.AstroObject;
-import com.example.barbara.skytonight.data.AstroObjectRepository;
-import com.example.barbara.skytonight.data.AstroObjectsDataSource;
-import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.CoreRepository;
-import com.example.barbara.skytonight.notes.NotesPresenter;
-import com.example.barbara.skytonight.photos.PhotoGalleryPresenter;
-import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 

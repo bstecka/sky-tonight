@@ -1,39 +1,25 @@
 package com.example.barbara.skytonight.notes;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 
-import com.example.barbara.skytonight.photos.ImageFile;
-import com.example.barbara.skytonight.photos.PhotoGalleryContract;
-
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Scanner;
 
-public class NotesPresenter implements NotesContract.Presenter {
+public class NotePresenter implements NoteContract.Presenter {
 
-    private final NotesContract.View mNotesView;
+    private final NoteContract.View mNotesView;
 
-    public NotesPresenter(NotesContract.View mNotesView) {
+    public NotePresenter(NoteContract.View mNotesView) {
         this.mNotesView = mNotesView;
     }
 
@@ -63,7 +49,7 @@ public class NotesPresenter implements NotesContract.Presenter {
             out.close();
             mNotesView.setText(fileContents);
         } catch (IOException e) {
-            Log.e("NotesPresenter", "IOException");
+            Log.e("NotePresenter", "IOException");
         }
     }
 
@@ -83,7 +69,7 @@ public class NotesPresenter implements NotesContract.Presenter {
             File file = createTextFile(mNotesView.getViewActivity());
             writeStringAsFile(file, text);
         } catch (IOException e) {
-            Log.e("NotesPresenter", "IOException");
+            Log.e("NotePresenter", "IOException");
         }
     }
 
@@ -96,10 +82,10 @@ public class NotesPresenter implements NotesContract.Presenter {
     }
 
     private static class ReadTextFileTask extends AsyncTask<File, Void, String> {
-        NotesContract.View view;
+        NoteContract.View view;
         File file;
 
-        ReadTextFileTask(File file, NotesContract.View view){
+        ReadTextFileTask(File file, NoteContract.View view){
             this.file = file;
             this.view = view;
         }

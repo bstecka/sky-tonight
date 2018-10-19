@@ -75,6 +75,7 @@
     <string name="cal_button_notes">Notes</string>
     <string name="cal_button_photos">Photos</string>
     <string name="title_activity_photo_gallery">Photos</string>
+    <string name="title_activity_note">Note</string>
     <string name="title_activity_notes">Notes</string>
     <string name="photo_saved">Your photo has been saved</string>
     <string name="title_activity_photo_gallery2">Photos</string>
@@ -136,6 +137,10 @@
     <string name="weather_condition_803">Broken clouds</string>
     <string name="weather_condition_804">Overcast clouds</string>
     <string name="weather_condition_unknown">Unknown weather</string>
+    <string name="exit_dialog_prompt">Do you want to return to the Calendar screen and discard changes?</string>
+    <string name="exit_dialog_title">Unsaved changes</string>
+    <string name="exit_dialog_yes">OK</string>
+    <string name="exit_dialog_no">Cancel</string>
     <string name="tab_day">Day</string>
     <string name="tab_week">This Week</string>
     <string name="tab_month">Month</string>
