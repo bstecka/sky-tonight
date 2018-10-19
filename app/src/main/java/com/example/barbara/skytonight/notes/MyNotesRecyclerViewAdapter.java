@@ -11,7 +11,12 @@ import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MyNotesRecyclerViewAdapter extends RecyclerView.Adapter<MyNotesRecyclerViewAdapter.ViewHolder> {
 
@@ -41,6 +46,15 @@ public class MyNotesRecyclerViewAdapter extends RecyclerView.Adapter<MyNotesRecy
                 context.startActivity(intent);
             }
         });
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+        try {
+            Date date = sdf.parse(noteFile.getFile().getName().substring(4, 13));
+            calendar.setTime(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        holder.mDateTextView.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.getTime()));
     }
 
     @Override
@@ -51,12 +65,14 @@ public class MyNotesRecyclerViewAdapter extends RecyclerView.Adapter<MyNotesRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mTextView;
+        final TextView mDateTextView;
         public String mItem;
 
         public ViewHolder(final View view) {
             super(view);
             mView = view;
             mTextView = view.findViewById(R.id.textView);
+            mDateTextView = view.findViewById(R.id.dateTextView);
         }
 
         @Override
