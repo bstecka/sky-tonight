@@ -17,9 +17,12 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.audio.AudioActivity;
+import com.example.barbara.skytonight.audio.AudioRecordTest;
 import com.example.barbara.skytonight.notes.NoteActivity;
 import com.example.barbara.skytonight.notes.NotesListActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
+import com.example.barbara.skytonight.video.VideoActivity;
 import com.ramotion.circlemenu.CircleMenuView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -182,11 +185,13 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             @Override
             public void onButtonClickAnimationEnd(@NonNull CircleMenuView view, int index) {
                 if (index == 0)
-                    onPhotosButtonClick();
+                    onVideoButtonClick();
                 else if (index == 1)
                     onPhotosButtonClick();
                 else if (index == 2)
                     onNotesButtonClick();
+                else
+                    onAudioButtonClick();
             }
         });
         hideButton();
@@ -286,6 +291,16 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             intent = new Intent(getActivity(), NoteActivity.class);
         else
             intent = new Intent(getActivity(), NotesListActivity.class);
+        startActivityOnMenuButton(intent);
+    }
+
+    private void onAudioButtonClick() {
+        Intent intent = new Intent(getActivity(), AudioActivity.class);
+        startActivityOnMenuButton(intent);
+    }
+
+    private void onVideoButtonClick() {
+        Intent intent = new Intent(getActivity(), VideoActivity.class);
         startActivityOnMenuButton(intent);
     }
 

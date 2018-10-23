@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
-import android.widget.CalendarView;
 
 import java.io.File;
 import java.io.FilenameFilter;
