@@ -5,14 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -58,6 +55,13 @@
         </activity>
         <activity android:name=".audio.AudioActivity"
             android:label="@string/title_activity_audio"
+            android:parentActivityName=".core.CoreActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.barbara.skytonight.core.CoreActivity" />
+        </activity>
+        <activity android:name=".video.VideoActivity"
+            android:label="@string/title_activity_video"
             android:parentActivityName=".core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
