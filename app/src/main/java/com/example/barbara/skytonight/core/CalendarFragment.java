@@ -185,11 +185,11 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             @Override
             public void onButtonClickAnimationEnd(@NonNull CircleMenuView view, int index) {
                 if (index == 0)
-                    onVideoButtonClick();
+                    onNotesButtonClick();
                 else if (index == 1)
                     onPhotosButtonClick();
                 else if (index == 2)
-                    onNotesButtonClick();
+                    onVideoButtonClick();
                 else
                     onAudioButtonClick();
             }
@@ -260,10 +260,13 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
 
     @Override
     public void updateDayInfoText(Calendar selectedDate) {
-        int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
         int numberOfWords = mPresenter.getNumberOfWords(selectedDate);
+        int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
+        int numberOfVideos = mPresenter.getNumberOfVideos(selectedDate);
+        int numberOfVoiceNotes = mPresenter.getNumberOfVoiceNotes(selectedDate);
+        int others = numberOfVideos + numberOfVoiceNotes;
         TextView textView = view.findViewById(R.id.dayInfoTextView);
-        textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : ""));
+        textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : "", others));
     }
 
     @Override

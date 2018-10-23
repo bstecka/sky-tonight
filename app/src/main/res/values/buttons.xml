@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/tools">
     <array name="icons">
-        <item>@drawable/ic_video</item>
-        <item>@drawable/ic_photos</item>
         <item>@drawable/ic_note</item>
+        <item>@drawable/ic_photos</item>
+        <item>@drawable/ic_video</item>
         <item>@drawable/ic_voice</item>
     </array>
     <array name="colors">

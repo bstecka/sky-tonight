@@ -27,6 +27,7 @@ public class AudioFragment extends Fragment implements AudioContract.View {
     private View view;
     private Integer selectedYear = null;
     private Integer selectedMonth = null;
+    private boolean recordingPermitted = true;
     private boolean isRecording = false;
 
     @Override
@@ -41,6 +42,26 @@ public class AudioFragment extends Fragment implements AudioContract.View {
             mPresenter.start();
     }
 
+    public void setRecordingPermitted(boolean permitted) {
+        recordingPermitted = permitted;
+    }
+
+    private void onFloatingActionButtonClick() {
+        if (recordingPermitted) {
+            FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
+            if (!isRecording) {
+                isRecording = true;
+                mPresenter.startRecording();
+                button.setImageResource(R.drawable.ic_baseline_stop_24px);
+            } else {
+                isRecording = false;
+                mPresenter.stopRecording();
+                button.setImageResource(R.drawable.ic_voice);
+                mPresenter.start();
+            }
+        }
+    }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_audio, container, false);
@@ -48,17 +69,7 @@ public class AudioFragment extends Fragment implements AudioContract.View {
         final FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (!isRecording) {
-                    isRecording = true;
-                    mPresenter.startRecording();
-                    button.setImageResource(R.drawable.ic_baseline_stop_24px);
-                }
-                else {
-                    isRecording = false;
-                    mPresenter.stopRecording();
-                    button.setImageResource(R.drawable.ic_voice);
-                    mPresenter.start();
-                }
+                onFloatingActionButtonClick();
             }
         });
         mAdapter = new MyAudioRecyclerViewAdapter(fileList);

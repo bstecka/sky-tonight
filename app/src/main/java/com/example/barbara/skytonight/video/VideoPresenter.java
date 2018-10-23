@@ -24,7 +24,6 @@ import static com.example.barbara.skytonight.video.VideoFragment.REQUEST_VIDEO_C
 public class VideoPresenter implements VideoContract.Presenter {
 
     private final VideoContract.View mVideoView;
-    private MediaRecorder mRecorder = null;
 
     public VideoPresenter(VideoContract.View mVideoView) {
         this.mVideoView = mVideoView;
@@ -34,36 +33,6 @@ public class VideoPresenter implements VideoContract.Presenter {
     public void start() {
         mVideoView.clearListInView();
         readFiles();
-    }
-
-    public void startRecording() {
-        File file = null;
-        try {
-            file = createFile(mVideoView.getViewActivity());
-            String fileName = file.getAbsolutePath();
-            mRecorder = new MediaRecorder();
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
-            mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            mRecorder.setOutputFile(fileName);
-            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            mRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H263);
-            mRecorder.setMaxFileSize(10000);
-            try {
-                mRecorder.prepare();
-            } catch (IOException e) {
-                Log.e("AudioPresenter", "prepare() failed");
-            }
-            mRecorder.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void stopRecording() {
-        mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
     }
 
     private void readFilesForDay(Calendar selectedDate) {

@@ -24,22 +24,6 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     }
 
     @Override
-    public int getNumberOfPhotos(Calendar date) {
-        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
-        int count = 0;
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
-            });
-            for (File file : filteredFiles)
-                count++;
-        }
-        return count;
-    }
-
-    @Override
     public int getNumberOfWords(Calendar date) {
         File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
@@ -51,6 +35,38 @@ public class CalendarPresenter implements CalendarContract.Presenter {
             });
             for (File file : filteredFiles)
                 count = readFile(file);
+        }
+        return count;
+    }
+
+    @Override
+    public int getNumberOfPhotos(Calendar date) {
+        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        return getNumberOfFiles(storageDir, date);
+    }
+
+    @Override
+    public int getNumberOfVideos(Calendar date) {
+        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        return getNumberOfFiles(storageDir, date);
+    }
+
+    @Override
+    public int getNumberOfVoiceNotes(Calendar date) {
+        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        return getNumberOfFiles(storageDir, date);
+    }
+
+    private int getNumberOfFiles(File storageDir, Calendar date) {
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
+        int count = 0;
+        if (storageDir != null) {
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+            });
+            for (File file : filteredFiles)
+                count++;
         }
         return count;
     }

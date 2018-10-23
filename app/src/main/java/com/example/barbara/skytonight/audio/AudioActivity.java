@@ -1,15 +1,21 @@
 package com.example.barbara.skytonight.audio;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.photos.PhotoGalleryFragment;
 import com.example.barbara.skytonight.photos.PhotoGalleryPresenter;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.util.Calendar;
 
@@ -58,6 +64,10 @@ public class AudioActivity extends AppCompatActivity {
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED;
+        if (noFineLocationPermission) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, AppConstants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+        }
     }
 
     @Override
@@ -68,6 +78,29 @@ public class AudioActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case AppConstants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+                        Log.e("onRequestPermission", "Record audio");
+                        AudioFragment audioView = (AudioFragment) getSupportFragmentManager().findFragmentById(R.id.audioFragment);
+                        if (audioView != null)
+                            audioView.setRecordingPermitted(true);
+                        Toast.makeText(getApplicationContext(), R.string.voice_permission_yes, Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Log.e("onRequestPermission", "Permission denied");
+                    AudioFragment audioView = (AudioFragment) getSupportFragmentManager().findFragmentById(R.id.audioFragment);
+                    if (audioView != null)
+                        audioView.setRecordingPermitted(false);
+                    Toast.makeText(getApplicationContext(), R.string.voice_permission_no, Toast.LENGTH_LONG).show();
+                }
+            }
         }
     }
 

@@ -3,17 +3,16 @@ package com.example.barbara.skytonight.video;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.barbara.skytonight.R;
 import java.io.File;
@@ -113,8 +112,9 @@ public class VideoFragment extends Fragment implements VideoContract.View {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
-            Uri videoUri = intent.getData();
-            Log.e("VideoFragment", videoUri.toString());
+            Toast.makeText(view.getContext(), R.string.video_saved, Toast.LENGTH_SHORT).show();
+            fileList.clear();
+            mAdapter.notifyDataSetChanged();
         }
     }
 
