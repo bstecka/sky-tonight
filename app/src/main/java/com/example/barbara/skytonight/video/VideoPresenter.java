@@ -52,14 +52,13 @@ public class VideoPresenter implements VideoContract.Presenter {
         }
     }
 
-    private void readFilesForWeek() {
+    private void readFilesForWeek(final Calendar selectedDate) {
         ArrayList<File> list = mVideoView.getFileList();
         File storageDir = mVideoView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
         if (storageDir != null) {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    Calendar now = Calendar.getInstance();
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
                     try {
@@ -69,7 +68,7 @@ public class VideoPresenter implements VideoContract.Presenter {
                         e.printStackTrace();
                         return false;
                     }
-                    return now.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+                    return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
                 }
             });
             for (File file : filteredFiles)
@@ -117,12 +116,12 @@ public class VideoPresenter implements VideoContract.Presenter {
 
     private void readFiles() {
         Calendar selectedDate = mVideoView.getSelectedDate();
-        if (selectedDate != null) {
+        if (mVideoView.isWeekModeEnabled()) {
+            readFilesForWeek(selectedDate);
+        } else if (selectedDate != null) {
             readFilesForDay(selectedDate);
         } else if (mVideoView.getSelectedMonth() != null) {
             readFilesForMonth(mVideoView.getSelectedMonth(), mVideoView.getSelectedYear());
-        } else {
-            readFilesForWeek();
         }
     }
 

@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.util.AppConstants;
+
 import java.util.Calendar;
 
 public class NotesListActivity extends AppCompatActivity {
@@ -15,6 +17,7 @@ public class NotesListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean weekMode = false;
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         Integer selectedMonth = null, selectedYear = null;
@@ -31,6 +34,8 @@ public class NotesListActivity extends AppCompatActivity {
             else {
                 selectedDate = null;
             }
+            if (bundle.getInt("type") == AppConstants.TAB_TYPE_WEEK)
+                weekMode = true;
         }
         setContentView(R.layout.activity_notes_list);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -42,6 +47,8 @@ public class NotesListActivity extends AppCompatActivity {
             notesListFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 notesListFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                notesListFragment.setWeekMode(true);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.notesListFragment, notesListFragment);
             transaction.commit();
@@ -51,6 +58,8 @@ public class NotesListActivity extends AppCompatActivity {
             notesListFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 notesListFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                notesListFragment.setWeekMode(true);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

@@ -23,6 +23,7 @@ public class VideoContract {
         Integer getSelectedMonth();
         Integer getSelectedYear();
         void startVideoActivity(Intent intent);
+        boolean isWeekModeEnabled();
     }
 
     interface Presenter extends BasePresenter {

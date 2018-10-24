@@ -41,7 +41,7 @@ public class CalendarPresenter implements CalendarContract.Presenter {
 
     @Override
     public int getNumberOfPhotos(Calendar date) {
-        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         return getNumberOfFiles(storageDir, date);
     }
 
@@ -53,7 +53,7 @@ public class CalendarPresenter implements CalendarContract.Presenter {
 
     @Override
     public int getNumberOfVoiceNotes(Calendar date) {
-        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        File storageDir = mCalendarView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DCIM);
         return getNumberOfFiles(storageDir, date);
     }
 

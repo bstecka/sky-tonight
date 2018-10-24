@@ -70,13 +70,12 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
         }
     }
 
-    private void readPhotosAsyncForWeek() {
+    private void readPhotosAsyncForWeek(final Calendar selectedDate) {
         File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (storageDir != null) {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    Calendar now = Calendar.getInstance();
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
                     try {
@@ -86,7 +85,8 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
                         e.printStackTrace();
                         return false;
                     }
-                    return now.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+                    Log.e("Phtoog", selectedDate.get(Calendar.WEEK_OF_YEAR) + " " + calendar.get(Calendar.WEEK_OF_YEAR) + " " + selectedDate.get(Calendar.YEAR) + " " + calendar.get(Calendar.YEAR));
+                    return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
                 }
             });
             for (File file : filteredFiles)
@@ -114,12 +114,13 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
 
     private void readPhotosAsync() {
         Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
-        if (selectedDate != null) {
+        if (mPhotoGalleryView.isWeekModeEnabled()) {
+            readPhotosAsyncForWeek(selectedDate);
+        }
+        else if (selectedDate != null) {
             readPhotosAsyncForDay(selectedDate);
         } else if (mPhotoGalleryView.getSelectedMonth() != null) {
             readPhotosAsyncForMonth(mPhotoGalleryView.getSelectedMonth(), mPhotoGalleryView.getSelectedYear());
-        } else {
-            readPhotosAsyncForWeek();
         }
     }
 

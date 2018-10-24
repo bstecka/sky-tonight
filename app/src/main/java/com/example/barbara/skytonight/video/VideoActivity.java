@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.audio.AudioFragment;
 import com.example.barbara.skytonight.audio.AudioPresenter;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.util.Calendar;
 
@@ -18,6 +19,7 @@ public class VideoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean weekMode = false;
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         Integer selectedMonth = null, selectedYear = null;
@@ -34,6 +36,8 @@ public class VideoActivity extends AppCompatActivity {
             else {
                 selectedDate = null;
             }
+            if (bundle.getInt("type") == AppConstants.TAB_TYPE_WEEK)
+                weekMode = true;
         }
         setContentView(R.layout.activity_video);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -45,6 +49,8 @@ public class VideoActivity extends AppCompatActivity {
             videoFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 videoFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                videoFragment.setWeekMode(true);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.videoFragment, videoFragment);
             transaction.commit();
@@ -54,6 +60,8 @@ public class VideoActivity extends AppCompatActivity {
             videoFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 videoFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                videoFragment.setWeekMode(true);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

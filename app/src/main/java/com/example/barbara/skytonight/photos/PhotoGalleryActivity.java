@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.util.Calendar;
 
@@ -17,6 +18,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean weekMode = false;
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         Integer selectedMonth = null, selectedYear = null;
@@ -33,6 +35,8 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             else {
                 selectedDate = null;
             }
+            if (bundle.getInt("type") == AppConstants.TAB_TYPE_WEEK)
+                weekMode = true;
         }
         setContentView(R.layout.activity_photo_gallery);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -44,6 +48,8 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             photoGalleryFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 photoGalleryFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                photoGalleryFragment.setWeekMode(true);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.photoGalleryFragment, photoGalleryFragment);
             transaction.commit();
@@ -53,6 +59,8 @@ public class PhotoGalleryActivity extends AppCompatActivity {
             photoGalleryFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 photoGalleryFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                photoGalleryFragment.setWeekMode(true);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

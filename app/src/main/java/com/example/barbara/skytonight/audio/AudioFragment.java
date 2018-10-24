@@ -29,6 +29,7 @@ public class AudioFragment extends Fragment implements AudioContract.View {
     private Integer selectedMonth = null;
     private boolean recordingPermitted = true;
     private boolean isRecording = false;
+    private boolean weekMode = false;
 
     @Override
     public void setPresenter(AudioContract.Presenter presenter) {
@@ -78,6 +79,16 @@ public class AudioFragment extends Fragment implements AudioContract.View {
         recyclerView.setAdapter(mAdapter);
         return view;
     }
+
+    public void setWeekMode(boolean value) {
+        weekMode = value;
+    }
+
+    @Override
+    public boolean isWeekModeEnabled() {
+        return weekMode;
+    }
+
 
     @Override
     public Context getContext() { return view.getContext(); }

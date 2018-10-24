@@ -28,6 +28,7 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
     private View view;
     private Integer selectedYear = null;
     private Integer selectedMonth = null;
+    private boolean weekMode = false;
 
     @Override
     public void setPresenter(NotesListContract.Presenter presenter) {
@@ -49,6 +50,15 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         return view;
+    }
+
+    public void setWeekMode(boolean value) {
+        weekMode = value;
+    }
+
+    @Override
+    public boolean isWeekModeEnabled() {
+        return weekMode;
     }
 
     @Override
