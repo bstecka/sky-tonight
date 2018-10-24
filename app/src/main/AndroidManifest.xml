@@ -46,14 +46,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.barbara.skytonight.core.CoreActivity" />
         </activity>
-        <activity android:name=".audio.AudioActivity"
+        <activity
+            android:name=".audio.AudioActivity"
             android:label="@string/title_activity_audio"
             android:parentActivityName=".core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.barbara.skytonight.core.CoreActivity" />
         </activity>
-        <activity android:name=".video.VideoActivity"
+        <activity
+            android:name=".video.VideoActivity"
             android:label="@string/title_activity_video"
             android:parentActivityName=".core.CoreActivity">
             <meta-data
@@ -76,8 +78,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.barbara.skytonight.core.CoreActivity" />
         </activity>
-        <activity android:name=".photos.FullPhotoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity android:name=".video.FullVideoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".photos.FullPhotoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".video.FullVideoActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name=".news.ArticleActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary"
+            android:label="@string/title_activity_article"/>
     </application>
 
 </manifest>

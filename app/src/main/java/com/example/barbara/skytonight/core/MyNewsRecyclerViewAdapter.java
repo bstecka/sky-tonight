@@ -1,6 +1,7 @@
 package com.example.barbara.skytonight.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.core.NewsFragment.OnListFragmentInteractionListener;
+import com.example.barbara.skytonight.news.ArticleActivity;
+import com.example.barbara.skytonight.notes.NoteActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -35,11 +38,20 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        NewsHeadline newsObject = mValues.get(position);
+        final NewsHeadline newsObject = mValues.get(position);
         holder.mItem = newsObject;
         holder.mTitleView.setText(newsObject.getTitle());
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm:dd", Locale.ENGLISH);
         holder.mDateView.setText(sdf.format(newsObject.getPubDate().getTime()));
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ArticleActivity.class);
+                intent.putExtra("articleUrl", newsObject.getUrl());
+                intent.putExtra("articleTitle", newsObject.getTitle());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
