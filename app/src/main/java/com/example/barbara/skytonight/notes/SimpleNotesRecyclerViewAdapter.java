@@ -1,4 +1,4 @@
-package com.example.barbara.skytonight.video;
+package com.example.barbara.skytonight.notes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,25 +19,24 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class MyVideoRecyclerViewAdapter extends RecyclerView.Adapter<MyVideoRecyclerViewAdapter.ViewHolder> {
+public class SimpleNotesRecyclerViewAdapter extends RecyclerView.Adapter<SimpleNotesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<File> mValues;
-    public static final String FILE_PATH = "FILE_PATH";
+    private final List<NoteFile> mValues;
 
-    public MyVideoRecyclerViewAdapter(List<File> items) {
+    public SimpleNotesRecyclerViewAdapter(List<NoteFile> items) {
         mValues = items;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.simple_notes_list_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final File file = mValues.get(position);
+        final File file = mValues.get(position).getFile();
         final Context context = holder.mTextView.getContext();
         holder.mItem = String.valueOf(file.toString());
         holder.mTextView.setText(file.getName());
@@ -55,9 +54,9 @@ public class MyVideoRecyclerViewAdapter extends RecyclerView.Adapter<MyVideoRecy
         });
     }
 
-    private void onItemClick(Context context, File file) {
-        Intent intent = new Intent(context, FullVideoActivity.class);
-        intent.putExtra(FILE_PATH, file.getAbsolutePath());
+    private void onItemClick(final Context context, File file) {
+        Intent intent = new Intent(context, NoteActivity.class);
+        intent.putExtra("filePath", file.getName());
         context.startActivity(intent);
     }
 

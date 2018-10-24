@@ -24,7 +24,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
     private PhotoGalleryContract.Presenter mPresenter;
-    private MyPhotoRecyclerViewAdapter mAdapter;
+    private SimplePhotoRecyclerViewAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<ImageFile> photoList;
     private Calendar selectedDate;
@@ -55,7 +55,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
                 mPresenter.dispatchTakePhotoIntent();
             }
         });
-        mAdapter = new MyPhotoRecyclerViewAdapter(photoList);
+        mAdapter = new SimplePhotoRecyclerViewAdapter(photoList);
         recyclerView = view.findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);

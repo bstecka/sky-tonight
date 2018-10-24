@@ -2,8 +2,10 @@ package com.example.barbara.skytonight.notes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.photos.ImageFile;
 import com.example.barbara.skytonight.photos.MyPhotoRecyclerViewAdapter;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +24,7 @@ import java.util.Calendar;
 public class NotesListFragment extends Fragment implements NotesListContract.View {
 
     private NotesListContract.Presenter mPresenter;
-    private MyNotesRecyclerViewAdapter mAdapter;
+    private SimpleNotesRecyclerViewAdapter mAdapter;
     private RecyclerView recyclerView;
     private ArrayList<NoteFile> notesList;
     private Calendar selectedDate;
@@ -45,11 +48,25 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_notes_list, container, false);
         notesList = new ArrayList<>();
-        mAdapter = new MyNotesRecyclerViewAdapter(notesList);
+        mAdapter = new SimpleNotesRecyclerViewAdapter(notesList);
         recyclerView = view.findViewById(R.id.notesListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
+        final FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onFloatingButtonClick();
+            }
+        });
         return view;
+    }
+
+    private void onFloatingButtonClick() {
+        Intent intent = new Intent(getActivity(), NoteActivity.class);
+        intent.putExtra("type", AppConstants.TAP_TYPE_DAY);
+        intent.putExtra("year", Calendar.getInstance().get(Calendar.YEAR));
+        intent.putExtra("dayOfYear", Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        startActivity(intent);
     }
 
     public void setWeekMode(boolean value) {
