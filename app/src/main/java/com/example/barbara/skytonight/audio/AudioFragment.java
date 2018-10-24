@@ -43,6 +43,12 @@ public class AudioFragment extends Fragment implements AudioContract.View {
             mPresenter.start();
     }
 
+    public void releaseMediaPlayer() {
+        if (mAdapter != null) {
+            mAdapter.releaseMediaPlayer();
+        }
+    }
+
     public void setRecordingPermitted(boolean permitted) {
         recordingPermitted = permitted;
     }

@@ -111,4 +111,12 @@ public class AudioActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        AudioFragment audioView = (AudioFragment) getSupportFragmentManager().findFragmentById(R.id.audioFragment);
+        if (audioView != null)
+            audioView.releaseMediaPlayer();
+        super.onBackPressed();
+    }
+
 }
