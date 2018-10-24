@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,10 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.audio.AudioActivity;
-import com.example.barbara.skytonight.audio.AudioRecordTest;
 import com.example.barbara.skytonight.notes.NoteActivity;
 import com.example.barbara.skytonight.notes.NotesListActivity;
 import com.example.barbara.skytonight.photos.PhotoGalleryActivity;
+import com.example.barbara.skytonight.util.AppConstants;
 import com.example.barbara.skytonight.video.VideoActivity;
 import com.ramotion.circlemenu.CircleMenuView;
 
@@ -117,6 +118,19 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void setTabLayout() {
+        CalendarView calendarView = view.findViewById(R.id.calendarView);
+        calendarView.setDate(Calendar.getInstance().getTimeInMillis());
+        currentlySelectedDate = Calendar.getInstance();
+        updateDayInfoText(currentlySelectedDate);
+        hideCircleMenu();
+        exLayoutMonth.collapse();
+        if (!exLayoutDay.isExpanded()) {
+            exLayoutDay.expand();
+        } else {
+            exLayoutDay.collapse(false);
+            exLayoutDay.expand();
+        }
+        showButton();
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_day));
         TabLayout.Tab weekTab = tabLayout.newTab().setText(R.string.tab_week);
@@ -141,10 +155,19 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                     }
                     showButton();
                 } else if (tab.getPosition() == 1) {
-                    showCircleMenu();
-                    exLayoutDay.collapse();
+                    CalendarView calendarView = view.findViewById(R.id.calendarView);
+                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
+                    currentlySelectedDate = Calendar.getInstance();
+                    updateDayInfoText(currentlySelectedDate);
+                    hideCircleMenu();
                     exLayoutMonth.collapse();
-                    hideButton();
+                    if (!exLayoutDay.isExpanded()) {
+                        exLayoutDay.expand();
+                    } else {
+                        exLayoutDay.collapse(false);
+                        exLayoutDay.expand();
+                    }
+                    showButton();
                 } else if (tab.getPosition() == 2) {
                     showCircleMenu();
                     exLayoutDay.collapse();
@@ -173,6 +196,20 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                     hideCircleMenu();
                     exLayoutDay.expand();
                     showButton();
+                } else if (tab.getPosition() == 1) {
+                    CalendarView calendarView = view.findViewById(R.id.calendarView);
+                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
+                    currentlySelectedDate = Calendar.getInstance();
+                    updateDayInfoText(currentlySelectedDate);
+                    hideCircleMenu();
+                    exLayoutMonth.collapse();
+                    if (!exLayoutDay.isExpanded()) {
+                        exLayoutDay.expand();
+                    } else {
+                        exLayoutDay.collapse(false);
+                        exLayoutDay.expand();
+                    }
+                    showButton();
                 }
             }
         });
@@ -194,7 +231,6 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                     onAudioButtonClick();
             }
         });
-        hideButton();
         final FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -310,17 +346,19 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     private void startActivityOnMenuButton(Intent intent) {
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         if (tabLayout.getSelectedTabPosition() == 0) {
-            intent.putExtra("type", "day");
+            intent.putExtra("type", AppConstants.TAP_TYPE_DAY);
             intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
             intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
         }
-        else if (tabLayout.getSelectedTabPosition() == 2) {
-            intent.putExtra("type", "month");
-            intent.putExtra("year", monthTabYear);
-            intent.putExtra("month", monthTabMonth);
+        else if (tabLayout.getSelectedTabPosition() == 1) {
+            intent.putExtra("type", AppConstants.TAB_TYPE_WEEK);
+            intent.putExtra("year", currentlySelectedDate.get(Calendar.YEAR));
+            intent.putExtra("dayOfYear", currentlySelectedDate.get(Calendar.DAY_OF_YEAR));
         }
         else {
-            intent.putExtra("type", "week");
+            intent.putExtra("type", AppConstants.TAB_TYPE_MONTH);
+            intent.putExtra("year", monthTabYear);
+            intent.putExtra("month", monthTabMonth);
         }
         startActivity(intent);
     }

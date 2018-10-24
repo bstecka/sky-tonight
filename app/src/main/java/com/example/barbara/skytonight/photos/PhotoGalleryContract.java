@@ -23,6 +23,7 @@ public class PhotoGalleryContract {
         Calendar getSelectedDate();
         Integer getSelectedMonth();
         Integer getSelectedYear();
+        boolean isWeekModeEnabled();
     }
 
     interface Presenter extends BasePresenter {

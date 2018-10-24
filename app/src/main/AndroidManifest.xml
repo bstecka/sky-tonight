@@ -46,13 +46,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.barbara.skytonight.core.CoreActivity" />
         </activity>
-        <activity android:name=".audio.AudioRecordTest"
-            android:label="@string/title_activity_photo_gallery"
-            android:parentActivityName=".core.CoreActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
-        </activity>
         <activity android:name=".audio.AudioActivity"
             android:label="@string/title_activity_audio"
             android:parentActivityName=".core.CoreActivity">

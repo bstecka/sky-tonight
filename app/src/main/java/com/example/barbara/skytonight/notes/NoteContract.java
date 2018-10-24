@@ -19,6 +19,7 @@ public class NoteContract {
         Context getContext();
         Activity getViewActivity();
         Calendar getSelectedDate();
+        boolean isWeekModeEnabled();
     }
 
     interface Presenter extends BasePresenter {

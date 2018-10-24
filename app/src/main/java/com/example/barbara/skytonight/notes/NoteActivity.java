@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.util.AppConstants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean weekMode = false;
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         if (bundle != null) {
@@ -41,6 +43,8 @@ public class NoteActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+            if (bundle.getInt("type") == AppConstants.TAB_TYPE_WEEK)
+                weekMode = true;
         }
         setContentView(R.layout.activity_note);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -50,6 +54,8 @@ public class NoteActivity extends AppCompatActivity {
             noteFragment = new NoteFragment();
             noteFragment.setPresenter(new NotePresenter(noteFragment));
             noteFragment.setSelectedDate(selectedDate);
+            if (weekMode)
+                noteFragment.setWeekMode(true);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.noteFragment, noteFragment);
             transaction.commit();
@@ -57,6 +63,8 @@ public class NoteActivity extends AppCompatActivity {
         else {
             noteFragment.setPresenter(new NotePresenter(noteFragment));
             noteFragment.setSelectedDate(selectedDate);
+            if (weekMode)
+                noteFragment.setWeekMode(true);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

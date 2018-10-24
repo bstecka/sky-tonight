@@ -24,6 +24,7 @@ public class AudioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        boolean weekMode = false;
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         Integer selectedMonth = null, selectedYear = null;
@@ -40,6 +41,8 @@ public class AudioActivity extends AppCompatActivity {
             else {
                 selectedDate = null;
             }
+            if (bundle.getInt("type") == AppConstants.TAB_TYPE_WEEK)
+                weekMode = true;
         }
         setContentView(R.layout.activity_audio);
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -51,6 +54,8 @@ public class AudioActivity extends AppCompatActivity {
             audioFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 audioFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                audioFragment.setWeekMode(true);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.audioFragment, audioFragment);
             transaction.commit();
@@ -60,6 +65,8 @@ public class AudioActivity extends AppCompatActivity {
             audioFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
                 audioFragment.setSelectedMonthYear(selectedMonth, selectedYear);
+            if (weekMode)
+                audioFragment.setWeekMode(true);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

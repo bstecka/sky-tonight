@@ -10,4 +10,7 @@ public class AppConstants {
     public static String ASTRO_OBJECT_API_URL = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?" +
             "batch=1&COMMAND='%d'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'" +
             "&START_TIME='%s'&STOP_TIME='%s'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
+    public static int TAP_TYPE_DAY = 1;
+    public static int TAB_TYPE_WEEK = 2;
+    public static int TAB_TYPE_MONTH = 3;
 }

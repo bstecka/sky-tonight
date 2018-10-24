@@ -32,6 +32,7 @@ public class VideoFragment extends Fragment implements VideoContract.View {
     private View view;
     private Integer selectedYear = null;
     private Integer selectedMonth = null;
+    private boolean weekMode = false;
 
     @Override
     public void setPresenter(VideoContract.Presenter presenter) {
@@ -61,6 +62,16 @@ public class VideoFragment extends Fragment implements VideoContract.View {
         recyclerView.setAdapter(mAdapter);
         return view;
     }
+
+    public void setWeekMode(boolean value) {
+        weekMode = value;
+    }
+
+    @Override
+    public boolean isWeekModeEnabled() {
+        return weekMode;
+    }
+
 
     @Override
     public void startVideoActivity(Intent intent) {

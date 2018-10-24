@@ -44,13 +44,12 @@ public class NotesListPresenter implements NotesListContract.Presenter {
         }
     }
 
-    private void readNotesAsyncForWeek() {
+    private void readNotesAsyncForWeek(final Calendar selectedDate) {
         File storageDir = mNotesListView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
         if (storageDir != null) {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
                 public boolean accept(File dir, String name) {
-                    Calendar now = Calendar.getInstance();
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
                     try {
@@ -60,7 +59,7 @@ public class NotesListPresenter implements NotesListContract.Presenter {
                         e.printStackTrace();
                         return false;
                     }
-                    return now.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && now.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
+                    return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
                 }
             });
             for (File file : filteredFiles) {
@@ -89,12 +88,12 @@ public class NotesListPresenter implements NotesListContract.Presenter {
 
     private void readNotesAsync() {
         Calendar selectedDate = mNotesListView.getSelectedDate();
-        if (selectedDate != null) {
+        if (mNotesListView.isWeekModeEnabled()) {
+            readNotesAsyncForWeek(selectedDate);
+        } else if (selectedDate != null) {
             readNotesAsyncForDay(selectedDate);
         } else if (mNotesListView.getSelectedMonth() != null) {
             readNotesAsyncForMonth(mNotesListView.getSelectedMonth(), mNotesListView.getSelectedYear());
-        } else {
-            readNotesAsyncForWeek();
         }
     }
 

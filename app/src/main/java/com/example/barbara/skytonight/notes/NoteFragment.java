@@ -20,6 +20,7 @@ public class NoteFragment extends Fragment implements NoteContract.View {
     private Calendar selectedDate;
     private View view;
     private boolean editModeEnabled = false;
+    private boolean weekMode = false;
 
     @Override
     public void setPresenter(NoteContract.Presenter presenter) {
@@ -58,6 +59,15 @@ public class NoteFragment extends Fragment implements NoteContract.View {
             }
         });
         return view;
+    }
+
+    public void setWeekMode(boolean value) {
+        weekMode = value;
+    }
+
+    @Override
+    public boolean isWeekModeEnabled() {
+        return weekMode;
     }
 
     public boolean isEditModeEnabled() { return editModeEnabled; }
