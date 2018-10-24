@@ -28,7 +28,9 @@ import com.ramotion.circlemenu.CircleMenuView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class CalendarFragment extends Fragment implements CalendarContract.View {
 
@@ -296,13 +298,30 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
 
     @Override
     public void updateDayInfoText(Calendar selectedDate) {
-        int numberOfWords = mPresenter.getNumberOfWords(selectedDate);
-        int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
-        int numberOfVideos = mPresenter.getNumberOfVideos(selectedDate);
-        int numberOfVoiceNotes = mPresenter.getNumberOfVoiceNotes(selectedDate);
-        int others = numberOfVideos + numberOfVoiceNotes;
-        TextView textView = view.findViewById(R.id.dayInfoTextView);
-        textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : "", others));
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            int numberOfWords = mPresenter.getNumberOfWords(selectedDate);
+            int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
+            int numberOfVideos = mPresenter.getNumberOfVideos(selectedDate);
+            int numberOfVoiceNotes = mPresenter.getNumberOfVoiceNotes(selectedDate);
+            int others = numberOfVideos + numberOfVoiceNotes;
+            TextView textView = view.findViewById(R.id.dayInfoTextView);
+            textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : "", others));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            textView.setText(sdf.format(selectedDate.getTime()));
+        }
+        else if (tabLayout.getSelectedTabPosition() == 1) {
+            int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK) - 1;
+            Calendar weekStart = Calendar.getInstance();
+            weekStart.setTime(selectedDate.getTime());
+            weekStart.add(Calendar.DAY_OF_YEAR, -(dayOfWeek - 1));
+            Calendar weekEnd = Calendar.getInstance();
+            weekEnd.setTime(selectedDate.getTime());
+            weekEnd.add(Calendar.DAY_OF_YEAR, (7 - dayOfWeek));
+            TextView textView = view.findViewById(R.id.dayInfoTextView);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            textView.setText(context.getString(R.string.week_info_text, sdf.format(weekStart.getTime()), sdf.format(weekEnd.getTime())));
+        }
     }
 
     @Override

@@ -83,6 +83,7 @@
     <string name="video_saved">Your video has been saved</string>
     <string name="title_activity_photo_gallery2">Photos</string>
     <string name="day_info_text">%1$d word%2$s, %3$d photo%4$s, %5$d others</string>
+    <string name="week_info_text">%1$s - %2$s</string>
     <string name="weather_cloud_coverage_unknown">Cloud coverage: ?</string>
     <string name="weather_cloud_coverage">Cloud coverage: %1$d%%</string>
     <string name="weather_condition_200">Thunderstorm with light rain</string>
