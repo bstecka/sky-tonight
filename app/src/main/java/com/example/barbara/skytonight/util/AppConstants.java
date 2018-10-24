@@ -3,6 +3,7 @@ package com.example.barbara.skytonight.util;
 public class AppConstants {
 
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
+    public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 98;
     public static double DEFAULT_LATITUDE = -27.104671;
     public static double DEFAULT_LONGITUDE = -109.360481;
     public static String API_URL = "http://skytonight-backend.herokuapp.com/api/v1/";

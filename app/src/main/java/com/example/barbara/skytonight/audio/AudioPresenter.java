@@ -1,6 +1,8 @@
 package com.example.barbara.skytonight.audio;
 
 import android.app.Activity;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;

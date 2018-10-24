@@ -83,7 +83,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.barbara.skytonight.core.CoreActivity" />
         </activity>
-        <activity android:name=".photos.FullPhotoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
+        <activity android:name=".photos.FullPhotoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name=".video.FullVideoActivity" android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
     </application>
 
 </manifest>
