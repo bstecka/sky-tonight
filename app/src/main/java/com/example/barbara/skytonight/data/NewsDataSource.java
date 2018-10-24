@@ -11,5 +11,10 @@ public interface NewsDataSource {
         void onDataNotAvailable();
     }
 
+    interface GetNewsArticleCallback {
+        void onDataLoaded(String content);
+        void onDataNotAvailable();
+    }
+
     void getNewsHeadlines(GetNewsHeadlinesCallback callback);
 }

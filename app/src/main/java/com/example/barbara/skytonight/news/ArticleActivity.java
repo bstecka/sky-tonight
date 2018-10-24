@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.NewsRepository;
+import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.notes.NoteFragment;
 import com.example.barbara.skytonight.notes.NotePresenter;
@@ -32,7 +33,7 @@ public class ArticleActivity extends AppCompatActivity {
         articleFragment = (ArticleFragment) currentFragment;
         if (articleFragment == null) {
             articleFragment = new ArticleFragment();
-            articleFragment.setPresenter(new ArticlePresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this)), articleFragment));
+            articleFragment.setPresenter(new ArticlePresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this)), articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -40,13 +41,12 @@ public class ArticleActivity extends AppCompatActivity {
             transaction.commit();
         }
         else {
-            articleFragment.setPresenter(new ArticlePresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this)), articleFragment));
+            articleFragment.setPresenter(new ArticlePresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this)), articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
         }
         if (getActionBar() != null) {
-            getActionBar().hide();
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 

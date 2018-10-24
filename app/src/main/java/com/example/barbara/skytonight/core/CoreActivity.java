@@ -22,6 +22,7 @@ import com.example.barbara.skytonight.data.ISSDataSource;
 import com.example.barbara.skytonight.data.ISSRepository;
 import com.example.barbara.skytonight.data.NewsRepository;
 import com.example.barbara.skytonight.data.WeatherRepository;
+import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
@@ -55,7 +56,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
-        newsFragment.setPresenter(new NewsPresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this)), newsFragment));
+        newsFragment.setPresenter(new NewsPresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this)), newsFragment));
         final CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         final EventsFragment eventsFragment = new EventsFragment();

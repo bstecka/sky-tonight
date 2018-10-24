@@ -1,4 +1,7 @@
 package com.example.barbara.skytonight.news;
+import android.util.Log;
+
+import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.NewsRepository;
 
 public class ArticlePresenter implements ArticleContract.Presenter {
@@ -14,11 +17,20 @@ public class ArticlePresenter implements ArticleContract.Presenter {
     @Override
     public void start() {
         if (articleView.getArticleUrl() != null)
-            getNewsArticle(articleView.getArticleUrl() );
+            getNewsArticle(articleView.getArticleUrl());
     }
 
     private void getNewsArticle(String url) {
-        String article = "content " + url;
-        articleView.setText(article);
+        newsRepository.getNewsArticle(url, new NewsDataSource.GetNewsArticleCallback() {
+            @Override
+            public void onDataLoaded(String content) {
+                articleView.setText(content);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                Log.e("ArticlePresenter", "data not available");
+            }
+        });
     }
 }
