@@ -55,6 +55,12 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
         textView.refreshDrawableState();
     }
 
+    public void setPubDate(String pubDate) {
+        TextView textView = view.findViewById(R.id.dateTextView);
+        textView.setText(pubDate);
+        textView.refreshDrawableState();
+    }
+
     @Override
     public Activity getViewActivity() { return getActivity(); }
 

@@ -13,37 +13,45 @@ import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.notes.NoteFragment;
 import com.example.barbara.skytonight.notes.NotePresenter;
+import com.example.barbara.skytonight.util.AppConstants;
 
 public class ArticleActivity extends AppCompatActivity {
 
-    private ArticleFragment articleFragment;
+    private String baseUrl = AppConstants.NEWS_URL_PL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-        String articleUrl = null, articleTitle = null;
+        String articleUrl = null, articleTitle = null, articlePubDate = null;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             articleUrl = bundle.getString("articleUrl");
             articleTitle = bundle.getString("articleTitle");
+            articlePubDate = bundle.getString("articlePubDate");
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.articleFragment);
-        articleFragment = (ArticleFragment) currentFragment;
+        ArticleFragment articleFragment = (ArticleFragment) currentFragment;
         if (articleFragment == null) {
             articleFragment = new ArticleFragment();
-            articleFragment.setPresenter(new ArticlePresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this)), articleFragment));
+            NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
+            newsRepository.setBaseUrl(baseUrl);
+            articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
+            articleFragment.setPubDate(articlePubDate);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.add(R.id.articleFragment, articleFragment);
             transaction.commit();
         }
         else {
-            articleFragment.setPresenter(new ArticlePresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this)), articleFragment));
+            NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
+            newsRepository.setBaseUrl(baseUrl);
+            articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
+            articleFragment.setPubDate(articlePubDate);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

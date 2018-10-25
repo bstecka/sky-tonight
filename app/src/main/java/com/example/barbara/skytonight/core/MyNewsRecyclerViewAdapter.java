@@ -41,7 +41,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
         final NewsHeadline newsObject = mValues.get(position);
         holder.mItem = newsObject;
         holder.mTitleView.setText(newsObject.getTitle());
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm:dd", Locale.ENGLISH);
+        final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm:dd", Locale.ENGLISH);
         holder.mDateView.setText(sdf.format(newsObject.getPubDate().getTime()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +49,7 @@ public class MyNewsRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsRecycl
                 Intent intent = new Intent(context, ArticleActivity.class);
                 intent.putExtra("articleUrl", newsObject.getUrl());
                 intent.putExtra("articleTitle", newsObject.getTitle());
+                intent.putExtra("articlePubDate", sdf.format(newsObject.getPubDate().getTime()));
                 context.startActivity(intent);
             }
         });

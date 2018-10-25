@@ -10,28 +10,53 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.VolleySingleton;
+import com.example.barbara.skytonight.util.AppConstants;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class ArticleFetchService {
 
     private RequestQueue queue;
+    private String baseUrl;
 
     public ArticleFetchService(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
     }
 
+    public void setBaseUrl(String baseUrl){
+        this.baseUrl = baseUrl;
+    }
+
     public void getNewsArticle(String url, final NewsDataSource.GetNewsArticleCallback callback) {
-        final String str = "content";
         Log.e("getNewsArticle", url);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Document document = Jsoup.parse(response);
-                Element element = document.selectFirst("div .content");
-                callback.onDataLoaded(element.wholeText());
+                Element element;
+                String content = "";
+                StringBuilder builder = new StringBuilder();
+                if (baseUrl.equals(AppConstants.NEWS_URL_EN)) {
+                    element = document.selectFirst("div .content");
+                    content = element.wholeText();
+                }
+                else if (baseUrl.equals(AppConstants.NEWS_URL_PL)) {
+                    element = document.selectFirst("div .entry-content");
+                    Elements elements = element.select("p");
+                    for (Element el: elements){
+                        if (!el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
+                            builder.append(el.wholeText());
+                            builder.append("\n\n");
+                            Log.e("Article", el.wholeText() + " " + el.wholeText().trim().length());
+                        }
+                    }
+                    content = builder.toString().trim();
+                }
+                callback.onDataLoaded(content);
             }
         },
         new Response.ErrorListener() {

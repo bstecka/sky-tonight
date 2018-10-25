@@ -1,7 +1,11 @@
 package com.example.barbara.skytonight.data;
 
-import com.example.barbara.skytonight.core.NewsHeadline;
+import android.graphics.Bitmap;
 
+import com.example.barbara.skytonight.core.NewsHeadline;
+import com.example.barbara.skytonight.photos.ImageFile;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public interface NewsDataSource {
@@ -17,4 +21,5 @@ public interface NewsDataSource {
     }
 
     void getNewsHeadlines(GetNewsHeadlinesCallback callback);
+    void setBaseUrl(String baseUrl);
 }

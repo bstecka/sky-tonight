@@ -19,6 +19,12 @@ public class NewsRepository implements NewsDataSource {
         this.articleFetchService = articleFetchService;
     }
 
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        articleFetchService.setBaseUrl(baseUrl);
+        newsDataSource.setBaseUrl(baseUrl);
+    }
+
     public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService) {
         if (INSTANCE == null) {
             INSTANCE = new NewsRepository(newsDataSource, articleFetchService);

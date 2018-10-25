@@ -42,9 +42,14 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     private static NewsRemoteDataSource INSTANCE;
     private RequestQueue queue;
-    private final String url = AppConstants.NEWS_URL_EN_2;
+    private String url;
 
     private NewsRemoteDataSource() {}
+
+    @Override
+    public void setBaseUrl(String baseUrl) {
+        this.url = baseUrl;
+    }
 
     private NewsRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);

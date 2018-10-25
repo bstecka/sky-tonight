@@ -41,6 +41,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
+    private String baseUrl = AppConstants.NEWS_URL_PL;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -56,7 +57,9 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
-        newsFragment.setPresenter(new NewsPresenter(NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this)), newsFragment));
+        NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
+        newsRepository.setBaseUrl(baseUrl);
+        newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
         final CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         final EventsFragment eventsFragment = new EventsFragment();
