@@ -17,7 +17,7 @@ import com.example.barbara.skytonight.util.AppConstants;
 
 public class ArticleActivity extends AppCompatActivity {
 
-    private String baseUrl = AppConstants.NEWS_URL_PL;
+    private String baseUrl = AppConstants.NEWS_URL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

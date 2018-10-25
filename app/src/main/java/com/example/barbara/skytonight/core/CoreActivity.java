@@ -41,7 +41,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
-    private String baseUrl = AppConstants.NEWS_URL_PL;
+    private String baseUrl = AppConstants.NEWS_URL;
 
     @Override
     protected void attachBaseContext(Context newBase) {

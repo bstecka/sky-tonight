@@ -42,19 +42,34 @@ public class ArticleFetchService {
                 StringBuilder builder = new StringBuilder();
                 if (baseUrl.equals(AppConstants.NEWS_URL_EN)) {
                     element = document.selectFirst("div .content");
-                    content = element.wholeText();
+                    if (element != null)
+                        content = element.wholeText();
                 }
                 else if (baseUrl.equals(AppConstants.NEWS_URL_PL)) {
                     element = document.selectFirst("div .entry-content");
-                    Elements elements = element.select("p");
-                    for (Element el: elements){
-                        if (!el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
-                            builder.append(el.wholeText());
-                            builder.append("\n\n");
-                            Log.e("Article", el.wholeText() + " " + el.wholeText().trim().length());
+                    if (element != null) {
+                        Elements elements = element.select("p");
+                        for (Element el : elements) {
+                            if (!el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
+                                builder.append(el.wholeText());
+                                builder.append("\n\n");
+                            }
                         }
+                        content = builder.toString().trim();
                     }
-                    content = builder.toString().trim();
+                }
+                else if (baseUrl.equals(AppConstants.NEWS_URL_EN_2)) {
+                    element = document.selectFirst("div .article-content");
+                    if (element != null) {
+                        Elements elements = element.select("p");
+                        for (Element el : elements) {
+                            if (el.wholeText().trim().length() > 1) {
+                                builder.append(el.wholeText().trim());
+                                builder.append("\n\n");
+                            }
+                        }
+                        content = builder.toString().trim();
+                    }
                 }
                 callback.onDataLoaded(content);
             }
