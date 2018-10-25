@@ -20,11 +20,14 @@ import com.example.barbara.skytonight.data.EventsRepository;
 import com.example.barbara.skytonight.data.AstroObjectRepository;
 import com.example.barbara.skytonight.data.ISSDataSource;
 import com.example.barbara.skytonight.data.ISSRepository;
+import com.example.barbara.skytonight.data.NewsRepository;
 import com.example.barbara.skytonight.data.WeatherRepository;
+import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
 import com.example.barbara.skytonight.util.AppConstants;
@@ -32,12 +35,13 @@ import com.example.barbara.skytonight.util.MyContextWrapper;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
-        NewsFragment.OnFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
+        NewsFragment.OnListFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
 
     private CoreContract.Presenter mCorePresenter;
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
+    private String baseUrl = AppConstants.NEWS_URL;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -53,6 +57,9 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
+        NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
+        newsRepository.setBaseUrl(baseUrl);
+        newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
         final CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         final EventsFragment eventsFragment = new EventsFragment();

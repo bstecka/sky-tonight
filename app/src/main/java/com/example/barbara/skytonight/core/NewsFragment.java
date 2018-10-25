@@ -1,26 +1,42 @@
 package com.example.barbara.skytonight.core;
 
+import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.data.AstroEvent;
+import java.util.ArrayList;
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements NewsContract.View {
 
-    private OnFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;
+    private MyNewsRecyclerViewAdapter mAdapter;
+    private NewsContract.Presenter mPresenter;
+    private Context context;
+    private RecyclerView recyclerView;
+    ArrayList<NewsHeadline> list;
 
-    public NewsFragment() { }
+    public NewsFragment() {
+        list = new ArrayList<>();
+    }
 
     public static NewsFragment newInstance(String param1, String param2) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
@@ -31,17 +47,22 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_news, container, false);
+        final View view = inflater.inflate(R.layout.fragment_news, container, false);
+        recyclerView = view.findViewById(R.id.newsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setAdapter(mAdapter);
+        return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        mAdapter = new MyNewsRecyclerViewAdapter(list, mListener);
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnListFragmentInteractionListener");
         }
     }
 
@@ -51,7 +72,30 @@ public class NewsFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void clearList() {
+        this.list.clear();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateList(ArrayList<NewsHeadline> list) {
+        this.list.clear();
+        this.list.addAll(list);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public Activity getCurrentActivity() {
+        return getActivity();
+    }
+
+    @Override
+    public void setPresenter(NewsContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    public interface OnListFragmentInteractionListener {
+        void onListFragmentInteraction(AstroEvent event);
     }
 }
