@@ -3,6 +3,7 @@ package com.example.barbara.skytonight.data;
 import android.graphics.Bitmap;
 
 import com.example.barbara.skytonight.core.NewsHeadline;
+import com.example.barbara.skytonight.news.ArticleContentWrapper;
 import com.example.barbara.skytonight.photos.ImageFile;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public interface NewsDataSource {
     }
 
     interface GetNewsArticleCallback {
-        void onDataLoaded(String content);
+        void onDataLoaded(ArrayList<ArticleContentWrapper> articleChunks);
         void onDataNotAvailable();
     }
 
