@@ -3,12 +3,9 @@ import android.graphics.Bitmap;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
+import kevenchen.utils.WebImageView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.NewsRepository;
@@ -34,14 +31,23 @@ public class ArticlePresenter implements ArticleContract.Presenter {
     private ArrayList<View> getArticleContentViews(ArrayList<ArticleContentWrapper> articleChunks, String url) {
         final ArrayList<View> views = new ArrayList<>();
         for (ArticleContentWrapper chunk : articleChunks) {
-            if (chunk.hasText()) {
-                Log.e("Article", chunk.getText());
-                TextView textView = makeTextView(chunk.getText());
-                views.add(textView);
-            }
+            if (chunk.hasText())
+                views.add(makeTextView(chunk.getText()));
+            else if (chunk.hasImage())
+                views.add(makeImageView(chunk.getImageUrl()));
         }
         views.add(makeTextView(url));
         return views;
+    }
+
+    private WebImageView makeImageView(String url) {
+        WebImageView imageView = new WebImageView(articleView.getContext());
+        imageView.showImageUrl(url);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 500);
+        layoutParams.setMargins(0, 10, 0, 20);
+        imageView.setLayoutParams(layoutParams);
+        imageView.reload();
+        return imageView;
     }
 
     private TextView makeTextView(String text) {
