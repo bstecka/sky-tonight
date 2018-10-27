@@ -14,7 +14,6 @@ public class AppConstants {
     public static int TAB_TYPE_WEEK = 2;
     public static int TAB_TYPE_MONTH = 3;
     public static String NEWS_URL_PL = "https://news.astronet.pl/index.php/feed/";
-    public static String NEWS_URL_EN = "http://www.astronomy.com/rss/news";
-    public static String NEWS_URL_EN_2 = "https://www.space.com/home/feed/site.xml";
-    public static String NEWS_URL = NEWS_URL_EN_2;
+    public static String NEWS_URL_EN = "https://www.space.com/home/feed/site.xml";
+    public static String NEWS_URL = NEWS_URL_PL;
 }

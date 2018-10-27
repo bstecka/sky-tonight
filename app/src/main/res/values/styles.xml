@@ -30,6 +30,10 @@
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
+    <style name="ArticleText">
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="PrimaryButton" parent="Theme.AppCompat">
         <item name="colorButtonNormal">@color/colorTextLight</item>
         <item name="colorControlHighlight">@color/materialGrey4</item>

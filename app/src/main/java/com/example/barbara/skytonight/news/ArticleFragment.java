@@ -10,11 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.notes.NoteContract;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ArticleFragment extends Fragment implements ArticleContract.View {
@@ -31,6 +34,8 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
     @Override
     public void onResume() {
         super.onResume();
+        LinearLayout scrollViewContainer = view.findViewById(R.id.scrollViewContainer);
+        scrollViewContainer.removeAllViewsInLayout();
         mPresenter.start();
     }
 
@@ -38,6 +43,14 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_article, container, false);
         return view;
+    }
+
+    @Override
+    public void addArticleViews(ArrayList<View> views) {
+        LinearLayout scrollViewContainer = view.findViewById(R.id.scrollViewContainer);
+        for (View view : views)
+            scrollViewContainer.addView(view);
+        scrollViewContainer.refreshDrawableState();
     }
 
     @Override

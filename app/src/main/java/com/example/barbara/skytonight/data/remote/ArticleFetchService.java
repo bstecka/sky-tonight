@@ -1,21 +1,26 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.VolleySingleton;
+import com.example.barbara.skytonight.news.ArticleContentWrapper;
 import com.example.barbara.skytonight.util.AppConstants;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
 
 public class ArticleFetchService {
 
@@ -40,38 +45,45 @@ public class ArticleFetchService {
                 Element element;
                 String content = "";
                 StringBuilder builder = new StringBuilder();
-                if (baseUrl.equals(AppConstants.NEWS_URL_EN)) {
-                    element = document.selectFirst("div .content");
-                    if (element != null)
-                        content = element.wholeText();
-                }
-                else if (baseUrl.equals(AppConstants.NEWS_URL_PL)) {
+                ArrayList<ArticleContentWrapper> articleChunks = new ArrayList<>();
+                if (baseUrl.equals(AppConstants.NEWS_URL_PL)) {
                     element = document.selectFirst("div .entry-content");
                     if (element != null) {
-                        Elements elements = element.select("p");
+                        Elements elements = element.getAllElements();
                         for (Element el : elements) {
-                            if (!el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
+                            if (el.is("p")&& !el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
                                 builder.append(el.wholeText());
+                                ArticleContentWrapper chunk = new ArticleContentWrapper(el.wholeText().trim(), false);
+                                articleChunks.add(chunk);
                                 builder.append("\n\n");
+                            }
+                            if (el.is("div") && el.hasClass("media-credit-container") && el.select("img").size() > 0) {
+                                Element img = el.selectFirst("img");
+                                ArticleContentWrapper chunk = new ArticleContentWrapper(img.attr("abs:src"),true);
+                                articleChunks.add(chunk);
                             }
                         }
                         content = builder.toString().trim();
                     }
                 }
-                else if (baseUrl.equals(AppConstants.NEWS_URL_EN_2)) {
+                else if (baseUrl.equals(AppConstants.NEWS_URL_EN)) {
+                    Element image = document.selectFirst("img");
+                    Log.e("Article", image.toString());
                     element = document.selectFirst("div .article-content");
                     if (element != null) {
                         Elements elements = element.select("p");
                         for (Element el : elements) {
                             if (el.wholeText().trim().length() > 1) {
                                 builder.append(el.wholeText().trim());
+                                ArticleContentWrapper chunk = new ArticleContentWrapper(el.wholeText().trim(), false);
+                                articleChunks.add(chunk);
                                 builder.append("\n\n");
                             }
                         }
                         content = builder.toString().trim();
                     }
                 }
-                callback.onDataLoaded(content);
+                callback.onDataLoaded(articleChunks);
             }
         },
         new Response.ErrorListener() {
