@@ -3,8 +3,10 @@ package com.example.barbara.skytonight.core;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -36,22 +38,22 @@ import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
 import com.example.barbara.skytonight.settings.SettingsActivity;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.LocaleHelper;
 import com.example.barbara.skytonight.util.MyContextWrapper;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
         NewsFragment.OnListFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
 
+    public static int ACTIVITY_NO_HISTORY = 5;
     private CoreContract.Presenter mCorePresenter;
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
-    private String baseUrl = AppConstants.NEWS_URL;
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        //super.attachBaseContext(newBase);
-        super.attachBaseContext(MyContextWrapper.wrap(newBase,"pl"));
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
     }
 
     @Override
@@ -59,6 +61,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
         final Toolbar toolbar = findViewById(R.id.toolBar);
+        toolbar.setTitle(R.string.core_option_today);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.core_pager);
         viewPager.setPagingEnabled(false);
@@ -66,7 +69,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
         NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-        newsRepository.setBaseUrl(baseUrl);
+        newsRepository.setBaseUrl(getBaseUrlForLanguage());
         newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
         final CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
@@ -110,6 +113,15 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         });
     }
 
+    private String getBaseUrlForLanguage() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
+        if (language.equals(AppConstants.LANG_PL))
+            return AppConstants.NEWS_URL_PL;
+        else
+            return AppConstants.NEWS_URL_EN;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.topbar_menu, menu);
@@ -120,7 +132,10 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                this.startActivity(new Intent(this, SettingsActivity.class));
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                this.startActivity(intent);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

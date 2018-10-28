@@ -1,6 +1,7 @@
 package com.example.barbara.skytonight.audio;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -16,10 +17,16 @@ import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.photos.PhotoGalleryFragment;
 import com.example.barbara.skytonight.photos.PhotoGalleryPresenter;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.LocaleHelper;
 
 import java.util.Calendar;
 
 public class AudioActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

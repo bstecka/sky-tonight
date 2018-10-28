@@ -1,7 +1,10 @@
 package com.example.barbara.skytonight.news;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,10 +17,14 @@ import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.notes.NoteFragment;
 import com.example.barbara.skytonight.notes.NotePresenter;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.LocaleHelper;
 
 public class ArticleActivity extends AppCompatActivity {
 
-    private String baseUrl = AppConstants.NEWS_URL;
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,7 @@ public class ArticleActivity extends AppCompatActivity {
         if (articleFragment == null) {
             articleFragment = new ArticleFragment();
             NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-            newsRepository.setBaseUrl(baseUrl);
+            newsRepository.setBaseUrl(getBaseUrlForLanguage());
             articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
@@ -47,7 +54,7 @@ public class ArticleActivity extends AppCompatActivity {
         }
         else {
             NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-            newsRepository.setBaseUrl(baseUrl);
+            newsRepository.setBaseUrl(getBaseUrlForLanguage());
             articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
@@ -56,6 +63,15 @@ public class ArticleActivity extends AppCompatActivity {
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private String getBaseUrlForLanguage() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
+        if (language.equals(AppConstants.LANG_PL))
+            return AppConstants.NEWS_URL_PL;
+        else
+            return AppConstants.NEWS_URL_EN;
     }
 
 }

@@ -153,6 +153,8 @@
     <string name="settings_language">Język</string>
     <string name="settings_language_en">English</string>
     <string name="settings_language_pl">Polski</string>
+    <string name="language_changed_en">Language changed</string>
+    <string name="language_changed_pl">Język został zmieniony</string>
     <string name="settings_location">Lokalizacja</string>
     <string name="tab_day">Dzień</string>
     <string name="tab_week">Tydzień</string>

@@ -151,7 +151,9 @@
     <string name="exit_dialog_no">Cancel</string>
     <string name="settings_language">Language</string>
     <string name="settings_language_en">English</string>
-    <string name="settings_language_pl">Polish</string>
+    <string name="settings_language_pl">Polski</string>
+    <string name="language_changed_en">Language changed</string>
+    <string name="language_changed_pl">Język został zmieniony</string>
     <string name="settings_location">Location</string>
     <string name="tab_day">Day</string>
     <string name="tab_week">Week</string>
