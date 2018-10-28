@@ -121,12 +121,10 @@
         </android.support.constraint.ConstraintLayout>
     </net.cachapa.expandablelayout.ExpandableLayout>
 
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/detailsLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_below="@id/layout"
         android:layout_gravity="center"
         android:orientation="horizontal"
         android:visibility="visible"
