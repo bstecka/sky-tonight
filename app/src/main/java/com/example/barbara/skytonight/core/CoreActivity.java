@@ -50,7 +50,8 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(MyContextWrapper.wrap(newBase,"en"));
+        //super.attachBaseContext(newBase);
+        super.attachBaseContext(MyContextWrapper.wrap(newBase,"pl"));
     }
 
     @Override
