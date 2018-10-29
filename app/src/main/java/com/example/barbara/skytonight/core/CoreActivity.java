@@ -45,7 +45,6 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,
         NewsFragment.OnListFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
 
-    public static int ACTIVITY_NO_HISTORY = 5;
     private CoreContract.Presenter mCorePresenter;
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;

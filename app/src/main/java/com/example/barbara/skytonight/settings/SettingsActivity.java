@@ -45,14 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (settingsFragment == null) {
-            super.onBackPressed();
-        } else if (!settingsFragment.wasLanguageChanged()) {
-            super.onBackPressed();
-        } else {
-            Intent intent = new Intent(this, CoreActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, CoreActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
     }
 }
