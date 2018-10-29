@@ -1,5 +1,4 @@
 package com.example.barbara.skytonight.news;
-import android.graphics.Bitmap;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;

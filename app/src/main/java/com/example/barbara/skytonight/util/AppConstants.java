@@ -15,5 +15,8 @@ public class AppConstants {
     public static int TAB_TYPE_MONTH = 3;
     public static String NEWS_URL_PL = "https://news.astronet.pl/index.php/feed/";
     public static String NEWS_URL_EN = "https://www.space.com/home/feed/site.xml";
-    public static String NEWS_URL = NEWS_URL_PL;
+    public static String PREF_KEY_LANG = "language";
+    public static String LANG_PL = "pl";
+    public static String LANG_EN = "en";
+    public static String APP = "com.example.barbara.skytonight";
 }

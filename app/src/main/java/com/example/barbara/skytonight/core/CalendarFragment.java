@@ -307,7 +307,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             int others = numberOfVideos + numberOfVoiceNotes;
             TextView textView = view.findViewById(R.id.dayInfoTextView);
             textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : "", others));
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
             textView.setText(sdf.format(selectedDate.getTime()));
         }
         else if (tabLayout.getSelectedTabPosition() == 1) {
@@ -319,7 +319,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             weekEnd.setTime(selectedDate.getTime());
             weekEnd.add(Calendar.DAY_OF_YEAR, (7 - dayOfWeek));
             TextView textView = view.findViewById(R.id.dayInfoTextView);
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
             textView.setText(context.getString(R.string.week_info_text, sdf.format(weekStart.getTime()), sdf.format(weekEnd.getTime())));
         }
     }

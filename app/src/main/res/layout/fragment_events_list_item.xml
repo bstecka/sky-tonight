@@ -43,7 +43,8 @@
             android:layout_height="wrap_content"
             android:text="Real visibility: partial"
             android:textSize="12dp"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:visibility="gone" />
 
     </LinearLayout>
 </LinearLayout>

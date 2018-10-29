@@ -2,16 +2,22 @@ package com.example.barbara.skytonight.core;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.AstroEvent;
@@ -30,7 +36,9 @@ import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
+import com.example.barbara.skytonight.settings.SettingsActivity;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.LocaleHelper;
 import com.example.barbara.skytonight.util.MyContextWrapper;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
@@ -41,24 +49,26 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     private BottomNavigationView bottomNavigationView;
     private MyViewPager viewPager;
     private BottomBarAdapter pagerAdapter;
-    private String baseUrl = AppConstants.NEWS_URL;
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(MyContextWrapper.wrap(newBase,"en"));
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_core);
+        final Toolbar toolbar = findViewById(R.id.toolBar);
+        toolbar.setTitle(R.string.core_option_today);
+        setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.core_pager);
         viewPager.setPagingEnabled(false);
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
         NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-        newsRepository.setBaseUrl(baseUrl);
+        newsRepository.setBaseUrl(getBaseUrlForLanguage());
         newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
         final CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
@@ -74,6 +84,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter.addFragments(newsFragment);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(1);
+        toolbar.setTitle(R.string.core_option_today);
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -81,20 +92,52 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
                 switch (item.getItemId()) {
                     case R.id.bottombaritem_calendar:
                         viewPager.setCurrentItem(0);
+                        toolbar.setTitle(R.string.core_option_calendar);
                         return true;
                     case R.id.bottombaritem_today:
                         viewPager.setCurrentItem(1);
+                        toolbar.setTitle(R.string.core_option_today);
                         return true;
                     case R.id.bottombaritem_events:
                         viewPager.setCurrentItem(2);
+                        toolbar.setTitle(R.string.core_option_events);
                         return true;
                     case R.id.bottombaritem_news:
                         viewPager.setCurrentItem(3);
+                        toolbar.setTitle(R.string.core_option_news);
                         return true;
                 }
                 return false;
             }
         });
+    }
+
+    private String getBaseUrlForLanguage() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
+        if (language.equals(AppConstants.LANG_PL))
+            return AppConstants.NEWS_URL_PL;
+        else
+            return AppConstants.NEWS_URL_EN;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.topbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                this.startActivity(intent);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

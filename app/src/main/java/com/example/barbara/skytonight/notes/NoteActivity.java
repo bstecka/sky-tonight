@@ -1,5 +1,6 @@
 package com.example.barbara.skytonight.notes;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.LocaleHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +23,11 @@ import java.util.Locale;
 public class NoteActivity extends AppCompatActivity {
 
     NoteFragment noteFragment;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

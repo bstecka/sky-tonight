@@ -1,5 +1,6 @@
 package com.example.barbara.skytonight.photos;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +11,16 @@ import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.util.LocaleHelper;
 
 import java.util.Calendar;
 
 public class PhotoGalleryActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

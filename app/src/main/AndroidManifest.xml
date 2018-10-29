@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary">
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.barbara.skytonight.fileprovider"
@@ -86,8 +86,11 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".news.ArticleActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary"
-            android:label="@string/title_activity_article"/>
+            android:label="@string/title_activity_article"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary" />
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_setting"></activity>
     </application>
 
 </manifest>

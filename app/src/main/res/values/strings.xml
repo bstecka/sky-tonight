@@ -56,6 +56,8 @@
     <string name="core_option_calendar">Journal</string>
     <string name="core_option_news">News</string>
     <string name="core_option_events">Events</string>
+    <string name="topbar_menu_settings">Settings</string>
+    <string name="topbar_menu_info">Acknowledgments</string>
     <string name="core_no_location_toast">Location not enabled - displaying the sky over the Easter Island.</string>
     <string name="core_yes_location_toast">Your location was successfully updated.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -147,9 +149,16 @@
     <string name="exit_dialog_title">Unsaved changes</string>
     <string name="exit_dialog_yes">OK</string>
     <string name="exit_dialog_no">Cancel</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_pl">Polski</string>
+    <string name="language_changed_en">Language changed</string>
+    <string name="language_changed_pl">Język został zmieniony</string>
+    <string name="settings_location">Location</string>
     <string name="tab_day">Day</string>
     <string name="tab_week">Week</string>
     <string name="tab_month">Month</string>
-    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quam diam, congue sed cursus eget, placerat non massa. Aliquam erat volutpat. Vivamus facilisis porttitor lacus a blandit. Donec quis finibus diam. Duis lacinia dolor dui, nec pulvinar neque luctus in. Donec sagittis arcu sed egestas eleifend. Mauris vestibulum ac ligula mollis dapibus. Mauris sem nisl, faucibus ac interdum sit amet, fringilla sed nibh. Etiam in elit ac mauris lacinia molestie vel vitae purus. Morbi nisl orci, aliquet in nulla vitae, faucibus auctor metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque posuere, erat vitae porttitor interdum, tortor tellus suscipit libero, ac egestas metus nibh at augue. Fusce sed libero vitae nunc tristique scelerisque. Donec blandit, massa ac venenatis dapibus, leo arcu efficitur risus, a malesuada sapien quam sit amet metus. Mauris dapibus ac leo vitae rhoncus. Pellentesque lorem libero, viverra ut leo et, ultrices ultricies tortor. Duis ornare libero et orci sagittis, sed tincidunt mi tempus. Curabitur eros turpis, luctus a consectetur vel, molestie sollicitudin nisi. Morbi dictum massa a aliquam euismod. Suspendisse euismod lectus vel velit dapibus interdum. Aliquam pharetra lectus ac faucibus auctor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus libero est, condimentum vehicula sapien vehicula, porta euismod nunc. Donec tincidunt nunc et malesuada euismod. Mauris sagittis nunc vel luctus hendrerit. Aliquam erat volutpat. Vivamus facilisis porttitor lacus a blandit. Donec quis finibus diam. Duis lacinia dolor dui, nec pulvinar neque luctus in. Donec sagittis arcu sed egestas eleifend. Mauris vestibulum ac ligula mollis dapibus. Mauris sem nisl, faucibus ac interdum sit amet, fringilla sed nibh. Etiam in elit ac mauris lacinia molestie vel vitae purus. Morbi nisl orci, aliquet in nulla vitae, faucibus auctor metus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Quisque posuere, erat vitae porttitor interdum, tortor tellus suscipit libero, ac egestas metus nibh at augue. Fusce sed libero vitae nunc tristique scelerisque. Donec blandit, massa ac venenatis dapibus, leo arcu efficitur risus, a malesuada sapien quam sit amet metus. Mauris dapibus ac leo vitae rhoncus. Pellentesque lorem libero, viverra ut leo et, ultrices ultricies tortor. Duis ornare libero et orci sagittis, sed tincidunt mi tempus. Curabitur eros turpis, luctus a consectetur vel, molestie sollicitudin nisi. Morbi dictum massa a aliquam euismod. Suspendisse euismod lectus vel velit dapibus interdum. Aliquam pharetra lectus ac faucibus auctor. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus libero est, condimentum vehicula sapien vehicula, porta euismod nunc. Donec tincidunt nunc et malesuada euismod. Mauris sagittis nunc vel luctus hendrerit. Pellentesque volutpat gravida maximus. Nulla eros nisl, tincidunt vel lectus vel, elementum vehicula leo. Morbi et feugiat lectus. Ut maximus orci ipsum, a vestibulum dui porttitor id. Sed ultricies nisi odio, consequat ornare lectus interdum sed. Vestibulum mollis euismod libero, eget porttitor leo maximus sed.</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="title_activity_article">News</string>
+    <string name="title_activity_setting">Settings</string>
 </resources>

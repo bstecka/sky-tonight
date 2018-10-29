@@ -6,13 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".core.CoreActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:titleTextColor="@color/white"
+        app:subtitleTextColor="@color/white"
+        android:theme="@style/Toolbar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
     <com.example.barbara.skytonight.core.MyViewPager
         android:id="@+id/core_pager"
         android:layout_width="match_parent"
         android:layout_height="574dp"
         android:layout_marginTop="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolBar" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_nav"
