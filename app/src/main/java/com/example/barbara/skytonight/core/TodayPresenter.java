@@ -63,10 +63,13 @@ public class TodayPresenter implements TodayContract.Presenter {
     }
 
     private void loadISS(Location location){
-        mISSRepository.getISSObject(location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObject() {
+        final Calendar time = Calendar.getInstance();
+        int overhead = mTodayView.getTimeOverhead();
+        time.add(Calendar.HOUR, overhead);
+        mISSRepository.getISSObject(time, location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObject() {
             @Override
             public void onDataLoaded(ISSObject issObject) {
-                issObject.displayLists();
+                issObject.logLists();
                 mTodayView.updateList(issObject);
             }
 
@@ -78,12 +81,20 @@ public class TodayPresenter implements TodayContract.Presenter {
     }
 
     private void loadWeather(Location location){
+        final Calendar time = Calendar.getInstance();
+        int overhead = mTodayView.getTimeOverhead();
+        time.add(Calendar.HOUR, overhead);
         mWeatherRepository.getWeatherObjects(location.getLatitude(), location.getLongitude(), new WeatherDataSource.GetWeatherObjectsCallback() {
             @Override
             public void onDataLoaded(List<WeatherObject> weatherObjectList) {
                 weatherObjects = (ArrayList<WeatherObject>) weatherObjectList;
-                WeatherObject first = weatherObjectList.get(0);
-                mTodayView.updateWeatherView(first);
+                int index = 0;
+                for (int i = 0; i < weatherObjectList.size() && index == 0; i++){
+                    if (weatherObjectList.get(i).getTime().getTimeInMillis() >= time.getTimeInMillis())
+                        index = i;
+                }
+                WeatherObject next = weatherObjectList.get(index);
+                mTodayView.updateWeatherView(next);
             }
 
             @Override
@@ -95,6 +106,8 @@ public class TodayPresenter implements TodayContract.Presenter {
 
     private void showObjects(){
         final Calendar time = Calendar.getInstance();
+        int overhead = mTodayView.getTimeOverhead();
+        time.add(Calendar.HOUR, overhead);
         int [] objectIds = AstroConstants.ASTRO_OBJECT_IDS;
         mTodayView.clearList();
         for (int id: objectIds){

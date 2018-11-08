@@ -28,8 +28,6 @@ import java.util.Locale;
 
 public class MyTodayRecyclerViewAdapter extends RecyclerView.Adapter<MyTodayRecyclerViewAdapter.ViewHolder> {
 
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
     private final List<AstroObject> mValues;
     private final TodayFragment.OnListFragmentInteractionListener mListener;
     private Context context;

@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
@@ -22,7 +23,11 @@ import com.example.barbara.skytonight.data.AstroObject;
 import com.example.barbara.skytonight.data.WeatherObject;
 import com.example.barbara.skytonight.util.AppConstants;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class TodayFragment extends Fragment implements TodayContract.View {
 
@@ -65,8 +70,45 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public int getTimeOverhead() {
+        int overhead = 0;
+        if (getView() != null) {
+            SeekBar seekBar = getView().findViewById(R.id.seekBar);
+            overhead = seekBar.getProgress();
+        }
+        return overhead;
+    }
+
+    private void updateTimeTextView() {
+        if (getView() != null) {
+            TextView textView = getView().findViewById(R.id.timeTextView);
+            if (getTimeOverhead() == 0)
+                textView.setText(R.string.time_now);
+            else if (getTimeOverhead() == 1)
+                textView.setText(R.string.time_now_one);
+            else {
+                Calendar time = Calendar.getInstance();
+                time.add(Calendar.HOUR, getTimeOverhead());
+                DateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                textView.setText(getString(R.string.time_from_now, getTimeOverhead(), sdf.format(time.getTime())));
+            }
+        }
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_list, container, false);
+        SeekBar seekBar = view.findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { updateTimeTextView(); }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) { mPresenter.start(); }
+        });
         View rView = view.findViewById(R.id.astroObjectRecyclerView);
         if (rView instanceof RecyclerView) {
             Context context = rView.getContext();
@@ -118,8 +160,27 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public void deleteFromList(int id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() == id)
+                list.remove(i);
+        }
+    }
+
+    @Override
     public void updateList(AstroObject object) {
-        this.list.add(object);
+        deleteFromList(object.getId());
+        boolean found = false;
+        int index = 0;
+        if (!list.isEmpty()) {
+           while (index < list.size() && !found) {
+                if (object.getId() < list.get(index).getId())
+                    found = true;
+                else
+                    index++;
+            }
+        }
+        this.list.add(index, object);
         mAdapter.notifyDataSetChanged();
     }
 

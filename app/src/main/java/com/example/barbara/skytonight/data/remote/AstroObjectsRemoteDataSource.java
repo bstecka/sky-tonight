@@ -54,7 +54,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
     }
 
     @Override
-    public void getAstroObject(Calendar time, final int objectId, final GetAstroObjectsCallback callback) {
+    public void getAstroObject(final Calendar time, final int objectId, final GetAstroObjectsCallback callback) {
         SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'%20'HH:mm:ss", Locale.getDefault());
         isoFormat.setTimeZone(TimeZone.getTimeZone("UT1"));
         String startDate = isoFormat.format(time.getTime());
@@ -62,6 +62,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
         time2.setTime(time.getTime());
         time2.add(Calendar.HOUR, 1);
         String endDate = isoFormat.format(time2.getTime());
+        Log.e("TIME", startDate + " " + time.getTime().toString());
         String url = String.format(AppConstants.ASTRO_OBJECT_API_URL, objectId, startDate, endDate);
         //String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
         //Log.e("RemoteDataSource", url);
@@ -69,7 +70,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        AstroObject object = processString(response, objectId, Calendar.getInstance());
+                        AstroObject object = processString(response, objectId, time);
                         callback.onDataLoaded(object);
                     }
                 }, new Response.ErrorListener() {

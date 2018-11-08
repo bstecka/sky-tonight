@@ -66,7 +66,7 @@ public class WeatherRemoteDataSource implements WeatherDataSource {
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTimeInMillis(time * 1000);
                         WeatherObject weatherObject = new WeatherObject(id, coverage, calendar);
-                        Log.e("WeatherRemoteDataSource", weatherObject.toString());
+                        //Log.e("WeatherRemoteDataSource", weatherObject.toString());
                         weatherObjects.add(weatherObject);
                     }
                 } catch (JSONException e) {

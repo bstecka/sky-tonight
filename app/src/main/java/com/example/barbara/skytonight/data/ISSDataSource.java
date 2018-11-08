@@ -1,6 +1,6 @@
 package com.example.barbara.skytonight.data;
 
-import java.util.List;
+import java.util.Calendar;
 
 public interface ISSDataSource {
 
@@ -9,6 +9,6 @@ public interface ISSDataSource {
         void onDataNotAvailable();
     }
 
-    void getISSObject(double latitude, double longitude, GetISSObject callback);
+    void getISSObject(Calendar time, double latitude, double longitude, GetISSObject callback);
 
 }

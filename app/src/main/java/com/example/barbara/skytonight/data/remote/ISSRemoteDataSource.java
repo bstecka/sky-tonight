@@ -44,10 +44,10 @@ public class ISSRemoteDataSource implements ISSDataSource {
     }
 
     @Override
-    public void getISSObject(final double latitude, final double longitude, final ISSDataSource.GetISSObject callback) {
+    public void getISSObject(Calendar time, final double latitude, final double longitude, final ISSDataSource.GetISSObject callback) {
         final ArrayList<Calendar> flybyTimes = new ArrayList<>();
         final ArrayList<Integer> durations = new ArrayList<>();
-        final ISSObject issObject = new ISSObject(flybyTimes, durations);
+        final ISSObject issObject = new ISSObject(flybyTimes, durations, time);
         String url = this.url + "&lat=" + latitude + "&lon=" + longitude;
         Log.e("getISSObject", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

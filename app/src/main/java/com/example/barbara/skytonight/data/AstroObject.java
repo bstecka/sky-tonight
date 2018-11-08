@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data;
 
+import android.util.Log;
+
 import com.example.barbara.skytonight.util.AstroConstants;
 
 import java.util.Calendar;
@@ -32,6 +34,16 @@ public class AstroObject {
         this.decl = -1;
         this.azimuth = -1.0;
         this.altitude = -1.0;
+    }
+
+    public AstroObject(int id, String name, Calendar time) {
+        this.id = id;
+        this.name = name;
+        this.rightAsc = -1;
+        this.decl = -1;
+        this.azimuth = -1.0;
+        this.altitude = -1.0;
+        this.time = time;
     }
 
     public AstroObject(int id, String name, double rightAscension, double decl, double illu, boolean waxing, Calendar time) {

@@ -2,6 +2,8 @@ package com.example.barbara.skytonight.data;
 
 import android.util.Log;
 
+import com.example.barbara.skytonight.util.AstroConstants;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,19 +13,27 @@ import java.util.Locale;
 public class ISSObject extends AstroObject {
     private ArrayList<Calendar> flybyTimes;
     private ArrayList<Integer> durations;
+    private Calendar time;
 
-    public ISSObject(ArrayList<Calendar> flybyTimes, ArrayList<Integer> durations){
-        super(1000, "ISS");
+    public ISSObject(ArrayList<Calendar> flybyTimes, ArrayList<Integer> durations, Calendar time){
+        super(AstroConstants.ID_ISS, "ISS");
         this.flybyTimes = flybyTimes;
         this.durations = durations;
+        this.time = time;
     }
 
     public Calendar getNextFlyby() {
-        return getNextFlyby(Calendar.getInstance());
+        if (time != null)
+            return getNextFlyby(time);
+        else
+            return getNextFlyby(Calendar.getInstance());
     }
 
     public int getNextDuration() {
-        return getNextDuration(Calendar.getInstance());
+        if (time != null)
+            return getNextDuration(time);
+        else
+            return getNextDuration(Calendar.getInstance());
     }
 
     public int getNextDuration(Calendar cal) {
@@ -36,7 +46,7 @@ public class ISSObject extends AstroObject {
         return duration;
     }
 
-    public void displayLists() {
+    public void logLists() {
         for (int i = 0; i < durations.size() && i < flybyTimes.size(); i++){
             Calendar flyby = flybyTimes.get(i);
             int duration = durations.get(i);
