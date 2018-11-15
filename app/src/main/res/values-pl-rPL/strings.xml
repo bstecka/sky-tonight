@@ -165,4 +165,8 @@
     <string name="title_activity_article">Wiadomości</string>
     <string name="title_activity_setting">Ustawienia</string>
     <string name="lorem_ipsum">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "</string>
+    <string name="notif_title_event">Nie przegap tego astronomicznego wydarzenia.</string>
+    <string name="notif_msg_event_meteor">%2$s, kulminacja: %3$s.</string>
+    <string name="notif_msg_event_lunar">Zaćmienie księżyca, początek: %2$s, kulminacja: %3$s.</string>
+    <string name="notif_msg_event_solar">Zaćmienie słońca, kulminacja: %2$s.</string>
 </resources>

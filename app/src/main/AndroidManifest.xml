@@ -90,7 +90,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary" />
         <activity
             android:name=".presentation.settings.SettingsActivity"
-            android:label="@string/title_activity_setting"></activity>
+            android:label="@string/title_activity_setting"/>
+        <service android:name=".JobSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

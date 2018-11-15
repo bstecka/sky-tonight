@@ -88,7 +88,7 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
                         e.printStackTrace();
                         return false;
                     }
-                    Log.e("Phtoog", selectedDate.get(Calendar.WEEK_OF_YEAR) + " " + calendar.get(Calendar.WEEK_OF_YEAR) + " " + selectedDate.get(Calendar.YEAR) + " " + calendar.get(Calendar.YEAR));
+                    //Log.e("Phtoog", selectedDate.get(Calendar.WEEK_OF_YEAR) + " " + calendar.get(Calendar.WEEK_OF_YEAR) + " " + selectedDate.get(Calendar.YEAR) + " " + calendar.get(Calendar.YEAR));
                     return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
                 }
             });

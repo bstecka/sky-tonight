@@ -41,7 +41,7 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         final NewsHeadline newsObject = mValues.get(position);
         holder.mItem = newsObject;
         holder.mTitleView.setText(newsObject.getTitle());
-        final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm:dd", Locale.getDefault());
+        final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm", Locale.getDefault());
         holder.mDateView.setText(sdf.format(newsObject.getPubDate().getTime()));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
