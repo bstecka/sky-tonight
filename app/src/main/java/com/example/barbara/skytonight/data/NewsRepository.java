@@ -2,7 +2,7 @@ package com.example.barbara.skytonight.data;
 
 import android.util.Log;
 
-import com.example.barbara.skytonight.core.NewsHeadline;
+import com.example.barbara.skytonight.entity.NewsHeadline;
 import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 
 import java.util.ArrayList;

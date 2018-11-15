@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -9,33 +8,22 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.barbara.skytonight.data.AstroObject;
-import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.SolarEclipseDataSource;
-import com.example.barbara.skytonight.data.SolarEclipseEvent;
+import com.example.barbara.skytonight.entity.SolarEclipseEvent;
 import com.example.barbara.skytonight.data.VolleySingleton;
-import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.AppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
 

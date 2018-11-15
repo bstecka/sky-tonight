@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".notes.NotesListActivity">
+    tools:context=".presentation.notes.NotesListActivity">
 
     <fragment
         android:id="@+id/notesListFragment"
-        android:name="com.example.barbara.skytonight.notes.NotesListFragment"
+        android:name="com.example.barbara.skytonight.presentation.notes.NotesListFragment"
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

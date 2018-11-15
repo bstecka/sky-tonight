@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".core.CoreActivity">
+    tools:context=".presentation.core.CoreActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar"
@@ -17,7 +17,7 @@
         android:theme="@style/Toolbar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <com.example.barbara.skytonight.core.MyViewPager
+    <com.example.barbara.skytonight.presentation.core.CoreViewPager
         android:id="@+id/core_pager"
         android:layout_width="match_parent"
         android:layout_height="574dp"

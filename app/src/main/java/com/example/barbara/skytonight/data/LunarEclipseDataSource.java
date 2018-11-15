@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data;
 
+import com.example.barbara.skytonight.entity.LunarEclipseEvent;
+
 import java.util.List;
 
 public interface LunarEclipseDataSource {

@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".video.VideoActivity">
+    tools:context=".presentation.video.VideoActivity">
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.barbara.skytonight.settings.SettingsFragment"
+        android:name="com.example.barbara.skytonight.presentation.settings.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

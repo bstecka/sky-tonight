@@ -9,11 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.barbara.skytonight.data.LunarEclipseDataSource;
-import com.example.barbara.skytonight.data.LunarEclipseEvent;
-import com.example.barbara.skytonight.data.SolarEclipseDataSource;
-import com.example.barbara.skytonight.data.SolarEclipseEvent;
+import com.example.barbara.skytonight.entity.LunarEclipseEvent;
 import com.example.barbara.skytonight.data.VolleySingleton;
-import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.AppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

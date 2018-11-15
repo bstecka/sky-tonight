@@ -9,11 +9,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.barbara.skytonight.data.ISSDataSource;
-import com.example.barbara.skytonight.data.ISSObject;
+import com.example.barbara.skytonight.entity.ISSObject;
 import com.example.barbara.skytonight.data.VolleySingleton;
-import com.example.barbara.skytonight.data.WeatherDataSource;
-import com.example.barbara.skytonight.data.WeatherObject;
-import com.example.barbara.skytonight.util.AppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +18,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class ISSRemoteDataSource implements ISSDataSource {
 

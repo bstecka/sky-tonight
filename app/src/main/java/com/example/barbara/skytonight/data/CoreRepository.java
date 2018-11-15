@@ -8,7 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.AppConstants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;

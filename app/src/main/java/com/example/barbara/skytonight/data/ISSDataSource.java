@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data;
 
+import com.example.barbara.skytonight.entity.ISSObject;
+
 import java.util.Calendar;
 
 public interface ISSDataSource {

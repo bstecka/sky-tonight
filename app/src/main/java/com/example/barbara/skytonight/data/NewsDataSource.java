@@ -1,10 +1,7 @@
 package com.example.barbara.skytonight.data;
 
-import android.graphics.Bitmap;
-
-import com.example.barbara.skytonight.core.NewsHeadline;
-import com.example.barbara.skytonight.news.ArticleContentWrapper;
-import com.example.barbara.skytonight.photos.ImageFile;
+import com.example.barbara.skytonight.entity.NewsHeadline;
+import com.example.barbara.skytonight.entity.ArticleContentWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

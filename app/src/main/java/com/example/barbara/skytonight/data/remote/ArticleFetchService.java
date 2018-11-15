@@ -1,19 +1,17 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.VolleySingleton;
-import com.example.barbara.skytonight.news.ArticleContentWrapper;
-import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.entity.ArticleContentWrapper;
+import com.example.barbara.skytonight.AppConstants;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

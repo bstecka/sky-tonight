@@ -8,24 +8,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.barbara.skytonight.data.MeteorShowerDataSource;
-import com.example.barbara.skytonight.data.MeteorShowerEvent;
 import com.example.barbara.skytonight.data.VolleySingleton;
 import com.example.barbara.skytonight.data.WeatherDataSource;
-import com.example.barbara.skytonight.data.WeatherObject;
-import com.example.barbara.skytonight.util.AppConstants;
+import com.example.barbara.skytonight.entity.WeatherObject;
+import com.example.barbara.skytonight.AppConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class WeatherRemoteDataSource implements WeatherDataSource {
 
