@@ -52,7 +52,6 @@ public class NotifyWorker extends Worker {
     public Worker.Result doWork() {
         triggerNotificationsForEvents();
         //Log.e("NotifyWorker", "doing work");
-        //makeStatusNotification("no Events", "message");
         return Worker.Result.SUCCESS;
     }
 
@@ -83,13 +82,12 @@ public class NotifyWorker extends Worker {
         nowTesting.add(Calendar.HOUR, 9);
         now = nowTesting;*/
         final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm", Locale.getDefault());
-        Log.e("processEventList", sdf.format(now.getTime()));
         for (int i = 0; i < events.size(); i++) {
             AstroEvent event = events.get(i);
             long diff = event.getPeakDate().getTime() - now.getTime().getTime();
-            if (event.getId() == 1) {
+            /*if (event.getId() == 1) {
                 Log.e("Notify", event.getName() + " " + diff + " " + now.getTime().toString() + " " + event.getPeakDate().getTime());
-            }
+            }*/
             if (diff > (-1 * timeCushion) && diff < timeWindowMilis + timeCushion) {
                 final SimpleDateFormat sdfShort = new SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
                 final SimpleDateFormat sdfLong = new SimpleDateFormat("MMM dd yyyy HH:mm", Locale.getDefault());
