@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".photos.PhotoGalleryActivity">
+    tools:context=".presentation.photos.PhotoGalleryActivity">
 
     <fragment
         android:id="@+id/photoGalleryFragment"
-        android:name="com.example.barbara.skytonight.photos.PhotoGalleryFragment"
+        android:name="com.example.barbara.skytonight.presentation.photos.PhotoGalleryFragment"
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -156,6 +156,9 @@
     <string name="language_changed_en">Language changed</string>
     <string name="language_changed_pl">Język został zmieniony</string>
     <string name="settings_location">Lokalizacja</string>
+    <string name="time_now">Teraz</string>
+    <string name="time_now_one">Za godzinę</string>
+    <string name="time_from_now">Za %1$s godzin (%2$s)</string>
     <string name="tab_day">Dzień</string>
     <string name="tab_week">Tydzień</string>
     <string name="tab_month">Miesiąc</string>

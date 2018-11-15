@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".news.ArticleActivity">
+    tools:context=".presentation.news.ArticleActivity">
 
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.example.barbara.skytonight.news.ArticleFragment"
+        android:name="com.example.barbara.skytonight.presentation.news.ArticleFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,7 +1,8 @@
 package com.example.barbara.skytonight.data;
 
+import com.example.barbara.skytonight.entity.AstroObject;
+
 import java.util.Calendar;
-import java.util.List;
 
 public interface AstroObjectsDataSource {
 

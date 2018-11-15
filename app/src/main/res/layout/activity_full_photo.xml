@@ -7,7 +7,7 @@
     android:background="@color/black"
     android:layout_margin="0dp"
     android:padding="0dp"
-    tools:context=".photos.FullPhotoActivity">
+    tools:context=".presentation.photos.FullPhotoActivity">
 
     <it.sephiroth.android.library.imagezoom.ImageViewTouch
         android:id="@+id/imageView"

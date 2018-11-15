@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data;
 
+import java.util.Calendar;
+
 public class ISSRepository implements ISSDataSource {
 
     private static ISSRepository INSTANCE = null;
@@ -20,12 +22,12 @@ public class ISSRepository implements ISSDataSource {
         INSTANCE = null;
     }
 
-    private void getISSObjectFromRemoteRepository(double latitude, double longitude, GetISSObject callback) {
-        mISSDataSource.getISSObject(latitude, longitude, callback);
+    private void getISSObjectFromRemoteRepository(Calendar time, double latitude, double longitude, GetISSObject callback) {
+        mISSDataSource.getISSObject(time, latitude, longitude, callback);
     }
 
     @Override
-    public void getISSObject(double latitude, double longitude, GetISSObject callback) {
-        getISSObjectFromRemoteRepository(latitude, longitude, callback);
+    public void getISSObject(Calendar time, double latitude, double longitude, GetISSObject callback) {
+        getISSObjectFromRemoteRepository(time, latitude, longitude, callback);
     }
 }

@@ -1,5 +1,10 @@
 package com.example.barbara.skytonight.data;
 
+import com.example.barbara.skytonight.entity.AstroEvent;
+import com.example.barbara.skytonight.entity.LunarEclipseEvent;
+import com.example.barbara.skytonight.entity.MeteorShowerEvent;
+import com.example.barbara.skytonight.entity.SolarEclipseEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 

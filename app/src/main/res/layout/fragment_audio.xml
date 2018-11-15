@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".photos.PhotoGalleryActivity">
+    tools:context=".presentation.photos.PhotoGalleryActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context=".core.EventsFragment"
+        tools:context=".presentation.core.EventsFragment"
         tools:listitem="@layout/audio_list_item" />
 
     <ImageView

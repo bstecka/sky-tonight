@@ -29,7 +29,7 @@
         </provider>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,59 +37,59 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".core.CoreActivity" />
+        <activity android:name=".presentation.core.CoreActivity" />
         <activity
-            android:name=".photos.PhotoGalleryActivity"
+            android:name=".presentation.photos.PhotoGalleryActivity"
             android:label="@string/title_activity_photo_gallery"
-            android:parentActivityName=".core.CoreActivity">
+            android:parentActivityName=".presentation.core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
+                android:value="com.example.barbara.skytonight.presentation.core.CoreActivity" />
         </activity>
         <activity
-            android:name=".audio.AudioActivity"
+            android:name=".presentation.audio.AudioActivity"
             android:label="@string/title_activity_audio"
-            android:parentActivityName=".core.CoreActivity">
+            android:parentActivityName=".presentation.core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
+                android:value="com.example.barbara.skytonight.presentation.core.CoreActivity" />
         </activity>
         <activity
-            android:name=".video.VideoActivity"
+            android:name=".presentation.video.VideoActivity"
             android:label="@string/title_activity_video"
-            android:parentActivityName=".core.CoreActivity">
+            android:parentActivityName=".presentation.core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
+                android:value="com.example.barbara.skytonight.presentation.core.CoreActivity" />
         </activity>
         <activity
-            android:name=".notes.NotesListActivity"
+            android:name=".presentation.notes.NotesListActivity"
             android:label="@string/title_activity_notes"
-            android:parentActivityName=".core.CoreActivity">
+            android:parentActivityName=".presentation.core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
+                android:value="com.example.barbara.skytonight.presentation.core.CoreActivity" />
         </activity>
         <activity
-            android:name=".notes.NoteActivity"
+            android:name=".presentation.notes.NoteActivity"
             android:label="@string/title_activity_note"
-            android:parentActivityName=".core.CoreActivity">
+            android:parentActivityName=".presentation.core.CoreActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.barbara.skytonight.core.CoreActivity" />
+                android:value="com.example.barbara.skytonight.presentation.core.CoreActivity" />
         </activity>
         <activity
-            android:name=".photos.FullPhotoActivity"
+            android:name=".presentation.photos.FullPhotoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".video.FullVideoActivity"
+            android:name=".presentation.video.FullVideoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".news.ArticleActivity"
+            android:name=".presentation.news.ArticleActivity"
             android:label="@string/title_activity_article"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary" />
         <activity
-            android:name=".settings.SettingsActivity"
+            android:name=".presentation.settings.SettingsActivity"
             android:label="@string/title_activity_setting"></activity>
     </application>
 
