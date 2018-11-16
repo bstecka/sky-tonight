@@ -86,16 +86,11 @@ public class NotifyWorkerISS extends Worker {
         conf.locale = new Locale(LocaleHelper.getPersistedLocale(context));
         res.updateConfiguration(conf, null);
         long timeWindowMilis = MIN_PERIODIC_INTERVAL_MILLIS; //NOTIFY 15 MINUTES BEFORE THE EVENT
-        long timeCushion = 60 * 1000;
+        long timeCushion = 60 * 1000 * 10; // 10 MINUTES CUSHION
         Calendar now = Calendar.getInstance();
-        /*Calendar nowTesting = Calendar.getInstance();
-        nowTesting.add(Calendar.DATE, 1);
-        nowTesting.add(Calendar.HOUR, 2);
-        nowTesting.add(Calendar.MINUTE, 25);
-        now = nowTesting;*/
         final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         long diff = issObject.getNextFlyby().getTime().getTime() - now.getTime().getTime();
-        if (diff > (-1 * timeCushion) && diff < timeWindowMilis + timeCushion) {
+        if (diff > (-1 * timeCushion) && diff < (timeWindowMilis + timeCushion)) {
             String message = context.getString(R.string.notif_msg_iss, sdf.format(issObject.getNextFlyby().getTime()));
             makeStatusNotification(context.getResources().getString(R.string.notif_title_iss), message);
         }

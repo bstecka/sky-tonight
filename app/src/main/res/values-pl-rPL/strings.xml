@@ -169,4 +169,6 @@
     <string name="notif_msg_event_meteor">%2$s, kulminacja: %3$s.</string>
     <string name="notif_msg_event_lunar">Zaćmienie księżyca, początek: %2$s, kulminacja: %3$s.</string>
     <string name="notif_msg_event_solar">Zaćmienie słońca, kulminacja: %2$s.</string>
+    <string name="notif_title_iss">Zbliża się przelot Międzynarodowej Stacji Kosmicznej.</string>
+    <string name="notif_msg_iss">MSK przeleci nad twoją lokalizacją o %1$s.</string>
 </resources>

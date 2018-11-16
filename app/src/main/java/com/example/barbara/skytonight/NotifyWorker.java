@@ -74,20 +74,16 @@ public class NotifyWorker extends Worker {
         android.content.res.Configuration conf = res.getConfiguration();
         conf.locale = new Locale(LocaleHelper.getPersistedLocale(context));
         res.updateConfiguration(conf, null);
-        long timeWindowMilis = MIN_PERIODIC_INTERVAL_MILLIS * 4; //NOTIFY ONE HOUR BEFORE THE EVENT
+        long timeWindowMilis = 60 * 1000 * 12; //NOTIFY 12 HOURS BEFORE THE EVENT
         long timeCushion = 60 * 1000;
         Calendar now = Calendar.getInstance();
         /*Calendar nowTesting = Calendar.getInstance();
         nowTesting.add(Calendar.DATE, 1);
         nowTesting.add(Calendar.HOUR, 9);
         now = nowTesting;*/
-        final SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy HH:mm", Locale.getDefault());
         for (int i = 0; i < events.size(); i++) {
             AstroEvent event = events.get(i);
             long diff = event.getPeakDate().getTime() - now.getTime().getTime();
-            /*if (event.getId() == 1) {
-                Log.e("Notify", event.getName() + " " + diff + " " + now.getTime().toString() + " " + event.getPeakDate().getTime());
-            }*/
             if (diff > (-1 * timeCushion) && diff < timeWindowMilis + timeCushion) {
                 final SimpleDateFormat sdfShort = new SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
                 final SimpleDateFormat sdfLong = new SimpleDateFormat("MMM dd yyyy HH:mm", Locale.getDefault());
