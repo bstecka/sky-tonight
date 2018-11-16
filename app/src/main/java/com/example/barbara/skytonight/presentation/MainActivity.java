@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import com.example.barbara.skytonight.NotifyWorker;
+import com.example.barbara.skytonight.NotifyWorkerISS;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.presentation.core.CoreActivity;
 import com.example.barbara.skytonight.AppConstants;
@@ -30,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //WorkManager.getInstance().cancelAllWorkByTag("periodic");
+        //WorkManager.getInstance().cancelAllWork();
         runNotifyWorker();
+        runNotifyWorkerISS();
         Intent myIntent = new Intent(MainActivity.this, CoreActivity.class);
         MainActivity.this.startActivity(myIntent);
     }
@@ -40,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
         builder.setConstraints(Constraints.NONE).addTag("periodic");
         PeriodicWorkRequest worker = builder.build();
         Log.e("runNotifyWorker", worker.toString());
+        WorkManager.getInstance().enqueue(worker);
+    }
+
+    private void runNotifyWorkerISS() {
+        PeriodicWorkRequest.Builder builder = new PeriodicWorkRequest.Builder(NotifyWorkerISS.class, MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+        builder.setConstraints(Constraints.NONE).addTag("periodic");
+        PeriodicWorkRequest worker = builder.build();
+        Log.e("runNotifyWorker2", worker.toString());
         WorkManager.getInstance().enqueue(worker);
     }
 }

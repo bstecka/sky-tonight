@@ -51,7 +51,7 @@ public class NotifyWorker extends Worker {
     @Override
     public Worker.Result doWork() {
         triggerNotificationsForEvents();
-        //Log.e("NotifyWorker", "doing work");
+        Log.e("NotifyWorker", "N1 doing work");
         return Worker.Result.SUCCESS;
     }
 
