@@ -11,8 +11,8 @@ public class SettingsContract {
     interface View extends BaseView<Presenter> {
         Context getContext();
         Activity getViewActivity();
-        void setLanguageSelected(String language);
-        void setUserChoiceListener();
+        void setUserSelection(String language);
+        void setUserChoiceListeners();
     }
 
     interface Presenter extends BasePresenter {

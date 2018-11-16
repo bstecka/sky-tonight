@@ -3,9 +3,11 @@ package com.example.barbara.skytonight;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.location.Location;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -45,9 +47,11 @@ public class NotifyWorkerISS extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        triggerNotificationsForISS();
-        Log.e("NotifyWorker2", "N2 doing work");
-        //makeStatusNotification("Test", "ISS is not here");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (preferences.getBoolean(AppConstants.PREF_KEY_NOTIF_ISS, true)) {
+            triggerNotificationsForISS();
+            Log.e("NotifyWorker2", "N2 doing work");
+        }
         return Result.SUCCESS;
     }
 

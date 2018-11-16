@@ -155,7 +155,11 @@
     <string name="settings_language_pl">Polski</string>
     <string name="language_changed_en">Language changed</string>
     <string name="language_changed_pl">Język został zmieniony</string>
+    <string name="notif_changed">Ustawienia notyfikacji zostały zmienione</string>
     <string name="settings_location">Lokalizacja</string>
+    <string name="settings_notifications">Powiadomienia</string>
+    <string name="settings_switch_events">Astronomiczne wydarzenia</string>
+    <string name="settings_switch_iss">Przeloty Międzynarodowej Stacji Kosmicznej</string>
     <string name="time_now">Teraz</string>
     <string name="time_now_one">Za godzinę</string>
     <string name="time_from_now">Za %1$s godzin (%2$s)</string>
