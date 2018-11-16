@@ -2,6 +2,7 @@ package com.example.barbara.skytonight.data;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +26,31 @@ public class CoreRepository implements CoreDataSource {
             INSTANCE = new CoreRepository();
         }
         return INSTANCE;
+    }
+
+    @Override
+    public void getUserLocation(final Context context, final CoreDataSource.GetUserLocationCallback callback) {
+        //Log.e("CoreRepository", "getUserLocation, boolean: " + requestedPermission);
+        boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean noCoarseLocationPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        if (noFineLocationPermission && noCoarseLocationPermission) {
+            callback.onDataNotAvailable();
+        } else {
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    if (location != null) {
+                        Log.e("CoreRepository", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
+                        callback.onDataLoaded(location);
+                    } else {
+                        Log.e("CoreRepository", "mFusedLocationClient returned null");
+                        callback.onDataNotAvailable();
+                        Toast.makeText(context, R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override

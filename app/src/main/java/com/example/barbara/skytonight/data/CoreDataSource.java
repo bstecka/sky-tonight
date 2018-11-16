@@ -1,8 +1,7 @@
 package com.example.barbara.skytonight.data;
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
-
-import java.util.Calendar;
 
 public interface CoreDataSource {
 
@@ -13,4 +12,5 @@ public interface CoreDataSource {
     }
 
     void getUserLocation(Activity activity, GetUserLocationCallback callback);
+    void getUserLocation(Context context, GetUserLocationCallback callback);
 }
