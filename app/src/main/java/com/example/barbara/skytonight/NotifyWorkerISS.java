@@ -52,7 +52,6 @@ public class NotifyWorkerISS extends Worker {
             triggerNotificationsForISS();
             Log.e("NotifyWorker2", "N2 doing work");
         }
-        //makeStatusNotification("Test", "ISS is not here");
         return Result.SUCCESS;
     }
 
