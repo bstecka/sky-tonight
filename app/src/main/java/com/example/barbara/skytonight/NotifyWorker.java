@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -50,8 +52,11 @@ public class NotifyWorker extends Worker {
     @NonNull
     @Override
     public Worker.Result doWork() {
-        triggerNotificationsForEvents();
-        Log.e("NotifyWorker", "N1 doing work");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (preferences.getBoolean(AppConstants.PREF_KEY_NOTIF_EVENTS, true)) {
+            triggerNotificationsForEvents();
+            Log.e("NotifyWorker", "N1 doing work");
+        }
         return Worker.Result.SUCCESS;
     }
 

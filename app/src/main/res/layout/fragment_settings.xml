@@ -37,6 +37,7 @@
 
             <RadioGroup
                 android:id="@+id/radioGroup"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -55,16 +56,40 @@
                     android:text="@string/settings_language_pl" />
             </RadioGroup>
 
+            <Switch
+                android:id="@+id/switchEn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_language_en" />
+
+            <Switch
+                android:id="@+id/switchPl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_language_pl" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="12dp"
-                android:text="@string/settings_location"
+                android:text="@string/settings_notifications"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible" />
+
+            <Switch
+                android:id="@+id/switchEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_switch_events" />
+
+            <Switch
+                android:id="@+id/switchISS"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_switch_iss" />
         </LinearLayout>
     </ScrollView>
 

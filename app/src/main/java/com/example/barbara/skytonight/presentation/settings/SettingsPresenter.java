@@ -16,7 +16,7 @@ public class SettingsPresenter implements SettingsContract.Presenter {
     @Override
     public void start() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(settingsView.getContext());
-        settingsView.setLanguageSelected(preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN));
-        settingsView.setUserChoiceListener();
+        settingsView.setUserSelection(preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN));
+        settingsView.setUserChoiceListeners();
     }
 }
