@@ -2,6 +2,11 @@ package com.example.barbara.skytonight.entity;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import static com.example.barbara.skytonight.entity.AstroConstants.GMST_CONST;
+import static com.example.barbara.skytonight.entity.AstroConstants.GMST_FACTOR_D0;
+import static com.example.barbara.skytonight.entity.AstroConstants.GMST_FACTOR_H;
 
 public class AstroObject {
     private int id;
@@ -41,8 +46,6 @@ public class AstroObject {
         this.waxing = waxing;
         this.time = time;
     }
-
-    public double getIlluPercentage() { return illu; }
 
     public String getShortName() { return "astr_obj_" + id; }
 
@@ -94,8 +97,7 @@ public class AstroObject {
     }
 
     private void calculateAzAlt(double latitude, double longitude, Calendar date) {
-        double julianDateAdj = getJulianDateAdj(date);
-        double LST = getLocalSiderealTime(julianDateAdj, longitude);
+        double LST = getLocalSiderealTime(date, longitude);
         double HA = LST - this.rightAsc + 360;
         double x, y, z, xhor, yhor, zhor;
         x = Math.cos(Math.toRadians(HA)) * Math.cos(Math.toRadians(this.decl));
@@ -108,16 +110,24 @@ public class AstroObject {
         this.altitude = Math.toDegrees(Math.asin(zhor));
     }
 
-    private double getGMST(double julianDateAdj)
-    {
-        double T = (julianDateAdj - 51544.5) / 36525.0;
-        double gmst = ((280.46061837 + 360.98564736629 * (julianDateAdj - 51544.5)) + 0.000387933 * T*T - T*T*T/38710000.0) % 360.0;
-        return gmst >= 0 ? gmst : gmst + 360.0;
+    private double getGMST(Calendar date){
+        Calendar time = date;
+        time.setTimeZone(TimeZone.getTimeZone("UT"));
+        double H = time.get(Calendar.HOUR_OF_DAY) + time.get(Calendar.MINUTE)/60.0 + time.get(Calendar.SECOND)/3600.0;
+        double JD = getJulianDate(time);
+        double JD0;
+        if (JD - Math.floor(JD) >= 0.5)
+            JD0 = Math.floor(JD) + 0.5;
+        else
+            JD0 = Math.floor(JD) - 0.5;
+        double D0 = JD0 - AstroConstants.JD_2000JAN01;
+        double GMST = (GMST_CONST + GMST_FACTOR_D0 * D0 + GMST_FACTOR_H * H) * 15;
+        return GMST % 360.0;
     }
 
-    private double getLocalSiderealTime(double julianDateAdj, double longitudeDeg)
+    private double getLocalSiderealTime(Calendar date, double longitudeDeg)
     {
-        return (getGMST(julianDateAdj) + longitudeDeg) % 360.0;
+        return (getGMST(date) + longitudeDeg) % 360.0;
     }
 
     private double getJulianDate(Calendar date) {
@@ -134,7 +144,4 @@ public class AstroObject {
         return (double) (t1 - t0) / (1000 * 60 * 60 * 24);
     }
 
-    private double getJulianDateAdj(Calendar date){
-        return getJulianDate(date) - AstroConstants.JDminusMJD;
-    }
 }
