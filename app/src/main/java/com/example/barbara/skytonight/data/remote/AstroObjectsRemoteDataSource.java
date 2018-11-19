@@ -12,6 +12,7 @@ import com.example.barbara.skytonight.entity.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.VolleySingleton;
 import com.example.barbara.skytonight.AppConstants;
+import com.example.barbara.skytonight.entity.CelestialBody;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
     }
 
     private AstroObject processString(String str, int objectId, Calendar time) {
-        AstroObject astroObject = new AstroObject();
+        AstroObject astroObject = new CelestialBody();
         Boolean waxing = false;
         BufferedReader in = new BufferedReader(new StringReader(str));
         try {
@@ -97,7 +98,7 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
                 if (Double.parseDouble(laterIllu) - illu > 0)
                     waxing = true;
             }
-            astroObject = new AstroObject(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), illu, waxing, time);
+            astroObject = new CelestialBody(objectId, objectName, rightAscToDeg(RA), strToDeg(decl), illu, waxing, time);
             in.close();
         } catch (IOException e) {
             e.printStackTrace();

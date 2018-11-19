@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.AstroObject;
+import com.example.barbara.skytonight.entity.CelestialBody;
 import com.example.barbara.skytonight.entity.ISSObject;
 import com.example.barbara.skytonight.entity.AstroConstants;
 
@@ -50,28 +51,29 @@ public class TodayRecyclerViewAdapter extends RecyclerView.Adapter<TodayRecycler
         return new ViewHolder(view);
     }
 
-    private void handlePlanetObject(ViewHolder holder, AstroObject object) {
-        holder.mAltView.setText(context.getString(R.string.astro_object_alt, object.getAltitude(latitude, longitude)));
+    private void handleCelestialBody(ViewHolder holder, AstroObject object) {
+        CelestialBody celestialBody = (CelestialBody) object;
+        holder.mAltView.setText(context.getString(R.string.astro_object_alt, celestialBody.getAltitude(latitude, longitude)));
         try {
             int nameStringId = context.getResources().getIdentifier(object.getShortName(), "string", context.getPackageName());
             holder.mNameTextView.setText(context.getResources().getString(nameStringId));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
-            holder.mNameTextView.setText(object.getName());
+            holder.mNameTextView.setText(celestialBody.getName());
         }
         try {
-            int directionStringId = context.getResources().getIdentifier("dir_" + object.getApproximateDirectionString().toLowerCase(), "string", context.getPackageName());
+            int directionStringId = context.getResources().getIdentifier("dir_" + celestialBody.getApproximateDirectionString().toLowerCase(), "string", context.getPackageName());
             holder.mAzView.setText(context.getResources().getString(directionStringId));
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
         try {
             if (object.getId() == AstroConstants.ID_MOON) {
-                int drawableId = context.getResources().getIdentifier("moon_" + object.getPhaseId(), "drawable", context.getPackageName());
+                int drawableId = context.getResources().getIdentifier("moon_" + celestialBody.getPhaseId(), "drawable", context.getPackageName());
                 holder.mImageView.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), drawableId, null));
             }
             else {
-                int drawableId = context.getResources().getIdentifier("icon_" + object.getName().toLowerCase(), "drawable", context.getPackageName());
+                int drawableId = context.getResources().getIdentifier("icon_" + celestialBody.getName().toLowerCase(), "drawable", context.getPackageName());
                 holder.mImageView.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), drawableId, null));
             }
         } catch (Resources.NotFoundException e) {
@@ -99,8 +101,8 @@ public class TodayRecyclerViewAdapter extends RecyclerView.Adapter<TodayRecycler
         if (object instanceof ISSObject) {
             ISSObject issObject = (ISSObject) object;
             handleISSObject(holder, issObject);
-        } else {
-            handlePlanetObject(holder, object);
+        } else if (object instanceof CelestialBody) {
+            handleCelestialBody(holder, object);
         }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

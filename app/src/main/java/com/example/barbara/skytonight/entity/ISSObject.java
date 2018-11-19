@@ -6,25 +6,23 @@ import java.util.Calendar;
 public class ISSObject extends AstroObject {
     private ArrayList<Calendar> flybyTimes;
     private ArrayList<Integer> durations;
-    private Calendar time;
 
     public ISSObject(ArrayList<Calendar> flybyTimes, ArrayList<Integer> durations, Calendar time){
-        super(AstroConstants.ID_ISS, "ISS");
+        super(AstroConstants.ID_ISS, "ISS", time);
         this.flybyTimes = flybyTimes;
         this.durations = durations;
-        this.time = time;
     }
 
     public Calendar getNextFlyby() {
-        if (time != null)
-            return getNextFlyby(time);
+        if (super.getTime() != null)
+            return getNextFlyby(super.getTime());
         else
             return getNextFlyby(Calendar.getInstance());
     }
 
     public int getNextDuration() {
-        if (time != null)
-            return getNextDuration(time);
+        if (super.getTime() != null)
+            return getNextDuration(super.getTime());
         else
             return getNextDuration(Calendar.getInstance());
     }
