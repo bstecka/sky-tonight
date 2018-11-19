@@ -39,6 +39,8 @@ public class AstroEvent {
 
     public String getName() { return name; }
 
+    public String getLongName() { return name; }
+
     public int getId() {
         return id;
     }

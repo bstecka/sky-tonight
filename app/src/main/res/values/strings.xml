@@ -154,7 +154,11 @@
     <string name="settings_language_pl">Polski</string>
     <string name="language_changed_en">Language changed</string>
     <string name="language_changed_pl">Język został zmieniony</string>
+    <string name="notif_changed">Notification settings changed</string>
     <string name="settings_location">Location</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_switch_events">Event Notifications</string>
+    <string name="settings_switch_iss">ISS Notifications</string>
     <string name="time_now">Now</string>
     <string name="time_now_one">1 hour from now</string>
     <string name="time_from_now">%1$s hours from now (%2$s)</string>
@@ -164,4 +168,10 @@
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</string>
     <string name="title_activity_article">News</string>
     <string name="title_activity_setting">Settings</string>
+    <string name="notif_title_event">Astronomical event approaching.</string>
+    <string name="notif_msg_event_meteor">A %1$s is about to peak on %3$s.</string>s
+    <string name="notif_msg_event_lunar">A %1$s is about to start on %2$s and peak on %3$s.</string>
+    <string name="notif_msg_event_solar">A %1$s is about to peak at %2$s.</string>
+    <string name="notif_title_iss">ISS flyby approaching.</string>
+    <string name="notif_msg_iss">ISS will fly overhead at %1$s.</string>
 </resources>

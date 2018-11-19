@@ -122,13 +122,13 @@ public class TodayFragment extends Fragment implements TodayContract.View {
 
     @Override
     public void refreshLocationInAdapter(Location location) {
-        Log.e("refreshLocationInAdapter", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
+        //Log.e("refreshLocationInAdapter", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
     }
 
     @Override
     public void updateWeatherView(WeatherObject currentWeather) {
-        Log.e("TodayFragment", currentWeather.toString());
+        //Log.e("TodayFragment", currentWeather.toString());
         if (getView() != null && getContext() != null) {
             ConstraintLayout layout = getView().findViewById(R.id.weatherLayout);
             layout.setVisibility(View.VISIBLE);
