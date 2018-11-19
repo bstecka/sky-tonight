@@ -3,7 +3,7 @@ package com.example.barbara.skytonight.entity;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AstroEvent {
+public abstract class AstroEvent {
     private int id;
     private String name;
     private Calendar startDate;
