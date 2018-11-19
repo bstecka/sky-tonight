@@ -1,31 +1,28 @@
 package com.example.barbara.skytonight.presentation.video;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
-
-import com.example.barbara.skytonight.presentation.video.VideoContract;
+import com.example.barbara.skytonight.data.VideoDataSource;
+import com.example.barbara.skytonight.data.VideoRepository;
+import com.example.barbara.skytonight.data.local.VideoLocalDataSource;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 public class VideoPresenter implements VideoContract.Presenter {
 
     private final VideoContract.View mVideoView;
+    private VideoRepository videoRepository;
 
     public VideoPresenter(VideoContract.View mVideoView) {
         this.mVideoView = mVideoView;
+        File storageDir = mVideoView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+        this.videoRepository = VideoRepository.getInstance(VideoLocalDataSource.getInstance(storageDir));
     }
 
     @Override
@@ -34,57 +31,10 @@ public class VideoPresenter implements VideoContract.Presenter {
         readFiles();
     }
 
-    private void readFilesForDay(Calendar selectedDate) {
-        ArrayList<File> list = mVideoView.getFileList();
-        File storageDir = mVideoView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(selectedDate.getTime());
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.contains(timeStamp);
-                }
-            });
-            for (File file : filteredFiles)
-                list.add(file);
-            mVideoView.refreshListInView();
-        }
-    }
-
-    private void readFilesForWeek(final Calendar selectedDate) {
-        ArrayList<File> list = mVideoView.getFileList();
-        File storageDir = mVideoView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-                    try {
-                        Date date = sdf.parse(name.substring(4, 13));
-                        calendar.setTime(date);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                    return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
-                }
-            });
-            for (File file : filteredFiles)
-                list.add(file);
-            mVideoView.refreshListInView();
-        }
-    }
-
     public void dispatchTakeVideoIntent() {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (takeVideoIntent.resolveActivity(mVideoView.getViewActivity().getPackageManager()) != null) {
-            File videoFile = null;
-            try {
-                videoFile = createFile(mVideoView.getViewActivity());
-            } catch (IOException ex) {
-                Log.e("VideoPresenter", "IOException");
-            }
+            File videoFile = createFile();
             if (videoFile != null) {
                 Uri videoURI = FileProvider.getUriForFile(mVideoView.getContext(), "com.example.barbara.skytonight.fileprovider", videoFile);
                 takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI);
@@ -93,24 +43,55 @@ public class VideoPresenter implements VideoContract.Presenter {
         }
     }
 
+    private void readFilesForDay(Calendar selectedDate) {
+        final ArrayList<File> list = mVideoView.getFileList();
+        videoRepository.readFilesForDay(selectedDate, new VideoDataSource.GetVideoFilesCallback() {
+            @Override
+            public void onDataLoaded(List<File> files) {
+                list.clear();
+                list.addAll(files);
+                mVideoView.refreshListInView();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    private void readFilesForWeek(final Calendar selectedDate) {
+        final ArrayList<File> list = mVideoView.getFileList();
+        videoRepository.readFilesForWeek(selectedDate, new VideoDataSource.GetVideoFilesCallback() {
+            @Override
+            public void onDataLoaded(List<File> files) {
+                list.clear();
+                list.addAll(files);
+                mVideoView.refreshListInView();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
     private void readFilesForMonth(int month, int year) {
-        ArrayList<File> list = mVideoView.getFileList();
-        File storageDir = mVideoView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
-        Calendar selectedDate = Calendar.getInstance();
-        selectedDate.set(Calendar.MONTH, month);
-        selectedDate.set(Calendar.YEAR, year);
-        final String timeStamp = new SimpleDateFormat("yyyyMM", Locale.getDefault()).format(selectedDate.getTime());
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.contains(timeStamp);
-                }
-            });
-            for (File file : filteredFiles)
-                list.add(file);
-            mVideoView.refreshListInView();
-        }
+        final ArrayList<File> list = mVideoView.getFileList();
+        videoRepository.readFilesForMonth(month, year, new VideoDataSource.GetVideoFilesCallback() {
+            @Override
+            public void onDataLoaded(List<File> files) {
+                list.clear();
+                list.addAll(files);
+                mVideoView.refreshListInView();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     private void readFiles() {
@@ -124,16 +105,8 @@ public class VideoPresenter implements VideoContract.Presenter {
         }
     }
 
-    private File createFile(Activity activity) throws IOException {
-        Calendar selectedDate = mVideoView.getSelectedDate();
-        String timeStamp;
-        if (selectedDate != null)
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
-        else
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
-        String videoFileName = "MP4_" + timeStamp + "_";
-        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
-        return File.createTempFile(videoFileName, ".mp4", storageDir);
+    private File createFile() {
+        return videoRepository.createFile(mVideoView.getSelectedDate());
     }
 
 }
