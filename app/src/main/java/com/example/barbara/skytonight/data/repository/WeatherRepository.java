@@ -1,4 +1,6 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
+
+import com.example.barbara.skytonight.data.WeatherDataSource;
 
 public class WeatherRepository implements WeatherDataSource {
 
@@ -21,7 +23,7 @@ public class WeatherRepository implements WeatherDataSource {
     }
 
     private void getWeatherObjectsFromRemoteRepository(double latitude, double longitude, GetWeatherObjectsCallback callback) {
-        mWeatherRemoteDataSource.getWeatherObjects(1, 2, callback);
+        mWeatherRemoteDataSource.getWeatherObjects(latitude, longitude, callback);
     }
 
     @Override

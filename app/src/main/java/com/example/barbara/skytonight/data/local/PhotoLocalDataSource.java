@@ -5,10 +5,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.barbara.skytonight.data.PhotoDataSource;
-import com.example.barbara.skytonight.presentation.photos.ImageFile;
+import com.example.barbara.skytonight.entity.ImageFile;
 
 import java.io.File;
 import java.io.FilenameFilter;

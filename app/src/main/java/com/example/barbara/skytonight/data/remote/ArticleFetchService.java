@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,13 +34,11 @@ public class ArticleFetchService {
     }
 
     public void getNewsArticle(String url, final NewsDataSource.GetNewsArticleCallback callback) {
-        Log.e("getNewsArticle", url);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Document document = Jsoup.parse(response);
                 Element element;
-                String content = "";
                 StringBuilder builder = new StringBuilder();
                 ArrayList<ArticleContentWrapper> articleChunks = new ArrayList<>();
                 if (baseUrl.equals(AppConstants.NEWS_URL_PL)) {
@@ -61,12 +58,10 @@ public class ArticleFetchService {
                                 articleChunks.add(chunk);
                             }
                         }
-                        content = builder.toString().trim();
                     }
                 }
                 else if (baseUrl.equals(AppConstants.NEWS_URL_EN)) {
                     Element image = document.selectFirst("img");
-                    Log.e("Article", image.toString());
                     element = document.selectFirst("div .article-content");
                     if (element != null) {
                         Elements elements = element.select("p");
@@ -78,7 +73,6 @@ public class ArticleFetchService {
                                 builder.append("\n\n");
                             }
                         }
-                        content = builder.toString().trim();
                     }
                 }
                 callback.onDataLoaded(articleChunks);
@@ -87,7 +81,7 @@ public class ArticleFetchService {
         new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("NewsRemoteDataSource", error.toString());
+                error.printStackTrace();
                 callback.onDataNotAvailable();
             }
         });

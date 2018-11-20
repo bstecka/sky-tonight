@@ -1,4 +1,4 @@
-package com.example.barbara.skytonight;
+package com.example.barbara.skytonight.data;
 
 import java.io.File;
 import java.util.Calendar;

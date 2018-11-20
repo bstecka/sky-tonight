@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.entity.ImageFile;
 
 import java.util.List;
 

@@ -93,7 +93,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                prefs.edit().putBoolean(AppConstants.PREF_KEY_NOTIF_EVENTS, isChecked).commit();
+                prefs.edit().putBoolean(AppConstants.PREF_KEY_NOTIF_EVENTS, isChecked).apply();
                 Toast.makeText(context, R.string.notif_changed, Toast.LENGTH_SHORT).show();
             }
         });
@@ -101,7 +101,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                prefs.edit().putBoolean(AppConstants.PREF_KEY_NOTIF_ISS, isChecked).commit();
+                prefs.edit().putBoolean(AppConstants.PREF_KEY_NOTIF_ISS, isChecked).apply();
                 Toast.makeText(context, R.string.notif_changed, Toast.LENGTH_SHORT).show();
             }
         });
@@ -115,12 +115,12 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.radioButtonEn) {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN).commit();
+                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN).apply();
                     Toast.makeText(context, R.string.language_changed_en, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_PL).commit();
+                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_PL).apply();
                     Toast.makeText(context, R.string.language_changed_pl, Toast.LENGTH_SHORT).show();
                 }
                 languageChanged = true;
@@ -133,7 +133,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN).commit();
+                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN).apply();
                     Toast.makeText(context, R.string.language_changed_en, Toast.LENGTH_SHORT).show();
                     switchPl.setChecked(false);
                 }
@@ -147,7 +147,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_PL).commit();
+                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_PL).apply();
                     Toast.makeText(context, R.string.language_changed_en, Toast.LENGTH_SHORT).show();
                     switchEn.setChecked(false);
                 }
@@ -157,5 +157,4 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
             }
         });
     }
-
 }

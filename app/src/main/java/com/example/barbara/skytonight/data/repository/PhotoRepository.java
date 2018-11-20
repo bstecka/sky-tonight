@@ -1,4 +1,6 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
+
+import com.example.barbara.skytonight.data.PhotoDataSource;
 
 import java.io.File;
 import java.util.Calendar;

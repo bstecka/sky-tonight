@@ -1,6 +1,6 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
 
-import com.example.barbara.skytonight.AudioDataSource;
+import com.example.barbara.skytonight.data.NoteDataSource;
 
 import java.util.Calendar;
 

@@ -1,9 +1,11 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
+
+import com.example.barbara.skytonight.data.VideoDataSource;
 
 import java.io.File;
 import java.util.Calendar;
 
-public class VideoRepository implements VideoDataSource{
+public class VideoRepository implements VideoDataSource {
 
     private static VideoRepository INSTANCE = null;
     private VideoDataSource mVideoDataSource;

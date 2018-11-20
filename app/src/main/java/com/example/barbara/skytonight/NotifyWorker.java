@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import com.example.barbara.skytonight.data.EventsDataSource;
-import com.example.barbara.skytonight.data.EventsRepository;
+import com.example.barbara.skytonight.data.repository.EventsRepository;
 import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
@@ -22,8 +22,6 @@ import com.example.barbara.skytonight.entity.LunarEclipseEvent;
 import com.example.barbara.skytonight.entity.MeteorShowerEvent;
 import com.example.barbara.skytonight.entity.SolarEclipseEvent;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
-
-import static androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

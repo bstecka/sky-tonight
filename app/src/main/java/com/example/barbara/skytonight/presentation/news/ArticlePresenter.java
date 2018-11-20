@@ -7,7 +7,7 @@ import android.widget.TextView;
 import kevenchen.utils.WebImageView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.NewsDataSource;
-import com.example.barbara.skytonight.data.NewsRepository;
+import com.example.barbara.skytonight.data.repository.NewsRepository;
 import com.example.barbara.skytonight.entity.ArticleContentWrapper;
 
 import java.util.ArrayList;

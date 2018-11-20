@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.AppConstants;
+import com.example.barbara.skytonight.entity.NoteFile;
 import com.example.barbara.skytonight.presentation.core.CalendarContract;
 
 import java.util.ArrayList;

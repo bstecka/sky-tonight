@@ -5,9 +5,9 @@ import android.util.Log;
 
 import com.example.barbara.skytonight.entity.AstroEvent;
 import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.CoreRepository;
+import com.example.barbara.skytonight.data.repository.CoreRepository;
 import com.example.barbara.skytonight.data.EventsDataSource;
-import com.example.barbara.skytonight.data.EventsRepository;
+import com.example.barbara.skytonight.data.repository.EventsRepository;
 import com.example.barbara.skytonight.AppConstants;
 
 import java.util.ArrayList;

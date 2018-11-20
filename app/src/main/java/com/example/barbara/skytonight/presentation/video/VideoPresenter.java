@@ -6,7 +6,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import com.example.barbara.skytonight.data.VideoDataSource;
-import com.example.barbara.skytonight.data.VideoRepository;
+import com.example.barbara.skytonight.data.repository.VideoRepository;
 import com.example.barbara.skytonight.data.local.VideoLocalDataSource;
 
 import java.io.File;

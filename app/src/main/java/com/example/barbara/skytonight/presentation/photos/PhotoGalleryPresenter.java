@@ -6,8 +6,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import com.example.barbara.skytonight.data.PhotoDataSource;
-import com.example.barbara.skytonight.data.PhotoRepository;
+import com.example.barbara.skytonight.data.repository.PhotoRepository;
 import com.example.barbara.skytonight.data.local.PhotoLocalDataSource;
+import com.example.barbara.skytonight.entity.ImageFile;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
