@@ -3,6 +3,9 @@ package com.example.barbara.skytonight.presentation.notes;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import com.example.barbara.skytonight.data.NoteDataSource;
+import com.example.barbara.skytonight.data.NoteRepository;
+import com.example.barbara.skytonight.data.local.NoteLocalDataSource;
 import com.example.barbara.skytonight.presentation.notes.NoteFile;
 import com.example.barbara.skytonight.presentation.notes.NotesListContract;
 
@@ -20,9 +23,12 @@ import java.util.Scanner;
 public class NotesListPresenter implements NotesListContract.Presenter {
 
     private final NotesListContract.View mNotesListView;
+    private NoteRepository noteRepository;
 
     public NotesListPresenter(NotesListContract.View mNotesListView) {
         this.mNotesListView = mNotesListView;
+        File storageDir = mNotesListView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        this.noteRepository = NoteRepository.getInstance(NoteLocalDataSource.getInstance(storageDir));
     }
 
     @Override
@@ -31,122 +37,66 @@ public class NotesListPresenter implements NotesListContract.Presenter {
         readNotesAsync();
     }
 
-    private void readNotesAsyncForDay(Calendar selectedDate) {
-        File storageDir = mNotesListView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(selectedDate.getTime());
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.contains(timeStamp);
-                }
-            });
-            for (File file : filteredFiles)
-                new ReadTextFileTask(file, mNotesListView.getNotesList(), mNotesListView).execute(file);
-        }
-    }
-
-    private void readNotesAsyncForWeek(final Calendar selectedDate) {
-        File storageDir = mNotesListView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-                    try {
-                        Date date = sdf.parse(name.substring(4, 13));
-                        calendar.setTime(date);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        return false;
-                    }
-                    return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
-                }
-            });
-            for (File file : filteredFiles) {
-                new ReadTextFileTask(file, mNotesListView.getNotesList(), mNotesListView).execute(file);
+    private void readNotesForDay(Calendar selectedDate) {
+        mNotesListView.clearListInView();
+        final ArrayList<NoteFile> list = mNotesListView.getNotesList();
+        noteRepository.readNotesForDay(selectedDate, new NoteDataSource.GetNoteFilesCallback() {
+            @Override
+            public void onDataLoaded(NoteFile file) {
+                list.add(file);
+                mNotesListView.refreshListInView();
             }
-        }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
-    private void readNotesAsyncForMonth(int month, int year) {
-        File storageDir = mNotesListView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        Calendar selectedDate = Calendar.getInstance();
-        selectedDate.set(Calendar.MONTH, month);
-        selectedDate.set(Calendar.YEAR, year);
-        final String timeStamp = new SimpleDateFormat("yyyyMM", Locale.getDefault()).format(selectedDate.getTime());
-        if (storageDir != null) {
-            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.contains(timeStamp);
-                }
-            });
-            for (File file : filteredFiles)
-                new ReadTextFileTask(file, mNotesListView.getNotesList(), mNotesListView).execute(file);
-        }
+    private void readNotesForWeek(final Calendar selectedDate) {
+        mNotesListView.clearListInView();
+        final ArrayList<NoteFile> list = mNotesListView.getNotesList();
+        noteRepository.readNotesForWeek(selectedDate, new NoteDataSource.GetNoteFilesCallback() {
+            @Override
+            public void onDataLoaded(NoteFile file) {
+                list.add(file);
+                mNotesListView.refreshListInView();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    private void readNotesForMonth(int month, int year) {
+        mNotesListView.clearListInView();
+        final ArrayList<NoteFile> list = mNotesListView.getNotesList();
+        noteRepository.readNotesForMonth(month, year, new NoteDataSource.GetNoteFilesCallback() {
+            @Override
+            public void onDataLoaded(NoteFile file) {
+                list.add(file);
+                mNotesListView.refreshListInView();
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     private void readNotesAsync() {
         Calendar selectedDate = mNotesListView.getSelectedDate();
         if (mNotesListView.isWeekModeEnabled()) {
-            readNotesAsyncForWeek(selectedDate);
+            readNotesForWeek(selectedDate);
         } else if (selectedDate != null) {
-            readNotesAsyncForDay(selectedDate);
+            readNotesForDay(selectedDate);
         } else if (mNotesListView.getSelectedMonth() != null) {
-            readNotesAsyncForMonth(mNotesListView.getSelectedMonth(), mNotesListView.getSelectedYear());
+            readNotesForMonth(mNotesListView.getSelectedMonth(), mNotesListView.getSelectedYear());
         }
-    }
-
-    private static class ReadTextFileTask extends AsyncTask<File, Void, NoteFile> {
-        NotesListContract.View view;
-        ArrayList<NoteFile> list;
-        File file;
-
-        ReadTextFileTask(File file, ArrayList<NoteFile> list, NotesListContract.View view){
-            this.file = file;
-            this.list = list;
-            this.view = view;
-        }
-
-        @Override
-        protected NoteFile doInBackground(File... params) {
-            return readFile(params[0]);
-        }
-
-        private NoteFile readFile(File file){
-            StringBuilder stringBuilder = new StringBuilder((int)file.length());
-            Scanner scanner = null;
-            try {
-                scanner = new Scanner(file);
-                String lineSeparator = System.getProperty("line.separator");
-                try {
-                    while(scanner.hasNextLine())
-                        stringBuilder.append(scanner.nextLine() + lineSeparator);
-                    return new NoteFile(stringBuilder.toString(), file);
-                } finally {
-                    scanner.close();
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(NoteFile result) {
-            if (result != null && result.getContent().trim().length() > 1) {
-                list.add(result);
-                view.refreshListInView();
-            }
-        }
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
     }
 
 }
