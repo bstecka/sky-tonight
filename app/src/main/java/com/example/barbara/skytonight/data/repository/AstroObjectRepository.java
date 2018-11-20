@@ -1,4 +1,7 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
+
+import com.example.barbara.skytonight.data.AstroObjectsDataSource;
+import com.example.barbara.skytonight.data.TodaysDataSource;
 
 import java.util.Calendar;
 

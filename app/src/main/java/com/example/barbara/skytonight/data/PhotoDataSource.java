@@ -1,5 +1,5 @@
 package com.example.barbara.skytonight.data;
-import com.example.barbara.skytonight.presentation.photos.ImageFile;
+import com.example.barbara.skytonight.entity.ImageFile;
 
 import java.io.File;
 import java.util.Calendar;

@@ -1,5 +1,9 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
 
+import com.example.barbara.skytonight.data.EventsDataSource;
+import com.example.barbara.skytonight.data.LunarEclipseDataSource;
+import com.example.barbara.skytonight.data.MeteorShowerDataSource;
+import com.example.barbara.skytonight.data.SolarEclipseDataSource;
 import com.example.barbara.skytonight.entity.AstroEvent;
 import com.example.barbara.skytonight.entity.LunarEclipseEvent;
 import com.example.barbara.skytonight.entity.MeteorShowerEvent;

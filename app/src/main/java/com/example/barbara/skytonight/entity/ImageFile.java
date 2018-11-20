@@ -1,4 +1,4 @@
-package com.example.barbara.skytonight.presentation.photos;
+package com.example.barbara.skytonight.entity;
 
 import android.graphics.Bitmap;
 

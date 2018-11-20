@@ -4,8 +4,8 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.util.Log;
 
-import com.example.barbara.skytonight.AudioDataSource;
-import com.example.barbara.skytonight.data.AudioRepository;
+import com.example.barbara.skytonight.data.AudioDataSource;
+import com.example.barbara.skytonight.data.repository.AudioRepository;
 import com.example.barbara.skytonight.data.local.AudioLocalDataSource;
 
 import java.io.File;

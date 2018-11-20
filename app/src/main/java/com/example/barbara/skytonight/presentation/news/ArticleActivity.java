@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.data.NewsRepository;
+import com.example.barbara.skytonight.data.repository.NewsRepository;
 import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.AppConstants;

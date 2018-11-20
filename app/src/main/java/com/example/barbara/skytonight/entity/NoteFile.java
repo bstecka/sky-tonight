@@ -1,4 +1,4 @@
-package com.example.barbara.skytonight.presentation.notes;
+package com.example.barbara.skytonight.entity;
 
 import java.io.File;
 

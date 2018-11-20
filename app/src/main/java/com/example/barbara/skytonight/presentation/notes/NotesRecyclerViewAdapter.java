@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.entity.NoteFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -2,8 +2,9 @@ package com.example.barbara.skytonight.presentation.notes;
 
 import android.os.Environment;
 import com.example.barbara.skytonight.data.NoteDataSource;
-import com.example.barbara.skytonight.data.NoteRepository;
+import com.example.barbara.skytonight.data.repository.NoteRepository;
 import com.example.barbara.skytonight.data.local.NoteLocalDataSource;
+import com.example.barbara.skytonight.entity.NoteFile;
 
 import java.io.File;
 

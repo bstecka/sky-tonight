@@ -18,15 +18,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
-import com.example.barbara.skytonight.NotifyWorker;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.AstroEvent;
-import com.example.barbara.skytonight.data.CoreRepository;
-import com.example.barbara.skytonight.data.EventsRepository;
-import com.example.barbara.skytonight.data.AstroObjectRepository;
-import com.example.barbara.skytonight.data.ISSRepository;
-import com.example.barbara.skytonight.data.NewsRepository;
-import com.example.barbara.skytonight.data.WeatherRepository;
+import com.example.barbara.skytonight.data.repository.CoreRepository;
+import com.example.barbara.skytonight.data.repository.EventsRepository;
+import com.example.barbara.skytonight.data.repository.AstroObjectRepository;
+import com.example.barbara.skytonight.data.repository.ISSRepository;
+import com.example.barbara.skytonight.data.repository.NewsRepository;
+import com.example.barbara.skytonight.data.repository.WeatherRepository;
 import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
 import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
@@ -38,14 +37,6 @@ import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
 import com.example.barbara.skytonight.presentation.settings.SettingsActivity;
 import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
-
-import java.util.concurrent.TimeUnit;
-
-import androidx.work.Constraints;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
-
-import static androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 
 public class CoreActivity extends AppCompatActivity implements CoreContract.View,
         TodayFragment.OnListFragmentInteractionListener, CalendarFragment.OnFragmentInteractionListener,

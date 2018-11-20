@@ -1,10 +1,8 @@
 package com.example.barbara.skytonight.data;
 
-import com.example.barbara.skytonight.presentation.notes.NoteFile;
+import com.example.barbara.skytonight.entity.NoteFile;
 
-import java.io.File;
 import java.util.Calendar;
-import java.util.List;
 
 public interface NoteDataSource {
 

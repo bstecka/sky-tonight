@@ -1,24 +1,15 @@
 package com.example.barbara.skytonight.presentation.notes;
 
-import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.example.barbara.skytonight.data.NoteDataSource;
-import com.example.barbara.skytonight.data.NoteRepository;
+import com.example.barbara.skytonight.data.repository.NoteRepository;
 import com.example.barbara.skytonight.data.local.NoteLocalDataSource;
-import com.example.barbara.skytonight.presentation.notes.NoteFile;
-import com.example.barbara.skytonight.presentation.notes.NotesListContract;
+import com.example.barbara.skytonight.entity.NoteFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
 
 public class NotesListPresenter implements NotesListContract.Presenter {
 

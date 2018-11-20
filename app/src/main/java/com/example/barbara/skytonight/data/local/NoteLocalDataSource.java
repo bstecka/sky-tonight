@@ -3,7 +3,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.NoteDataSource;
-import com.example.barbara.skytonight.presentation.notes.NoteFile;
+import com.example.barbara.skytonight.entity.NoteFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;

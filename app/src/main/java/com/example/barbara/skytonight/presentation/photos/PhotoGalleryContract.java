@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.example.barbara.skytonight.entity.ImageFile;
 import com.example.barbara.skytonight.presentation.BasePresenter;
 import com.example.barbara.skytonight.presentation.BaseView;
 

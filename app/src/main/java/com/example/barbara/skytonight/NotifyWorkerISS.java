@@ -14,9 +14,9 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.CoreRepository;
+import com.example.barbara.skytonight.data.repository.CoreRepository;
 import com.example.barbara.skytonight.data.ISSDataSource;
-import com.example.barbara.skytonight.data.ISSRepository;
+import com.example.barbara.skytonight.data.repository.ISSRepository;
 import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
 import com.example.barbara.skytonight.entity.ISSObject;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;

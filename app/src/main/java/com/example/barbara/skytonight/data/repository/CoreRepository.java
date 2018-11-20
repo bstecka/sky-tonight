@@ -1,4 +1,4 @@
-package com.example.barbara.skytonight.data;
+package com.example.barbara.skytonight.data.repository;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.AppConstants;
+import com.example.barbara.skytonight.data.CoreDataSource;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
