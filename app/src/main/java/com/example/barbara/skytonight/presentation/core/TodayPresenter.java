@@ -87,8 +87,8 @@ public class TodayPresenter implements TodayContract.Presenter {
             @Override
             public void onDataLoaded(List<WeatherObject> weatherObjectList) {
                 weatherObjects = (ArrayList<WeatherObject>) weatherObjectList;
-                int index = 0;
-                for (int i = 0; i < weatherObjectList.size() && index == 0; i++){
+                int index = -1;
+                for (int i = 0; i < weatherObjectList.size() && index == -1; i++){
                     if (weatherObjectList.get(i).getTime().getTimeInMillis() >= time.getTimeInMillis())
                         index = i;
                 }
