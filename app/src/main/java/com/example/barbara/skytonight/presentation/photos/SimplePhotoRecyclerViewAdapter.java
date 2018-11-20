@@ -13,7 +13,12 @@ import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.ImageFile;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,6 +44,18 @@ public class SimplePhotoRecyclerViewAdapter extends RecyclerView.Adapter<SimpleP
         final Context context = holder.mImageView.getContext();
         holder.mItem = String.valueOf(imageFile.toString());
         holder.mTextView.setText(imageFile.getFile().getName());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
+        Date date = null;
+        try {
+            date = sdf.parse(imageFile.getFile().getName().substring(5, 18));
+            calendar.setTime(date);
+            SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy, HH:mm", Locale.getDefault());
+            holder.mTextView.setText(readable.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            holder.mTextView.setText(imageFile.getFile().getName());
+        }
         holder.mImageView.setImageBitmap(imageFile.getBitmap());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
