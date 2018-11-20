@@ -71,8 +71,15 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
             MeteorShowerEvent meteorShowerEvent = (MeteorShowerEvent) event;
             holder.mZhrView.setVisibility(View.VISIBLE);
             holder.mZhrView.setText(context.getString(R.string.zhr, meteorShowerEvent.getZhr()));
+            if (meteorShowerEvent.isVisibilityLow()) {
+                holder.mVisibilityView.setVisibility(View.VISIBLE);
+                holder.mVisibilityView.setText(R.string.low_visibility);
+            }
+            else
+                holder.mVisibilityView.setVisibility(View.GONE);
         } else {
             holder.mZhrView.setVisibility(View.GONE);
+            holder.mVisibilityView.setVisibility(View.GONE);
         }
     }
 
@@ -87,6 +94,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         final TextView mDateView;
         final TextView mPeakTimeView;
         final TextView mZhrView;
+        final TextView mVisibilityView;
         public AstroEvent mItem;
 
         public ViewHolder(View view) {
@@ -96,6 +104,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
             mDateView = view.findViewById(R.id.astroEventDateTextView);
             mPeakTimeView = view.findViewById(R.id.astroEventPeakTextView);
             mZhrView = view.findViewById(R.id.astroEventZhrTextView);
+            mVisibilityView = view.findViewById(R.id.astroEventLowVisibilityView);
         }
 
         @Override

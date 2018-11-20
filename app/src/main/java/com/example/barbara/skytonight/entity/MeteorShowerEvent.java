@@ -18,12 +18,13 @@ public class MeteorShowerEvent extends AstroEvent {
     private int zhr;
     private double rightAsc;
     private double decl;
-    private boolean visible;
+    private boolean lowVisibility;
 
     public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
         super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate);
         this.peakDate = peakDate;
         this.showerLongName = name + " Meteor Shower";
+        this.lowVisibility = false;
     }
 
     public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate, int zhr, double rightAsc, double decl) {
@@ -33,23 +34,34 @@ public class MeteorShowerEvent extends AstroEvent {
         this.zhr = zhr;
         this.rightAsc = rightAsc;
         this.decl = decl;
+        this.lowVisibility = false;
     }
 
     public void calculateVisibility(double latitude, double longitude) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(peakDate.getTime());
         calendar.set(Calendar.HOUR_OF_DAY, 21);
-        int count = 0, altSum = 0;
-        for (int i = 0; i < 10; i++){
+        int count = 0, altSum = 0, iterations = 10;
+        double maxAlt = 0;
+        for (int i = 0; i < iterations; i++){
             double alt = calculateAlt(latitude, longitude, calendar);
-            calendar.add(Calendar.HOUR_OF_DAY, 1);
-            Log.e("M", getLongName() + " " + calendar.get(Calendar.HOUR_OF_DAY) + " " + alt);
             if (alt > 10) {
                 count++;
             }
+            if (alt > maxAlt) {
+                maxAlt = alt;
+            }
             altSum += alt;
+            calendar.add(Calendar.HOUR_OF_DAY, 1);
         }
-        Log.e("MeteorShower", getLongName() + " " + count + " " + (double)altSum/10);
+        double altAvg = (double) altSum/iterations;
+        //Log.e("M", getLongName() + " " + altAvg + " " + count + " " + maxAlt);
+        if (altAvg < 15 || count < 4 || maxAlt < 20)
+            lowVisibility = true;
+    }
+
+    public boolean isVisibilityLow() {
+        return lowVisibility;
     }
 
     @Override

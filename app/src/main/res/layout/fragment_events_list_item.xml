@@ -22,6 +22,15 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/astroEventLowVisibilityView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12dp"
+            android:textStyle="normal|italic"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/astroEventDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -32,7 +32,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
 
     private static MeteorShowerRemoteDataSource INSTANCE;
     private RequestQueue queue;
-    private final String url = AppConstants.API_URL + "meteor-showers?future=0";
+    private final String url = AppConstants.API_URL + "meteor-showers?future=1";
 
     private MeteorShowerRemoteDataSource() {}
 
@@ -50,7 +50,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
 
     public void getMeteorShowers(final double latitude, final double longitude, int month, int year, final GetMeteorShowersCallback callback) {
         final List<MeteorShowerEvent> events = new ArrayList<>();
-        String url = this.url + "&month=" + month + "&year=" + 2018;
+        String url = this.url + "&month=" + month + "&year=" + year;
         Log.e("getMeteorShowers " + latitude + " " + longitude, url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -62,7 +62,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
                         int id = object.getInt("id");
                         String name = object.getString("name");
                         String radiant = object.getString("radiant");
-                        double RA = parseInt(radiant.substring(0,2)) + (double)parseInt(radiant.substring(3,5))/60;
+                        double RA = (parseInt(radiant.substring(0,2)) + (double)parseInt(radiant.substring(3,5))/60) * 15;
                         double decl = parseDouble(radiant.substring(6).replace("°",""));
                         int zhr = object.getInt("zhr");
                         Calendar startCal = Calendar.getInstance();
