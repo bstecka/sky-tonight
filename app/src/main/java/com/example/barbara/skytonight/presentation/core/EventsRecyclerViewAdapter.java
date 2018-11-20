@@ -47,12 +47,14 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
             e.printStackTrace();
             holder.mNameView.setText(event.getName());
         }
-        String dateStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getStartDate());
+        SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
+        String dateStr = readable.format(event.getStartDate());
         String peakStr = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(event.getPeakDate());
         if (event.getStartDate().before(event.getEndDate())) {
+            dateStr = readable.format(event.getStartDate());
             dateStr += " - ";
-            dateStr += new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getEndDate());
-            peakStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(event.getPeakDate());
+            dateStr += readable.format(event.getEndDate());
+            peakStr = readable.format(event.getPeakDate());
         }
         holder.mDateView.setText(dateStr);
         holder.mPeakTimeView.setText(context.getString(R.string.astro_event_peak, peakStr));
