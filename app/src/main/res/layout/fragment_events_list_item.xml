@@ -38,6 +38,15 @@
             android:textStyle="normal" />
 
         <TextView
+            android:id="@+id/astroEventZhrTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12dp"
+            android:textStyle="normal"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/astroEventVisTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

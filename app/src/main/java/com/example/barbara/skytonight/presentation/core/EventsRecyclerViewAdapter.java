@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.entity.MeteorShowerEvent;
 import com.example.barbara.skytonight.presentation.core.EventsFragment.OnListFragmentInteractionListener;
 import com.example.barbara.skytonight.entity.AstroEvent;
 
@@ -66,6 +67,13 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
                 }
             }
         });
+        if (event instanceof MeteorShowerEvent){
+            MeteorShowerEvent meteorShowerEvent = (MeteorShowerEvent) event;
+            holder.mZhrView.setVisibility(View.VISIBLE);
+            holder.mZhrView.setText(context.getString(R.string.zhr, meteorShowerEvent.getZhr()));
+        } else {
+            holder.mZhrView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -78,6 +86,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         final TextView mNameView;
         final TextView mDateView;
         final TextView mPeakTimeView;
+        final TextView mZhrView;
         public AstroEvent mItem;
 
         public ViewHolder(View view) {
@@ -86,6 +95,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
             mNameView = view.findViewById(R.id.astroEventNameTextView);
             mDateView = view.findViewById(R.id.astroEventDateTextView);
             mPeakTimeView = view.findViewById(R.id.astroEventPeakTextView);
+            mZhrView = view.findViewById(R.id.astroEventZhrTextView);
         }
 
         @Override
