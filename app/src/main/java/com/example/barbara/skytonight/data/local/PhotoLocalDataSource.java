@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.barbara.skytonight.data.PhotoDataSource;
 import com.example.barbara.skytonight.presentation.photos.ImageFile;
@@ -14,6 +15,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -36,6 +38,23 @@ public class PhotoLocalDataSource implements PhotoDataSource {
         return INSTANCE;
     }
 
+    public File createImageFile(Calendar selectedDate) {
+        String timeStamp;
+        if (selectedDate != null)
+            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
+        else
+            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File file;
+        try {
+            file = File.createTempFile(imageFileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            file = null;
+            e.printStackTrace();
+        }
+        return file;
+    }
+
     @Override
     public void readPhotosForDay(Calendar selectedDate, GetImageFileCallback callback) {
         final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(selectedDate.getTime());
@@ -46,8 +65,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
                     return name.contains(timeStamp);
                 }
             });
-            for (File file : filteredFiles)
-                new GetImageFileTask(file, callback).execute(file);
+            new GetImageFilesTask(callback).execute(filteredFiles);
         }
     }
 
@@ -69,8 +87,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
                     return selectedDate.get(Calendar.WEEK_OF_YEAR) == calendar.get(Calendar.WEEK_OF_YEAR) && selectedDate.get(Calendar.YEAR) == calendar.get(Calendar.YEAR);
                 }
             });
-            for (File file : filteredFiles)
-                new GetImageFileTask(file, callback).execute(file);
+            new GetImageFilesTask(callback).execute(filteredFiles);
         }
     }
 
@@ -87,54 +104,31 @@ public class PhotoLocalDataSource implements PhotoDataSource {
                     return name.contains(timeStamp);
                 }
             });
-            for (File file : filteredFiles)
-                new GetImageFileTask(file, callback).execute(file);
+            new GetImageFilesTask(callback).execute(filteredFiles);
         }
     }
 
-    public File createImageFile(Calendar selectedDate) {
-        String timeStamp;
-        if (selectedDate != null)
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
-        else
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File file;
-        try {
-            file = File.createTempFile(imageFileName, ".jpg", storageDir);
-        } catch (IOException e) {
-            file = null;
-            e.printStackTrace();
-        }
-        return file;
-    }
-
-    private static class GetImageFileTask extends AsyncTask<File, Void, ImageFile> {
-        File file;
+    private static class GetImageFilesTask extends AsyncTask<File[], ImageFile, ArrayList<ImageFile>> {
         GetImageFileCallback callback;
 
-        GetImageFileTask(File file, GetImageFileCallback callback){
-            this.file = file;
+        GetImageFilesTask(GetImageFileCallback callback){
             this.callback = callback;
         }
 
-        @Override
-        protected ImageFile doInBackground(File... params) {
-            return readFile(params[0]);
-        }
-
-        private ImageFile readFile(File file){
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-            if (bitmap != null) {
-                Matrix rotationMatrix = getRotationMatrix(file.getAbsolutePath());
-                Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotationMatrix, false);
-                Bitmap scaled = Bitmap.createScaledBitmap(rotated, rotated.getWidth() / 4, rotated.getHeight() / 4, false);
-                ImageFile imageFile = new ImageFile(scaled, file);
-                return imageFile;
+        private ArrayList<ImageFile> readFiles(File[] files){
+            ArrayList<ImageFile> list = new ArrayList<>();
+            for (File file : files) {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                if (bitmap != null) {
+                    Matrix rotationMatrix = getRotationMatrix(file.getAbsolutePath());
+                    Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotationMatrix, false);
+                    Bitmap scaled = Bitmap.createScaledBitmap(rotated, rotated.getWidth() / 4, rotated.getHeight() / 4, false);
+                    ImageFile imageFile = new ImageFile(scaled, file);
+                    list.add(imageFile);
+                    publishProgress(imageFile);
+                }
             }
-            else {
-                return null;
-            }
+            return list;
         }
 
         private Matrix getRotationMatrix(String fileName) {
@@ -176,17 +170,20 @@ public class PhotoLocalDataSource implements PhotoDataSource {
         }
 
         @Override
-        protected void onPostExecute(ImageFile file) {
-            if (file != null)
-                callback.onDataLoaded(file);
-            else
-                callback.onDataNotAvailable();
+        protected void onPostExecute(ArrayList<ImageFile> files) {
+        }
+
+        @Override
+        protected ArrayList<ImageFile> doInBackground(File[]... files) {
+            return readFiles(files[0]);
         }
 
         @Override
         protected void onPreExecute() {}
 
         @Override
-        protected void onProgressUpdate(Void... values) {}
+        protected void onProgressUpdate(ImageFile... values) {
+            callback.onDataLoaded(values[0]);
+        }
     }
 }
