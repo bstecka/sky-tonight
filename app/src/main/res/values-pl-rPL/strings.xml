@@ -175,4 +175,6 @@
     <string name="notif_msg_event_solar">Zaćmienie słońca, kulminacja: %2$s.</string>
     <string name="notif_title_iss">Zbliża się przelot Międzynarodowej Stacji Kosmicznej.</string>
     <string name="notif_msg_iss">MSK przeleci nad twoją lokalizacją o %1$s.</string>
+    <string name="zhr">%1$d meteorów na godzinę</string>
+    <string name="low_visibility">Słaba widoczność dla twojej lokalizacji</string>
 </resources>

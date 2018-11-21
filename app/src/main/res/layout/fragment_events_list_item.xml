@@ -22,6 +22,15 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/astroEventLowVisibilityView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12dp"
+            android:textStyle="normal|italic"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/astroEventDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,6 +45,15 @@
             android:text="Peak time: 08:51:42"
             android:textSize="12dp"
             android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/astroEventZhrTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12dp"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/astroEventVisTextView"
