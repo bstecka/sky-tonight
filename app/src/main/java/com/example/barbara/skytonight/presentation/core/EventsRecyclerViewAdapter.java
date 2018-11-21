@@ -55,7 +55,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         }
         SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
         String dateStr = readable.format(event.getStartDate());
-        String peakStr = new SimpleDateFormat("hh:mm", Locale.getDefault()).format(event.getPeakDate());
+        String peakStr = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(event.getPeakDate());
         if (event.getStartDate().before(event.getEndDate())) {
             dateStr = readable.format(event.getStartDate());
             dateStr += " - ";
@@ -80,6 +80,9 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         }
         if (event instanceof LunarEclipseEvent){
             handleLunarEclipse(holder, (LunarEclipseEvent) event);
+            holder.mImageView.setVisibility(View.VISIBLE);
+        } else {
+            holder.mImageView.setVisibility(View.GONE);
         }
     }
 

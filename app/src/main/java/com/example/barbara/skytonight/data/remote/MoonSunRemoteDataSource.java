@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,19 +47,28 @@ public class MoonSunRemoteDataSource implements MoonSunDataSource {
 
     @Override
     public void getMoonSunData(final Calendar time, final double latitude, final double longitude, final GetMoonSunDataCallback callback) {
-        SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         String url = this.url + "date=" + sdf.format(time.getTime()) + "&coords=" + latitude + "," + longitude +"&tz=0";
-        Log.e("getMoonSunData", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray sundata = response.getJSONArray("sundata");
-                    String sunrise = sundata.getJSONObject(1).getString("time");
-                    String sunset = sundata.getJSONObject(3).getString("time");
+                    String sunrise = "", sunset = "";
+                    for (int i = 0; i < sundata.length(); i++){
+                        if (sundata.getJSONObject(i).getString("phen").equals("R"))
+                            sunrise = sundata.getJSONObject(i).getString("time");
+                        if (sundata.getJSONObject(i).getString("phen").equals("S"))
+                            sunset = sundata.getJSONObject(i).getString("time");
+                    }
                     JSONArray moondata = response.getJSONArray("moondata");
-                    String moonrise = moondata.getJSONObject(0).getString("time");
-                    String moonset = moondata.getJSONObject(2).getString("time");
+                    String moonrise = "", moonset = "";
+                    for (int i = 0; i < moondata.length(); i++){
+                        if (moondata.getJSONObject(i).getString("phen").equals("R"))
+                            moonrise = moondata.getJSONObject(i).getString("time");
+                        if (moondata.getJSONObject(i).getString("phen").equals("S"))
+                            moonset = moondata.getJSONObject(i).getString("time");
+                    }
                     Calendar sunriseTime = getTime(time, sunrise);
                     Calendar sunsetTime = getTime(time, sunset);
                     Calendar moonriseTime = getTime(time, moonrise);
@@ -83,16 +93,17 @@ public class MoonSunRemoteDataSource implements MoonSunDataSource {
     }
 
     private Calendar getTime(Calendar baseTime, String hourString) {
-        Calendar object = Calendar.getInstance();
-        object.setTime(baseTime.getTime());
-        int hour = Integer.parseInt(hourString.substring(0,2));
-        int minute = Integer.parseInt(hourString.substring(3));
-        hour += (object.getTimeZone().getRawOffset()/3600000)%24;
-        if (hour < 0){
-            hour = 24 - hour;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-", Locale.getDefault());
+        String str = sdf.format(baseTime.getTime());
+        str += hourString;
+        SimpleDateFormat sdfTimezoneCorrected = new SimpleDateFormat("yyyy-MM-dd-HH:mm", Locale.getDefault());
+        sdfTimezoneCorrected.setTimeZone(TimeZone.getTimeZone("UT"));
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(sdfTimezoneCorrected.parse(str));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        object.set(Calendar.HOUR_OF_DAY, hour);
-        object.set(Calendar.MINUTE, minute);
-        return object;
+        return calendar;
     }
 }
