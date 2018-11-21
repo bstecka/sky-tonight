@@ -1,26 +1,31 @@
 package com.example.barbara.skytonight.entity;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public abstract class AstroEvent {
+public abstract class AstroEvent implements Serializable {
     private int id;
     private String name;
     private Calendar startDate;
     private Calendar endDate;
     private Calendar peakDate;
+    private double latitude;
+    private double longitude;
 
     public AstroEvent() {
         this.id = -1;
         this.name = "";
     }
 
-    public AstroEvent(int id, String name, Calendar startDate, Calendar endDate) {
+    public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.peakDate = startDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
@@ -30,6 +35,22 @@ public abstract class AstroEvent {
         this.endDate = endDate;
         this.peakDate = peakDate;
     }
+
+    public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate, double latitude, double longitude) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.peakDate = peakDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
+
+    public Calendar getPeak() { return peakDate; }
 
     public Date getPeakDate() { return peakDate.getTime(); }
 

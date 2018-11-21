@@ -90,7 +90,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary" />
         <activity
             android:name=".presentation.settings.SettingsActivity"
-            android:label="@string/title_activity_setting"/>
+            android:label="@string/title_activity_setting" />
+        <activity
+            android:name=".presentation.details.LunarDetailsActivity"
+            android:label="@string/title_activity_lunar_details"></activity>
     </application>
 
 </manifest>

@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
 
@@ -57,10 +58,32 @@ public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
                         JSONObject object = arr.getJSONObject(i);
                         int id = object.getInt("id");
                         int type = object.getInt("eclipse_type");
-                        Calendar cal = Calendar.getInstance();
-                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("greatest_eclipse"));
-                        cal.setTime(date);
-                        LunarEclipseEvent eclipseEvent = new LunarEclipseEvent(id, cal, type);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+                        sdf.setTimeZone(TimeZone.getTimeZone("UT"));
+                        Calendar greatestEclipse = Calendar.getInstance();
+                        greatestEclipse.setTime(sdf.parse(object.getString("greatest_eclipse")));
+                        Calendar partialBegins = Calendar.getInstance();
+                        partialBegins.setTime(sdf.parse(object.getString("partial_begins")));
+                        Calendar partialEnds = Calendar.getInstance();
+                        partialEnds.setTime(sdf.parse(object.getString("partial_ends")));
+                        Calendar totalBegins = null;
+                        Calendar totalEnds = null;
+                        if (object.getString("total_begins").length() > 1) {
+                            totalBegins = Calendar.getInstance();
+                            totalBegins.setTime(sdf.parse(object.getString("total_begins")));
+                            totalEnds = Calendar.getInstance();
+                            totalEnds.setTime(sdf.parse(object.getString("total_ends")));
+                        }
+                        Calendar penunmbralBegins = null;
+                        Calendar penunmbralEnds = null;
+                        if (object.getString("penunmbral_begins").length() > 1) {
+                            penunmbralBegins = Calendar.getInstance();
+                            penunmbralBegins.setTime(sdf.parse(object.getString("penunmbral_begins")));
+                            penunmbralEnds = Calendar.getInstance();
+                            penunmbralEnds.setTime(sdf.parse(object.getString("penunmbral_ends")));
+                        }
+                        LunarEclipseEvent eclipseEvent = new LunarEclipseEvent(id, greatestEclipse, type, latitude, longitude,
+                                partialBegins, partialEnds, penunmbralBegins, penunmbralEnds, totalBegins, totalEnds);
                         events.add(eclipseEvent);
                     }
                 } catch (JSONException e) {
@@ -93,10 +116,32 @@ public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
                         JSONObject object = arr.getJSONObject(i);
                         int id = object.getInt("id");
                         int type = object.getInt("eclipse_type");
-                        Calendar cal = Calendar.getInstance();
-                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("greatest_eclipse"));
-                        cal.setTime(date);
-                        LunarEclipseEvent eclipseEvent = new LunarEclipseEvent(id, cal, type);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+                        sdf.setTimeZone(TimeZone.getTimeZone("UT"));
+                        Calendar greatestEclipse = Calendar.getInstance();
+                        greatestEclipse.setTime(sdf.parse(object.getString("greatest_eclipse")));
+                        Calendar partialBegins = Calendar.getInstance();
+                        partialBegins.setTime(sdf.parse(object.getString("partial_begins")));
+                        Calendar partialEnds = Calendar.getInstance();
+                        partialEnds.setTime(sdf.parse(object.getString("partial_ends")));
+                        Calendar totalBegins = null;
+                        Calendar totalEnds = null;
+                        if (object.getString("total_begins").length() > 1) {
+                            totalBegins = Calendar.getInstance();
+                            totalBegins.setTime(sdf.parse(object.getString("total_begins")));
+                            totalEnds = Calendar.getInstance();
+                            totalEnds.setTime(sdf.parse(object.getString("total_ends")));
+                        }
+                        Calendar penunmbralBegins = null;
+                        Calendar penunmbralEnds = null;
+                        if (object.getString("penunmbral_begins").length() > 1) {
+                            penunmbralBegins = Calendar.getInstance();
+                            penunmbralBegins.setTime(sdf.parse(object.getString("penunmbral_begins")));
+                            penunmbralEnds = Calendar.getInstance();
+                            penunmbralEnds.setTime(sdf.parse(object.getString("penunmbral_ends")));
+                        }
+                        LunarEclipseEvent eclipseEvent = new LunarEclipseEvent(id, greatestEclipse, type, latitude, longitude,
+                                partialBegins, partialEnds, penunmbralBegins, penunmbralEnds, totalBegins, totalEnds);
                         events.add(eclipseEvent);
                     }
                 } catch (JSONException e) {

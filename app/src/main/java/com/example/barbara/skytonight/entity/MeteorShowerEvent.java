@@ -21,14 +21,14 @@ public class MeteorShowerEvent extends AstroEvent {
     private boolean lowVisibility;
 
     public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
-        super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate);
+        super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate, 0, 0);
         this.peakDate = peakDate;
         this.showerLongName = name + " Meteor Shower";
         this.lowVisibility = false;
     }
 
     public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate, int zhr, double rightAsc, double decl) {
-        super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate);
+        super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate, 0, 0);
         this.peakDate = peakDate;
         this.showerLongName = name + " Meteor Shower";
         this.zhr = zhr;

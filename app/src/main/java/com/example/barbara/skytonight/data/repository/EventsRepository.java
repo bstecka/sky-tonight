@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data.repository;
 
+import android.util.Log;
+
 import com.example.barbara.skytonight.data.EventsDataSource;
 import com.example.barbara.skytonight.data.LunarEclipseDataSource;
 import com.example.barbara.skytonight.data.MeteorShowerDataSource;
@@ -10,6 +12,7 @@ import com.example.barbara.skytonight.entity.MeteorShowerEvent;
 import com.example.barbara.skytonight.entity.SolarEclipseEvent;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class EventsRepository implements EventsDataSource {

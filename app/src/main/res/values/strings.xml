@@ -176,4 +176,5 @@
     <string name="notif_msg_iss">ISS will fly overhead at %1$s.</string>
     <string name="zhr">%1$d meteors per hour</string>
     <string name="low_visibility">Low visibility for your location</string>
+    <string name="title_activity_lunar_details">LunarDetailsActivity</string>
 </resources>
