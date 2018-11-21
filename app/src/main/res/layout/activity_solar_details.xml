@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.details.LunarDetailsActivity">
+    tools:context=".presentation.details.SolarDetailsActivity">
 
     <fragment
-        android:id="@+id/lunarDetailsFragment"
-        android:name="com.example.barbara.skytonight.presentation.details.LunarDetailsFragment"
+        android:id="@+id/solarDetailsFragment"
+        android:name="com.example.barbara.skytonight.presentation.details.SolarDetailsFragment"
         android:layout_width="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

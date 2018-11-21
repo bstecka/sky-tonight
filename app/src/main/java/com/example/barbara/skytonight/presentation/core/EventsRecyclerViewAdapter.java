@@ -15,9 +15,11 @@ import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.LunarEclipseEvent;
 import com.example.barbara.skytonight.entity.MeteorShowerEvent;
+import com.example.barbara.skytonight.entity.SolarEclipseEvent;
 import com.example.barbara.skytonight.presentation.core.EventsFragment.OnListFragmentInteractionListener;
 import com.example.barbara.skytonight.entity.AstroEvent;
 import com.example.barbara.skytonight.presentation.details.LunarDetailsActivity;
+import com.example.barbara.skytonight.presentation.details.SolarDetailsActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -74,6 +76,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         });
         if (event instanceof MeteorShowerEvent){
             handleMeteorShowerEvent(holder, (MeteorShowerEvent) event);
+            holder.mImageView.setVisibility(View.INVISIBLE);
         } else {
             holder.mZhrView.setVisibility(View.GONE);
             holder.mVisibilityView.setVisibility(View.GONE);
@@ -81,8 +84,10 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         if (event instanceof LunarEclipseEvent){
             handleLunarEclipse(holder, (LunarEclipseEvent) event);
             holder.mImageView.setVisibility(View.VISIBLE);
-        } else {
-            holder.mImageView.setVisibility(View.GONE);
+        }
+        if (event instanceof SolarEclipseEvent){
+            handleSolarEclipse(holder, (SolarEclipseEvent) event);
+            holder.mImageView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -111,10 +116,37 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
                 onLunarEclipseClick(holder.mImageView.getContext(), lunarEclipseEvent);
             }
         });
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLunarEclipseClick(holder.mImageView.getContext(), lunarEclipseEvent);
+            }
+        });
+    }
+
+    private void handleSolarEclipse(final ViewHolder holder,final SolarEclipseEvent solarEclipseEvent){
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSolarEclipseClick(holder.mImageView.getContext(), solarEclipseEvent);
+            }
+        });
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSolarEclipseClick(holder.mImageView.getContext(), solarEclipseEvent);
+            }
+        });
     }
 
     private void onMeteorShowerClick(Context context, MeteorShowerEvent event) {
 
+    }
+
+    private void onSolarEclipseClick(Context context, SolarEclipseEvent event) {
+        Intent intent = new Intent(context, SolarDetailsActivity.class);
+        intent.putExtra("event", event);
+        context.startActivity(intent);
     }
 
     private void onLunarEclipseClick(Context context, LunarEclipseEvent event) {

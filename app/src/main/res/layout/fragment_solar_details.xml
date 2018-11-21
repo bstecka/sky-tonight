@@ -1,0 +1,73 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/colorPrimary"
+            android:textSize="20dp"
+            android:layout_marginTop="8dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text=""
+            android:textSize="14dp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_tite_1"
+            android:textSize="14dp"
+            android:visibility="invisible"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="8dp"
+            android:textStyle="normal|bold" />
+
+        <TextView
+            android:id="@+id/greatestEclipse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="14dp"
+            android:layout_marginBottom="8dp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_title_2"
+            android:textSize="14dp"
+            android:visibility="invisible"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="8dp"
+            android:textStyle="normal|bold" />
+
+        <kevenchen.utils.WebImageView
+            android:id="@+id/webImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

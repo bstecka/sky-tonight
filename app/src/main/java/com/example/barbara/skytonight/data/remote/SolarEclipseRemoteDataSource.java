@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
 
@@ -57,10 +58,13 @@ public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
                         JSONObject object = arr.getJSONObject(i);
                         int id = object.getInt("id");
                         int type = object.getInt("eclipse_type");
+                        String imageUrl = object.getString("eclipse_image");
                         Calendar cal = Calendar.getInstance();
-                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("date"));
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+                        sdf.setTimeZone(TimeZone.getTimeZone("UT"));
+                        Date date = sdf.parse(object.getString("date"));
                         cal.setTime(date);
-                        SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type);
+                        SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type, imageUrl);
                         events.add(eclipseEvent);
                     }
                 } catch (JSONException e) {
@@ -93,10 +97,13 @@ public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
                         JSONObject object = arr.getJSONObject(i);
                         int id = object.getInt("id");
                         int type = object.getInt("eclipse_type");
+                        String imageUrl = object.getString("eclipse_image");
                         Calendar cal = Calendar.getInstance();
-                        Date date = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("date"));
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
+                        sdf.setTimeZone(TimeZone.getTimeZone("UT"));
+                        Date date = sdf.parse(object.getString("date"));
                         cal.setTime(date);
-                        SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type);
+                        SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type, imageUrl);
                         events.add(eclipseEvent);
                     }
                 } catch (JSONException e) {

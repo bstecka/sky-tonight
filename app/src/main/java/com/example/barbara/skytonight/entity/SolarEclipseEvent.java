@@ -13,14 +13,20 @@ import static com.example.barbara.skytonight.entity.EclipseTypes.SOLAR_TOTAL;
 public class SolarEclipseEvent extends AstroEvent {
 
     private int eclipseType;
+    private String imageUrl;
 
     public SolarEclipseEvent() {
         super();
     }
 
-    public SolarEclipseEvent(int id, Calendar startDate, int eclipseType) {
+    public SolarEclipseEvent(int id, Calendar startDate, int eclipseType, String imageUrl) {
         super(id, "ecl_sol_" + eclipseType, startDate, startDate, 0, 0);
         this.eclipseType = eclipseType;
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     @Override

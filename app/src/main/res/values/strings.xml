@@ -186,6 +186,7 @@
     <string name="greatest_eclipse">Greatest Eclipse: %1$s</string>
     <string name="detail_tite_1">Timeline:</string>
     <string name="detail_title_2">Visibility in your location:</string>
+    <string name="detail_title_3">Visibility map:</string>
     <string name="moontimes">The Moon rises at %1$s and sets at %2$s.</string>
     <string name="suntimes">The Sun sets at %1$s.</string>
 </resources>

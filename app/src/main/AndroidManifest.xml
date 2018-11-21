@@ -93,7 +93,10 @@
             android:label="@string/title_activity_setting" />
         <activity
             android:name=".presentation.details.LunarDetailsActivity"
-            android:label="@string/title_activity_lunar_details"></activity>
+            android:label="@string/title_activity_lunar_details"/>
+        <activity
+            android:name=".presentation.details.SolarDetailsActivity"
+            android:label="@string/title_activity_lunar_details"/>
     </application>
 
 </manifest>

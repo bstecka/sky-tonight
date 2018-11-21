@@ -186,6 +186,7 @@
     <string name="greatest_eclipse">Maksimum zaćmienia: %1$s</string>
     <string name="detail_tite_1">Oś czasu:</string>
     <string name="detail_title_2">Widoczność dla Twojej lokalizacji:</string>
+    <string name="detail_title_3">Mapa widoczności:</string>
     <string name="moontimes">Księżyc wschodzi o %1$s i zachodzi o %2$s.</string>
     <string name="suntimes">Słońce zachodzi o %1$s.</string>
 </resources>
