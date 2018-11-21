@@ -55,14 +55,15 @@ public class SolarDetailsFragment extends Fragment implements SolarDetailsContra
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
-        dateTextView.setText(context.getString(R.string.greatest_eclipse, date));
+        dateTextView.setText(date);
     }
 
     @Override
     public void setTimeLine(String greatestEclipse){
         view.findViewById(R.id.title1).setVisibility(View.VISIBLE);
         TextView greatestTextView = view.findViewById(R.id.greatestEclipse);
-        greatestTextView.setText(greatestEclipse);
+        Context context = view.getContext();
+        greatestTextView.setText(context.getString(R.string.greatest_eclipse, greatestEclipse));
     }
 
     @Override
