@@ -77,7 +77,7 @@ public class EventsPresenter implements EventsContract.Presenter {
         });
     }
 
-    private void getEvents(double latitude, double longitude) {
+    /*private void getEvents(double latitude, double longitude) {
         mEventsView.clearList();
         mEventsRepository.getEvents(latitude, longitude, new EventsDataSource.GetEventsCallback() {
             @Override
@@ -99,5 +99,5 @@ public class EventsPresenter implements EventsContract.Presenter {
                 Log.e("EventsPresenter", "DataNotAvailable");
             }
         });
-    }
+    }*/
 }

@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.presentation.news.ArticleContract;
 
 import java.util.ArrayList;
 

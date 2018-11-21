@@ -175,4 +175,18 @@
     <string name="notif_msg_event_solar">Zaćmienie słońca, kulminacja: %2$s.</string>
     <string name="notif_title_iss">Zbliża się przelot Międzynarodowej Stacji Kosmicznej.</string>
     <string name="notif_msg_iss">MSK przeleci nad twoją lokalizacją o %1$s.</string>
+    <string name="zhr">%1$d meteorów na godzinę</string>
+    <string name="low_visibility">Słaba widoczność dla twojej lokalizacji</string>
+    <string name="part_begins">Poczatek zaćmienia częściowego: %1$s</string>
+    <string name="part_ends">Koniec zaćmienina częsciowego: %1$s</string>
+    <string name="pen_begins">Początek zaćmienia półcieniowego: %1$s</string>
+    <string name="pen_ends">Koniec zaćmienia półcieniowego: %1$s</string>
+    <string name="total_begins">Początek zaćmienia całkowitego: %1$s</string>
+    <string name="total_ends">Koniec zaćmienia całkowitego: %1$s</string>
+    <string name="greatest_eclipse">Maksimum zaćmienia: %1$s</string>
+    <string name="detail_tite_1">Oś czasu:</string>
+    <string name="detail_title_2">Widoczność dla Twojej lokalizacji:</string>
+    <string name="detail_title_3">Mapa widoczności:</string>
+    <string name="moontimes">Księżyc wschodzi o %1$s i zachodzi o %2$s.</string>
+    <string name="suntimes">Słońce zachodzi o %1$s.</string>
 </resources>

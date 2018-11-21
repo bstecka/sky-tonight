@@ -1,0 +1,30 @@
+package com.example.barbara.skytonight.data.repository;
+import com.example.barbara.skytonight.data.MoonSunDataSource;
+
+import java.util.Calendar;
+
+public class MoonSunDataRepository implements MoonSunDataSource {
+
+    private static MoonSunDataRepository INSTANCE = null;
+    private final MoonSunDataSource moonSunDataSource;
+
+    private MoonSunDataRepository(MoonSunDataSource moonSunDataSource) {
+        this.moonSunDataSource = moonSunDataSource;
+    }
+
+    public static MoonSunDataRepository getInstance(MoonSunDataSource moonSunDataSource) {
+        if (INSTANCE == null) {
+            INSTANCE = new MoonSunDataRepository(moonSunDataSource);
+        }
+        return INSTANCE;
+    }
+
+    public static void destroyInstance() {
+        INSTANCE = null;
+    }
+
+    @Override
+    public void getMoonSunData(Calendar time, double latitude, double longitude, GetMoonSunDataCallback callback) {
+        moonSunDataSource.getMoonSunData(time, latitude, longitude, callback);
+    }
+}

@@ -32,6 +32,7 @@ public class AudioPresenter implements AudioContract.Presenter {
         readFiles();
     }
 
+    @Override
     public void startRecording() {
         File file = createFile();
         String fileName = file.getAbsolutePath();
@@ -48,6 +49,7 @@ public class AudioPresenter implements AudioContract.Presenter {
         mRecorder.start();
     }
 
+    @Override
     public void stopRecording() {
         mRecorder.stop();
         mRecorder.release();

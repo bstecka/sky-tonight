@@ -174,4 +174,19 @@
     <string name="notif_msg_event_solar">A %1$s is about to peak at %2$s.</string>
     <string name="notif_title_iss">ISS flyby approaching.</string>
     <string name="notif_msg_iss">ISS will fly overhead at %1$s.</string>
+    <string name="zhr">%1$d meteors per hour</string>
+    <string name="low_visibility">Low visibility for your location</string>
+    <string name="title_activity_lunar_details">LunarDetailsActivity</string>
+    <string name="part_begins">Partial Eclipse begins: %1$s</string>
+    <string name="part_ends">Partial Eclipse ends: %1$s</string>
+    <string name="pen_begins">Penunmbral Eclipse begins: %1$s</string>
+    <string name="pen_ends">Penunmbral Eclipse ends: %1$s</string>
+    <string name="total_begins">Total Eclipse begins: %1$s</string>
+    <string name="total_ends">Total Eclipse ends: %1$s</string>
+    <string name="greatest_eclipse">Greatest Eclipse: %1$s</string>
+    <string name="detail_tite_1">Timeline:</string>
+    <string name="detail_title_2">Visibility in your location:</string>
+    <string name="detail_title_3">Visibility map:</string>
+    <string name="moontimes">The Moon rises at %1$s and sets at %2$s.</string>
+    <string name="suntimes">The Sun sets at %1$s.</string>
 </resources>

@@ -13,7 +13,12 @@ import com.example.barbara.skytonight.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecyclerViewAdapter.ViewHolder> {
 
@@ -41,8 +46,19 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final File file = mValues.get(position);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
+        Date date = null;
+        try {
+            date = sdf.parse(file.getName().substring(4, 18));
+            calendar.setTime(date);
+            SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy, HH:mm", Locale.getDefault());
+            holder.mTextView.setText(readable.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            holder.mTextView.setText(file.getName());
+        }
         holder.mItem = String.valueOf(file.toString());
-        holder.mTextView.setText(file.getName());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +91,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
                     }
                 });
             } catch (IOException e) {
-                Log.e("AudioRecyclerViewAdapter", "prepare() failed");
+                Log.e("AudioRecycler", "prepare() failed");
             }
             holder.mButton.setImageResource(R.drawable.ic_baseline_stop_24px);
             holder.isPlaying = true;

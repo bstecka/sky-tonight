@@ -13,7 +13,12 @@ import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecyclerViewAdapter.ViewHolder> {
 
@@ -36,7 +41,18 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         final File file = mValues.get(position);
         final Context context = holder.mTextView.getContext();
         holder.mItem = String.valueOf(file.toString());
-        holder.mTextView.setText(file.getName());
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
+        Date date = null;
+        try {
+            date = sdf.parse(file.getName().substring(4, 18));
+            calendar.setTime(date);
+            SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy, HH:mm", Locale.getDefault());
+            holder.mTextView.setText(readable.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            holder.mTextView.setText(file.getName());
+        }
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

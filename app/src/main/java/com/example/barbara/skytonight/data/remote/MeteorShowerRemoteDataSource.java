@@ -25,6 +25,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+
 public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
 
     private static MeteorShowerRemoteDataSource INSTANCE;
@@ -48,7 +51,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
     public void getMeteorShowers(final double latitude, final double longitude, int month, int year, final GetMeteorShowersCallback callback) {
         final List<MeteorShowerEvent> events = new ArrayList<>();
         String url = this.url + "&month=" + month + "&year=" + year;
-        Log.e("getMeteorShowers", url);
+        Log.e("getMeteorShowers " + latitude + " " + longitude, url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -58,6 +61,10 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
                         JSONObject object = arr.getJSONObject(i);
                         int id = object.getInt("id");
                         String name = object.getString("name");
+                        String radiant = object.getString("radiant");
+                        double RA = (parseInt(radiant.substring(0,2)) + (double)parseInt(radiant.substring(3,5))/60) * 15;
+                        double decl = parseDouble(radiant.substring(6).replace("°",""));
+                        int zhr = object.getInt("zhr");
                         Calendar startCal = Calendar.getInstance();
                         Date startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("start_date"));
                         startCal.setTime(startDate);
@@ -67,7 +74,8 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
                         Calendar peakCal = Calendar.getInstance();
                         Date peakDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("start_peak"));
                         peakCal.setTime(peakDate);
-                        MeteorShowerEvent event = new MeteorShowerEvent(id, name, startCal, endCal, peakCal);
+                        MeteorShowerEvent event = new MeteorShowerEvent(id, name, startCal, endCal, peakCal, zhr, RA, decl);
+                        event.calculateVisibility(latitude, longitude);
                         events.add(event);
                     }
                 } catch (JSONException e) {

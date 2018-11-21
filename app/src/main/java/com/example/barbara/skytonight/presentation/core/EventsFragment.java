@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     public void onResume() {
         super.onResume();
         mPresenter.start();
+        currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
+        currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
+        setCurrentMonthTextView();
         int itemCount = mAdapter.getItemCount();
         if (itemCount < 1)
             displayNoEventsText();
@@ -171,6 +175,9 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             displayNoEventsText();
         else
             hideNoEventsText();
+        for (int i = 0; i < list.size(); i++){
+            //Log.e("Fragment updateList", list.get(i).getLongName() + " " + list.get(i).getLatitude() + " " + list.get(i).getLongitude());
+        }
         mAdapter.notifyDataSetChanged();
     }
 
