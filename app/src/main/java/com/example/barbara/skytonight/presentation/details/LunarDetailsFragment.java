@@ -49,7 +49,7 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
     public void setSunTimesTextView(String sunrise, String sunset) {
         TextView sunTimes = view.findViewById(R.id.suntimes);
         Context context = sunTimes.getContext();
-        sunTimes.setText(context.getString(R.string.suntimes, sunrise, sunset));
+        sunTimes.setText(context.getString(R.string.suntimes, sunset));
     }
 
     @Override
