@@ -38,7 +38,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.fragment_events_list_item, parent, false);
         return new ViewHolder(view);
@@ -59,9 +59,7 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         String dateStr = readable.format(event.getStartDate());
         String peakStr = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(event.getPeakDate());
         if (event.getStartDate().before(event.getEndDate())) {
-            dateStr = readable.format(event.getStartDate());
-            dateStr += " - ";
-            dateStr += readable.format(event.getEndDate());
+            dateStr = readable.format(event.getStartDate()) + " - " + readable.format(event.getEndDate());
             peakStr = readable.format(event.getPeakDate());
         }
         holder.mDateView.setText(dateStr);
@@ -77,17 +75,18 @@ public class EventsRecyclerViewAdapter extends RecyclerView.Adapter<EventsRecycl
         if (event instanceof MeteorShowerEvent){
             handleMeteorShowerEvent(holder, (MeteorShowerEvent) event);
             holder.mImageView.setVisibility(View.INVISIBLE);
-        } else {
+        }
+        else if (event instanceof LunarEclipseEvent){
+            handleLunarEclipse(holder, (LunarEclipseEvent) event);
+            holder.mImageView.setVisibility(View.VISIBLE);
             holder.mZhrView.setVisibility(View.GONE);
             holder.mVisibilityView.setVisibility(View.GONE);
         }
-        if (event instanceof LunarEclipseEvent){
-            handleLunarEclipse(holder, (LunarEclipseEvent) event);
-            holder.mImageView.setVisibility(View.VISIBLE);
-        }
-        if (event instanceof SolarEclipseEvent){
+        else if (event instanceof SolarEclipseEvent){
             handleSolarEclipse(holder, (SolarEclipseEvent) event);
             holder.mImageView.setVisibility(View.VISIBLE);
+            holder.mZhrView.setVisibility(View.GONE);
+            holder.mVisibilityView.setVisibility(View.GONE);
         }
     }
 

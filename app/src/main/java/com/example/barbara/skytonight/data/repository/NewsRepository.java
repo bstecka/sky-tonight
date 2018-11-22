@@ -12,18 +12,18 @@ import java.util.List;
 public class NewsRepository implements NewsDataSource {
 
     private static NewsRepository INSTANCE = null;
-    private NewsDataSource newsDataSource;
-    private ArticleFetchService articleFetchService;
+    private NewsDataSource mNewsDataSource;
+    private ArticleFetchService mArticleFetchService;
 
-    private NewsRepository(NewsDataSource newsDataSource, ArticleFetchService articleFetchService) {
-        this.newsDataSource = newsDataSource;
-        this.articleFetchService = articleFetchService;
+    private NewsRepository(NewsDataSource mNewsDataSource, ArticleFetchService mArticleFetchService) {
+        this.mNewsDataSource = mNewsDataSource;
+        this.mArticleFetchService = mArticleFetchService;
     }
 
     @Override
     public void setBaseUrl(String baseUrl) {
-        articleFetchService.setBaseUrl(baseUrl);
-        newsDataSource.setBaseUrl(baseUrl);
+        mArticleFetchService.setBaseUrl(baseUrl);
+        mNewsDataSource.setBaseUrl(baseUrl);
     }
 
     public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService) {
@@ -37,9 +37,10 @@ public class NewsRepository implements NewsDataSource {
         INSTANCE = null;
     }
 
-    private void getNewsHeadlinesFromRemoteRepository(final GetNewsHeadlinesCallback callback){
+    @Override
+    public void getNewsHeadlines(final GetNewsHeadlinesCallback callback) {
         final List<NewsHeadline> list = new ArrayList<>();
-        newsDataSource.getNewsHeadlines(new GetNewsHeadlinesCallback() {
+        mNewsDataSource.getNewsHeadlines(new GetNewsHeadlinesCallback() {
             @Override
             public void onDataLoaded(List<NewsHeadline> newsHeadlines) {
                 list.addAll(newsHeadlines);
@@ -54,16 +55,7 @@ public class NewsRepository implements NewsDataSource {
         });
     }
 
-    private void getNewsArticleFromRemoteRepository(String url, final GetNewsArticleCallback callback){
-        articleFetchService.getNewsArticle(url, callback);
-    }
-
-    @Override
-    public void getNewsHeadlines(GetNewsHeadlinesCallback callback) {
-        getNewsHeadlinesFromRemoteRepository(callback);
-    }
-
     public void getNewsArticle(String url, GetNewsArticleCallback callback) {
-        getNewsArticleFromRemoteRepository(url, callback);
+        mArticleFetchService.getNewsArticle(url, callback);
     }
 }

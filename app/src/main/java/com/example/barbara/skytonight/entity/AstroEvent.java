@@ -13,9 +13,12 @@ public abstract class AstroEvent implements Serializable {
     private double latitude;
     private double longitude;
 
-    public AstroEvent() {
-        this.id = -1;
-        this.name = "";
+    public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
+        this.id = id;
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.peakDate = peakDate;
     }
 
     public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, double latitude, double longitude) {
@@ -26,14 +29,6 @@ public abstract class AstroEvent implements Serializable {
         this.peakDate = startDate;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
-        this.id = id;
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.peakDate = peakDate;
     }
 
     public AstroEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate, double latitude, double longitude) {

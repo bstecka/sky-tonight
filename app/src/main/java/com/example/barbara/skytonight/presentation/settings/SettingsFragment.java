@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.example.barbara.skytonight.AppConstants;
 public class SettingsFragment extends Fragment implements SettingsContract.View {
 
     private SettingsContract.Presenter mPresenter;
-    private boolean languageChanged = false;
     private View view;
 
     @Override
@@ -33,10 +31,6 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     public void onResume() {
         super.onResume();
         mPresenter.start();
-    }
-
-    public boolean wasLanguageChanged() {
-        return languageChanged;
     }
 
     @Override
@@ -72,11 +66,6 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
     }
 
     private void setLanguageSelected(String language) {
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-        if (language.equals(AppConstants.LANG_EN))
-            radioGroup.check(R.id.radioButtonEn);
-        else if (language.equals(AppConstants.LANG_PL))
-            radioGroup.check(R.id.radioButtonPl);
         Switch switchEn = view.findViewById(R.id.switchEn);
         Switch switchPl = view.findViewById(R.id.switchPl);
         if (language.equals(AppConstants.LANG_EN))
@@ -109,23 +98,6 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
 
     private void setLanguageListeners() {
         final Context context = view.getContext();
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.radioButtonEn) {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN).apply();
-                    Toast.makeText(context, R.string.language_changed_en, Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                    prefs.edit().putString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_PL).apply();
-                    Toast.makeText(context, R.string.language_changed_pl, Toast.LENGTH_SHORT).show();
-                }
-                languageChanged = true;
-            }
-        });
         final Switch switchEn = view.findViewById(R.id.switchEn);
         final Switch switchPl = view.findViewById(R.id.switchPl);
         switchEn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

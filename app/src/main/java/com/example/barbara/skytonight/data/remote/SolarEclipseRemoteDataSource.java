@@ -46,47 +46,18 @@ public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
         return INSTANCE;
     }
 
+    @Override
     public void getSolarEclipses(final double latitude, final double longitude, int month, int year, final GetSolarEclipsesCallback callback) {
-        final List<SolarEclipseEvent> events = new ArrayList<>();
         String url = this.url + "&month=" + month + "&year=" + year;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray arr = response.getJSONArray("events");
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject object = arr.getJSONObject(i);
-                        int id = object.getInt("id");
-                        int type = object.getInt("eclipse_type");
-                        String imageUrl = object.getString("eclipse_image");
-                        Calendar cal = Calendar.getInstance();
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault());
-                        sdf.setTimeZone(TimeZone.getTimeZone("UT"));
-                        Date date = sdf.parse(object.getString("date"));
-                        cal.setTime(date);
-                        SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type, imageUrl);
-                        events.add(eclipseEvent);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                    Log.e("RemoteDataSource", "ParseException");
-                }
-                callback.onDataLoaded(events);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("RemoteDataSource", error.toString());
-                callback.onDataNotAvailable();
-            }
-        });
-        queue.add(jsonObjectRequest);
+        getSolarEclipses(url, callback);
     }
 
     @Override
     public void getSolarEclipses(final double latitude, final double longitude, final GetSolarEclipsesCallback callback) {
+        getSolarEclipses(url, callback);
+    }
+
+    private void getSolarEclipses(String url, final GetSolarEclipsesCallback callback) {
         final List<SolarEclipseEvent> events = new ArrayList<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -106,13 +77,15 @@ public class SolarEclipseRemoteDataSource implements SolarEclipseDataSource {
                         SolarEclipseEvent eclipseEvent = new SolarEclipseEvent(id, cal, type, imageUrl);
                         events.add(eclipseEvent);
                     }
+                    callback.onDataLoaded(events);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    callback.onDataNotAvailable();
                 } catch (ParseException ex) {
                     ex.printStackTrace();
+                    callback.onDataNotAvailable();
                     Log.e("RemoteDataSource", "ParseException");
                 }
-                callback.onDataLoaded(events);
             }
         }, new Response.ErrorListener() {
             @Override

@@ -34,7 +34,6 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final ImageFile imageFile = mValues.get(position);
         final Context context = holder.mImageView.getContext();
-        holder.mItem = String.valueOf(imageFile.toString());
         holder.mImageView.setImageBitmap(imageFile.getBitmap());
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +53,6 @@ public class PhotoRecyclerViewAdapter extends RecyclerView.Adapter<PhotoRecycler
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final ImageView mImageView;
-        public String mItem;
 
         public ViewHolder(final View view) {
             super(view);

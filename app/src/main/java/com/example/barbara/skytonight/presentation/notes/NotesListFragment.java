@@ -23,10 +23,8 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
 
     private NotesListContract.Presenter mPresenter;
     private SimpleNotesRecyclerViewAdapter mAdapter;
-    private RecyclerView recyclerView;
     private ArrayList<NoteFile> notesList;
     private Calendar selectedDate;
-    private View view;
     private Integer selectedYear = null;
     private Integer selectedMonth = null;
     private boolean weekMode = false;
@@ -44,10 +42,10 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_notes_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_notes_list, container, false);
         notesList = new ArrayList<>();
         mAdapter = new SimpleNotesRecyclerViewAdapter(notesList);
-        recyclerView = view.findViewById(R.id.notesListRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.notesListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         final FloatingActionButton button = view.findViewById(R.id.floatingActionButton);

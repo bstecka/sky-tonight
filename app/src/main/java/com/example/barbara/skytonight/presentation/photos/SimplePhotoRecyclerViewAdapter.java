@@ -42,11 +42,10 @@ public class SimplePhotoRecyclerViewAdapter extends RecyclerView.Adapter<SimpleP
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final ImageFile imageFile = mValues.get(position);
         final Context context = holder.mImageView.getContext();
-        holder.mItem = String.valueOf(imageFile.toString());
         holder.mTextView.setText(imageFile.getFile().getName());
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
-        Date date = null;
+        Date date;
         try {
             date = sdf.parse(imageFile.getFile().getName().substring(5, 18));
             calendar.setTime(date);
@@ -86,7 +85,6 @@ public class SimplePhotoRecyclerViewAdapter extends RecyclerView.Adapter<SimpleP
         final View mView;
         final CircleImageView mImageView;
         final TextView mTextView;
-        public String mItem;
 
         public ViewHolder(final View view) {
             super(view);

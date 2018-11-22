@@ -43,9 +43,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         NewsFragment.OnListFragmentInteractionListener, EventsFragment.OnListFragmentInteractionListener {
 
     private CoreContract.Presenter mCorePresenter;
-    private BottomNavigationView bottomNavigationView;
     private CoreViewPager viewPager;
-    private BottomBarAdapter pagerAdapter;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -61,7 +59,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.core_pager);
         viewPager.setPagingEnabled(false);
-        pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
+        BottomBarAdapter pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
         final TodayFragment todayFragment = new TodayFragment();
         final NewsFragment newsFragment = new NewsFragment();
         NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
@@ -82,7 +80,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(1);
         toolbar.setTitle(R.string.core_option_today);
-        bottomNavigationView = findViewById(R.id.bottom_nav);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

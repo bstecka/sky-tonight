@@ -76,8 +76,6 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
         TextView penBegins = view.findViewById(R.id.penunmbralBegins);
         TextView penEnds = view.findViewById(R.id.penunmbralEnds);
         Context context = partialBegins.getContext();
-        partialBegins.setText(context.getString(R.string.part_begins, partB));
-        partialEnds.setText(context.getString(R.string.part_ends, partE));
         greatest.setText(context.getString(R.string.greatest_eclipse, gr));
         if (tB.length() > 1) {
             totalBegins.setText(context.getString(R.string.total_begins, tB));
@@ -92,6 +90,13 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
         } else {
             penBegins.setVisibility(View.GONE);
             penEnds.setVisibility(View.GONE);
+        }
+        if (partB.length() > 1) {
+            partialBegins.setText(context.getString(R.string.part_begins, partB));
+            partialEnds.setText(context.getString(R.string.part_ends, partE));
+        } else {
+            partialBegins.setVisibility(View.GONE);
+            partialEnds.setVisibility(View.GONE);
         }
         view.findViewById(R.id.title1).setVisibility(View.VISIBLE);
         view.findViewById(R.id.title2).setVisibility(View.VISIBLE);

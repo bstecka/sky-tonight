@@ -41,37 +41,30 @@ public class ArticleFetchService {
                 Element element;
                 StringBuilder builder = new StringBuilder();
                 ArrayList<ArticleContentWrapper> articleChunks = new ArrayList<>();
-                if (baseUrl.equals(AppConstants.NEWS_URL_PL)) {
-                    element = document.selectFirst("div .entry-content");
-                    if (element != null) {
-                        Elements elements = element.getAllElements();
-                        for (Element el : elements) {
-                            if (el.is("p")&& !el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
-                                builder.append(el.wholeText());
-                                ArticleContentWrapper chunk = new ArticleContentWrapper(el.wholeText().trim(), false);
-                                articleChunks.add(chunk);
-                                builder.append("\n\n");
-                            }
-                            if (el.is("div") && el.hasClass("media-credit-container") && el.select("img").size() > 0) {
-                                Element img = el.selectFirst("img");
-                                ArticleContentWrapper chunk = new ArticleContentWrapper(img.attr("abs:src"),true);
-                                articleChunks.add(chunk);
-                            }
+                if (baseUrl.equals(AppConstants.NEWS_URL_PL) && (element = document.selectFirst("div .entry-content")) != null) {
+                    Elements elements = element.getAllElements();
+                    for (Element el : elements) {
+                        if (el.is("p")&& !el.hasClass("wp-caption-text") && !el.hasClass("news-source") && el.wholeText().trim().length() > 1) {
+                            builder.append(el.wholeText());
+                            ArticleContentWrapper chunk = new ArticleContentWrapper(el.wholeText().trim(), false);
+                            articleChunks.add(chunk);
+                            builder.append("\n\n");
+                        }
+                        if (el.is("div") && el.hasClass("media-credit-container") && el.select("img").size() > 0) {
+                            Element img = el.selectFirst("img");
+                            ArticleContentWrapper chunk = new ArticleContentWrapper(img.attr("abs:src"),true);
+                            articleChunks.add(chunk);
                         }
                     }
                 }
-                else if (baseUrl.equals(AppConstants.NEWS_URL_EN)) {
-                    Element image = document.selectFirst("img");
-                    element = document.selectFirst("div .article-content");
-                    if (element != null) {
-                        Elements elements = element.select("p");
-                        for (Element el : elements) {
-                            if (el.wholeText().trim().length() > 1) {
-                                builder.append(el.wholeText().trim());
-                                ArticleContentWrapper chunk = new ArticleContentWrapper(el.wholeText().trim(), false);
-                                articleChunks.add(chunk);
-                                builder.append("\n\n");
-                            }
+                else if (baseUrl.equals(AppConstants.NEWS_URL_EN) && (element = document.selectFirst("div .article-content")) != null) {
+                    Elements elements = element.select("p");
+                    for (Element el : elements) {
+                        if (el.wholeText().trim().length() > 1) {
+                            builder.append(el.wholeText().trim());
+                            ArticleContentWrapper chunk = new ArticleContentWrapper(el.wholeText().trim(), false);
+                            articleChunks.add(chunk);
+                            builder.append("\n\n");
                         }
                     }
                 }

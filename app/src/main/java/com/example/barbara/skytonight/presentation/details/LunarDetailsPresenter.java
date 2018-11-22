@@ -32,8 +32,6 @@ public class LunarDetailsPresenter implements LunarDetailsContract.Presenter {
             moonSunDataRepository.getMoonSunData(time, latitude, longitude, new MoonSunDataSource.GetMoonSunDataCallback(){
                 @Override
                 public void onDataLoaded(MoonSunData moonSunData) {
-                    Log.e("Presenter", moonSunData.toString());
-                    Log.e("Presenter", event.toString());
                     setDataInView(moonSunData, event);
                 }
 

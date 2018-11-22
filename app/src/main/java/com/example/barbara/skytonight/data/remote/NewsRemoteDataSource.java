@@ -83,10 +83,11 @@ public class NewsRemoteDataSource implements NewsDataSource {
                         NewsHeadline newsHeadline = new NewsHeadline(title, link, calendar);
                         newsHeadlines.add(newsHeadline);
                     }
+                    callback.onDataLoaded(newsHeadlines);
                 } catch (DocumentException e) {
                     e.printStackTrace();
+                    callback.onDataNotAvailable();
                 }
-                callback.onDataLoaded(newsHeadlines);
             }
         },
         new Response.ErrorListener() {

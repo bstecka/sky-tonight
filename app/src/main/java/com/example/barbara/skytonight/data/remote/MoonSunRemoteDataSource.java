@@ -58,7 +58,7 @@ public class MoonSunRemoteDataSource implements MoonSunDataSource {
                     for (int i = 0; i < sundata.length(); i++){
                         if (sundata.getJSONObject(i).getString("phen").equals("R"))
                             sunrise = sundata.getJSONObject(i).getString("time");
-                        if (sundata.getJSONObject(i).getString("phen").equals("S"))
+                        else if (sundata.getJSONObject(i).getString("phen").equals("S"))
                             sunset = sundata.getJSONObject(i).getString("time");
                     }
                     JSONArray moondata = response.getJSONArray("moondata");
@@ -66,7 +66,7 @@ public class MoonSunRemoteDataSource implements MoonSunDataSource {
                     for (int i = 0; i < moondata.length(); i++){
                         if (moondata.getJSONObject(i).getString("phen").equals("R"))
                             moonrise = moondata.getJSONObject(i).getString("time");
-                        if (moondata.getJSONObject(i).getString("phen").equals("S"))
+                        else if (moondata.getJSONObject(i).getString("phen").equals("S"))
                             moonset = moondata.getJSONObject(i).getString("time");
                     }
                     Calendar sunriseTime = getTime(time, sunrise);

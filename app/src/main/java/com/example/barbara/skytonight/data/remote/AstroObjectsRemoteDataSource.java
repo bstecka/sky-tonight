@@ -55,7 +55,6 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
         time2.add(Calendar.HOUR, 1);
         String endDate = isoFormat.format(time2.getTime());
         String url = String.format(AppConstants.ASTRO_OBJECT_API_URL, objectId, startDate, endDate);
-        //String url = "https://ssd.jpl.nasa.gov/horizons_batch.cgi?batch=1&COMMAND='" + objectId + "'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'&START_TIME='" + str_date + "'&STOP_TIME='" + str_date_end + "'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
         Log.e("RemoteDataSource", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -71,7 +70,6 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
             }
         });
         queue.add(stringRequest);
-        //Log.e("RemoteDataSource", url + " request added to queue");
     }
 
     private AstroObject processString(String str, int objectId, Calendar time) {

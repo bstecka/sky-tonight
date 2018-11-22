@@ -12,6 +12,5 @@ public interface SolarEclipseDataSource {
     }
 
     void getSolarEclipses(final double latitude, final double longitude, GetSolarEclipsesCallback callback);
-
     void getSolarEclipses(final double latitude, final double longitude, int month, int year, GetSolarEclipsesCallback callback);
 }

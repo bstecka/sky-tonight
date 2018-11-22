@@ -13,11 +13,6 @@ public abstract class AstroObject {
     private String name;
     private Calendar time;
 
-    public AstroObject() {
-        this.id = -1;
-        this.name = "";
-    }
-
     public AstroObject(int id, String name, Calendar time) {
         this.id = id;
         this.name = name;

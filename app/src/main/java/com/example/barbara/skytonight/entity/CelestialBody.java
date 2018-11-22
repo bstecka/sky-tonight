@@ -17,7 +17,7 @@ public class CelestialBody extends AstroObject {
     private Double altitude;
 
     public CelestialBody() {
-        super();
+        super(-1, "", null);
         this.rightAsc = -1;
         this.decl = -1;
         this.azimuth = -1.0;
@@ -78,7 +78,8 @@ public class CelestialBody extends AstroObject {
     }
 
     private double getGMST(Calendar date){
-        Calendar time = date;
+        Calendar time = Calendar.getInstance();
+        time.setTime(date.getTime());
         time.setTimeZone(TimeZone.getTimeZone("UT"));
         double H = time.get(Calendar.HOUR_OF_DAY) + time.get(Calendar.MINUTE)/60.0 + time.get(Calendar.SECOND)/3600.0;
         double JD = getJulianDate(time);

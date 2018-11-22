@@ -76,28 +76,4 @@ public class EventsPresenter implements EventsContract.Presenter {
             }
         });
     }
-
-    /*private void getEvents(double latitude, double longitude) {
-        mEventsView.clearList();
-        mEventsRepository.getEvents(latitude, longitude, new EventsDataSource.GetEventsCallback() {
-            @Override
-            public void onDataLoaded(List<AstroEvent> events) {
-                ArrayList<AstroEvent> arrayList = (ArrayList<AstroEvent>) events;
-                if (arrayList.size() > 0) {
-                    Collections.sort(arrayList, new Comparator<AstroEvent>() {
-                        @Override
-                        public int compare(final AstroEvent object1, final AstroEvent object2) {
-                            return object1.getStartDate().compareTo(object2.getStartDate());
-                        }
-                    });
-                }
-                mEventsView.updateList(arrayList);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                Log.e("EventsPresenter", "DataNotAvailable");
-            }
-        });
-    }*/
 }

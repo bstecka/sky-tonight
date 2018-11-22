@@ -27,7 +27,6 @@ public class TodayPresenter implements TodayContract.Presenter {
     private final WeatherRepository mWeatherRepository;
     private final ISSRepository mISSRepository;
     private final TodayContract.View mTodayView;
-    private ArrayList<WeatherObject> weatherObjects;
 
     public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, WeatherRepository mWeatherRepository, ISSRepository mISSRepository, TodayContract.View mTodayView) {
         this.mAstroObjectRepository = mAstroObjectRepository;
@@ -81,12 +80,10 @@ public class TodayPresenter implements TodayContract.Presenter {
 
     private void loadWeather(Location location){
         final Calendar time = Calendar.getInstance();
-        int overhead = mTodayView.getTimeOverhead();
-        time.add(Calendar.HOUR, overhead);
+        time.add(Calendar.HOUR, mTodayView.getTimeOverhead());
         mWeatherRepository.getWeatherObjects(location.getLatitude(), location.getLongitude(), new WeatherDataSource.GetWeatherObjectsCallback() {
             @Override
             public void onDataLoaded(List<WeatherObject> weatherObjectList) {
-                weatherObjects = (ArrayList<WeatherObject>) weatherObjectList;
                 int index = -1;
                 for (int i = 0; i < weatherObjectList.size() && index == -1; i++){
                     if (weatherObjectList.get(i).getTime().getTimeInMillis() >= time.getTimeInMillis())

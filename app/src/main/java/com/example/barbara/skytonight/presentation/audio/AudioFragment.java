@@ -21,7 +21,6 @@ public class AudioFragment extends Fragment implements AudioContract.View {
 
     private AudioContract.Presenter mPresenter;
     private AudioRecyclerViewAdapter mAdapter;
-    private RecyclerView recyclerView;
     private ArrayList<File> fileList;
     private Calendar selectedDate;
     private View view;
@@ -53,34 +52,18 @@ public class AudioFragment extends Fragment implements AudioContract.View {
         recordingPermitted = permitted;
     }
 
-    private void onFloatingActionButtonClick() {
-        if (recordingPermitted) {
-            FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
-            if (!isRecording) {
-                isRecording = true;
-                mPresenter.startRecording();
-                button.setImageResource(R.drawable.ic_baseline_stop_24px);
-            } else {
-                isRecording = false;
-                mPresenter.stopRecording();
-                button.setImageResource(R.drawable.ic_voice);
-                mPresenter.start();
-            }
-        }
-    }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_audio, container, false);
-        fileList = new ArrayList<>();
         final FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onFloatingActionButtonClick();
             }
         });
+        fileList = new ArrayList<>();
         mAdapter = new AudioRecyclerViewAdapter(fileList);
-        recyclerView = view.findViewById(R.id.audioRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.audioRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         return view;
@@ -136,6 +119,22 @@ public class AudioFragment extends Fragment implements AudioContract.View {
     @Override
     public void refreshListInView() {
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void onFloatingActionButtonClick() {
+        if (recordingPermitted) {
+            FloatingActionButton button = view.findViewById(R.id.floatingActionButton);
+            if (!isRecording) {
+                isRecording = true;
+                mPresenter.startRecording();
+                button.setImageResource(R.drawable.ic_baseline_stop_24px);
+            } else {
+                isRecording = false;
+                mPresenter.stopRecording();
+                button.setImageResource(R.drawable.ic_voice);
+                mPresenter.start();
+            }
+        }
     }
 
 }

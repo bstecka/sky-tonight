@@ -26,10 +26,6 @@ public class LunarEclipseEvent extends AstroEvent {
     private Calendar totalBegins;
     private Calendar totalEnds;
 
-    public LunarEclipseEvent() {
-        super();
-    }
-
     public LunarEclipseEvent(int id, Calendar startDate, int eclipseType, double latitude, double longitude) {
         super(id, "ecl_lun_" + eclipseType, startDate, startDate, latitude, longitude);
         this.eclipseType = eclipseType;

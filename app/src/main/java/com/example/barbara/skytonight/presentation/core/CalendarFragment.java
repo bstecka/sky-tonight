@@ -21,7 +21,6 @@ import com.example.barbara.skytonight.presentation.audio.AudioActivity;
 import com.example.barbara.skytonight.presentation.notes.NoteActivity;
 import com.example.barbara.skytonight.presentation.notes.NotesListActivity;
 import com.example.barbara.skytonight.presentation.photos.PhotoGalleryActivity;
-import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.video.VideoActivity;
 import com.ramotion.circlemenu.CircleMenuView;
 
@@ -44,13 +43,6 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     private Context context;
 
     public CalendarFragment() { }
-
-    public static CalendarFragment newInstance() {
-        CalendarFragment fragment = new CalendarFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onResume() {
@@ -118,7 +110,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
         setCurrentMonthTextView();
     }
 
-    private void setTabLayout() {
+    private void initializeExpandableLayoutTab() {
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setDate(Calendar.getInstance().getTimeInMillis());
         currentlySelectedDate = Calendar.getInstance();
@@ -132,6 +124,10 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             exLayoutDay.expand();
         }
         showButton();
+    }
+
+    private void setTabLayout() {
+        initializeExpandableLayoutTab();
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_day));
         TabLayout.Tab weekTab = tabLayout.newTab().setText(R.string.tab_week);
@@ -141,34 +137,8 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() == 0) {
-                    CalendarView calendarView = view.findViewById(R.id.calendarView);
-                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
-                    currentlySelectedDate = Calendar.getInstance();
-                    updateDayInfoText(currentlySelectedDate);
-                    hideCircleMenu();
-                    exLayoutMonth.collapse();
-                    if (!exLayoutDay.isExpanded()) {
-                        exLayoutDay.expand();
-                    } else {
-                        exLayoutDay.collapse(false);
-                        exLayoutDay.expand();
-                    }
-                    showButton();
-                } else if (tab.getPosition() == 1) {
-                    CalendarView calendarView = view.findViewById(R.id.calendarView);
-                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
-                    currentlySelectedDate = Calendar.getInstance();
-                    updateDayInfoText(currentlySelectedDate);
-                    hideCircleMenu();
-                    exLayoutMonth.collapse();
-                    if (!exLayoutDay.isExpanded()) {
-                        exLayoutDay.expand();
-                    } else {
-                        exLayoutDay.collapse(false);
-                        exLayoutDay.expand();
-                    }
-                    showButton();
+                if (tab.getPosition() == 0 || tab.getPosition() == 1) {
+                    initializeExpandableLayoutTab();
                 } else if (tab.getPosition() == 2) {
                     showCircleMenu();
                     exLayoutDay.collapse();
@@ -198,19 +168,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
                     exLayoutDay.expand();
                     showButton();
                 } else if (tab.getPosition() == 1) {
-                    CalendarView calendarView = view.findViewById(R.id.calendarView);
-                    calendarView.setDate(Calendar.getInstance().getTimeInMillis());
-                    currentlySelectedDate = Calendar.getInstance();
-                    updateDayInfoText(currentlySelectedDate);
-                    hideCircleMenu();
-                    exLayoutMonth.collapse();
-                    if (!exLayoutDay.isExpanded()) {
-                        exLayoutDay.expand();
-                    } else {
-                        exLayoutDay.collapse(false);
-                        exLayoutDay.expand();
-                    }
-                    showButton();
+                    initializeExpandableLayoutTab();
                 }
             }
         });

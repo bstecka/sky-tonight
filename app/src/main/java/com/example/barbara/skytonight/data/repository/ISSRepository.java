@@ -23,13 +23,9 @@ public class ISSRepository implements ISSDataSource {
     public static void destroyInstance() {
         INSTANCE = null;
     }
-
-    private void getISSObjectFromRemoteRepository(Calendar time, double latitude, double longitude, GetISSObject callback) {
-        mISSDataSource.getISSObject(time, latitude, longitude, callback);
-    }
-
+    
     @Override
     public void getISSObject(Calendar time, double latitude, double longitude, GetISSObject callback) {
-        getISSObjectFromRemoteRepository(time, latitude, longitude, callback);
+        mISSDataSource.getISSObject(time, latitude, longitude, callback);
     }
 }

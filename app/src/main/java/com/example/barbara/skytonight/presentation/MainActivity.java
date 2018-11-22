@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         PeriodicWorkRequest.Builder builder = new PeriodicWorkRequest.Builder(NotifyWorkerISS.class, MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
         builder.setConstraints(Constraints.NONE).addTag("iss");
         PeriodicWorkRequest worker = builder.build();
-        Log.e("runNotifyWorker2", worker.toString());
+        Log.e("runNotifyWorkerISS", worker.toString());
         WorkManager.getInstance().enqueue(worker);
     }
 }
