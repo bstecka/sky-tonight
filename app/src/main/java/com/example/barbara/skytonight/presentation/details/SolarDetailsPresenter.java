@@ -25,7 +25,6 @@ public class SolarDetailsPresenter implements SolarDetailsContract.Presenter {
     @Override
     public void start() {
         if (event != null) {
-            Log.e("SolarPresenter", event.toString());
             setDataInView(event);
         }
     }

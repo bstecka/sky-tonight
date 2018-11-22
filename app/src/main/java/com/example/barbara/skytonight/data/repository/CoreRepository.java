@@ -31,7 +31,6 @@ public class CoreRepository implements CoreDataSource {
 
     @Override
     public void getUserLocation(final Context context, final CoreDataSource.GetUserLocationCallback callback) {
-        //Log.e("CoreRepository", "getUserLocation, boolean: " + requestedPermission);
         boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean noCoarseLocationPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         if (noFineLocationPermission && noCoarseLocationPermission) {
@@ -42,7 +41,6 @@ public class CoreRepository implements CoreDataSource {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        Log.e("CoreRepository", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                         callback.onDataLoaded(location);
                     } else {
                         Log.e("CoreRepository", "mFusedLocationClient returned null");
@@ -56,7 +54,6 @@ public class CoreRepository implements CoreDataSource {
 
     @Override
     public void getUserLocation(final Activity activity, final CoreDataSource.GetUserLocationCallback callback) {
-        //Log.e("CoreRepository", "getUserLocation, boolean: " + requestedPermission);
         boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean noCoarseLocationPermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         if (noFineLocationPermission && noCoarseLocationPermission) {
@@ -74,7 +71,6 @@ public class CoreRepository implements CoreDataSource {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        Log.e("CoreRepository", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                         callback.onDataLoaded(location);
                     } else {
                         Log.e("CoreRepository", "mFusedLocationClient returned null");

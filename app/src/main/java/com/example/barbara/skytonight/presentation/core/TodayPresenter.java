@@ -46,7 +46,7 @@ public class TodayPresenter implements TodayContract.Presenter {
                 mTodayView.refreshLocationInAdapter(location);
                 loadISS(location);
                 loadWeather(location);
-                showObjects(); //objects are shown asynchronously
+                showObjects();
             }
 
             @Override

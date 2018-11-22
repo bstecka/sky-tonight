@@ -62,10 +62,14 @@ public class LunarEclipseRemoteDataSource implements LunarEclipseDataSource {
                         sdf.setTimeZone(TimeZone.getTimeZone("UT"));
                         Calendar greatestEclipse = Calendar.getInstance();
                         greatestEclipse.setTime(sdf.parse(object.getString("greatest_eclipse")));
-                        Calendar partialBegins = Calendar.getInstance();
-                        partialBegins.setTime(sdf.parse(object.getString("partial_begins")));
-                        Calendar partialEnds = Calendar.getInstance();
-                        partialEnds.setTime(sdf.parse(object.getString("partial_ends")));
+                        Calendar partialBegins = null;
+                        Calendar partialEnds = null;
+                        if (object.getString("partial_begins").length() > 1) {
+                            partialBegins = Calendar.getInstance();
+                            partialBegins.setTime(sdf.parse(object.getString("partial_begins")));
+                            partialEnds = Calendar.getInstance();
+                            partialEnds.setTime(sdf.parse(object.getString("partial_ends")));
+                        }
                         Calendar totalBegins = null;
                         Calendar totalEnds = null;
                         if (object.getString("total_begins").length() > 1) {

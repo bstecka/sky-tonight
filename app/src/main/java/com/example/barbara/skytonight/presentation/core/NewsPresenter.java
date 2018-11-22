@@ -21,7 +21,6 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     @Override
     public void start() {
-        Log.e("NewsPresenter", "news start");
         getNews();
     }
 
