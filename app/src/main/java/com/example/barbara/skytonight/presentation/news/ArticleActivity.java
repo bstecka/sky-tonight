@@ -36,7 +36,7 @@ public class ArticleActivity extends AppCompatActivity {
         ArticleFragment articleFragment = (ArticleFragment) currentFragment;
         if (articleFragment == null) {
             articleFragment = new ArticleFragment();
-            articleFragment.setPresenter(new ArticlePresenter(articleFragment, getBaseUrlForLanguage()));
+            articleFragment.setPresenter(new ArticlePresenter(articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             articleFragment.setPubDate(articlePubDate);
@@ -45,10 +45,11 @@ public class ArticleActivity extends AppCompatActivity {
             transaction.commit();
         }
         else {
-            articleFragment.setPresenter(new ArticlePresenter(articleFragment, getBaseUrlForLanguage()));
+            articleFragment.setPresenter(new ArticlePresenter(articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             articleFragment.setPubDate(articlePubDate);
+            articleFragment.setBaseUrlForLanguage(getBaseUrlForLanguage());
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

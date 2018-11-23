@@ -20,9 +20,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.AstroEvent;
-import com.example.barbara.skytonight.data.repository.NewsRepository;
-import com.example.barbara.skytonight.data.remote.ArticleFetchService;
-import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.presentation.settings.SettingsActivity;
 import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
@@ -142,9 +139,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final NewsFragment newsFragment = new NewsFragment();
         final CalendarFragment calendarFragment = new CalendarFragment();
         final EventsFragment eventsFragment = new EventsFragment();
-        NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-        newsRepository.setBaseUrl(getBaseUrlForLanguage());
-        newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
+        newsFragment.setPresenter(new NewsPresenter(newsFragment, getApplicationContext()));
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         eventsFragment.setPresenter(new EventsPresenter(eventsFragment, getApplicationContext()));
         TodayPresenter presenter = new TodayPresenter(todayFragment, getApplicationContext());
@@ -154,6 +149,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter.addFragments(todayFragment);
         pagerAdapter.addFragments(eventsFragment);
         pagerAdapter.addFragments(newsFragment);
+        newsFragment.setBaseUrlForLanguage(getBaseUrlForLanguage());
         return pagerAdapter;
     }
 
