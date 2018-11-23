@@ -153,7 +153,8 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         final NewsFragment newsFragment = new NewsFragment();
         final CalendarFragment calendarFragment = new CalendarFragment();
         final EventsFragment eventsFragment = new EventsFragment();
-        NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this), getBaseUrlForLanguage());
+        NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
+        newsRepository.setBaseUrl(getBaseUrlForLanguage());
         newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
         calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
         eventsFragment.setPresenter(new EventsPresenter(eventsFragment, getApplicationContext()));

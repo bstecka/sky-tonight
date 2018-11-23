@@ -28,7 +28,8 @@ public class ArticlePresenter implements ArticleContract.Presenter {
     public ArticlePresenter(ArticleContract.View mArticleView, String baseUrl) {
         this.mArticleView = mArticleView;
         Context context = mArticleView.getContext().getApplicationContext();
-        this.mNewsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(context), new ArticleFetchService(context), baseUrl);
+        this.mNewsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(context), new ArticleFetchService(context));
+        this.mNewsRepository.setBaseUrl(baseUrl);
     }
 
     @Override

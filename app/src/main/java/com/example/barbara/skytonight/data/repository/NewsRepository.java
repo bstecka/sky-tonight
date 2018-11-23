@@ -14,10 +14,9 @@ public class NewsRepository implements NewsDataSource {
     private NewsDataSource mNewsDataSource;
     private ArticleFetchService mArticleFetchService;
 
-    private NewsRepository(NewsDataSource mNewsDataSource, ArticleFetchService mArticleFetchService, String baseUrl) {
+    private NewsRepository(NewsDataSource mNewsDataSource, ArticleFetchService mArticleFetchService) {
         this.mNewsDataSource = mNewsDataSource;
         this.mArticleFetchService = mArticleFetchService;
-        setBaseUrl(baseUrl);
     }
 
     @Override
@@ -26,9 +25,9 @@ public class NewsRepository implements NewsDataSource {
         mNewsDataSource.setBaseUrl(baseUrl);
     }
 
-    public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService, String baseUrl) {
+    public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService) {
         if (INSTANCE == null) {
-            INSTANCE = new NewsRepository(newsDataSource, articleFetchService, baseUrl);
+            INSTANCE = new NewsRepository(newsDataSource, articleFetchService);
         }
         return INSTANCE;
     }
