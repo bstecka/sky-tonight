@@ -1,5 +1,5 @@
 package com.example.barbara.skytonight.presentation.core;
-
+import android.content.Context;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.NewsDataSource;
@@ -11,12 +11,12 @@ import java.util.List;
 
 public class NewsPresenter implements NewsContract.Presenter {
 
-    private final NewsRepository newsRepository;
-    private final NewsContract.View newsView;
+    private final NewsRepository mNewsRepository;
+    private final NewsContract.View mNewsView;
 
-    public NewsPresenter(NewsRepository newsRepository, NewsContract.View newsView) {
-        this.newsRepository = newsRepository;
-        this.newsView = newsView;
+    public NewsPresenter(NewsRepository mNewsRepository, NewsContract.View mNewsView) {
+        this.mNewsRepository = mNewsRepository;
+        this.mNewsView = mNewsView;
     }
 
     @Override
@@ -25,12 +25,12 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     private void getNews() {
-        newsView.clearList();
-        newsRepository.getNewsHeadlines(new NewsDataSource.GetNewsHeadlinesCallback() {
+        mNewsView.clearList();
+        mNewsRepository.getNewsHeadlines(new NewsDataSource.GetNewsHeadlinesCallback() {
             @Override
             public void onDataLoaded(List<NewsHeadline> newsHeadlines) {
                 ArrayList<NewsHeadline> arrayList = (ArrayList<NewsHeadline>) newsHeadlines;
-                newsView.updateList(arrayList);
+                mNewsView.updateList(arrayList);
             }
 
             @Override

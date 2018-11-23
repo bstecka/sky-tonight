@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.repository;
 
 import android.util.Log;
-
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.entity.NewsHeadline;
 import com.example.barbara.skytonight.data.remote.ArticleFetchService;
@@ -15,9 +14,10 @@ public class NewsRepository implements NewsDataSource {
     private NewsDataSource mNewsDataSource;
     private ArticleFetchService mArticleFetchService;
 
-    private NewsRepository(NewsDataSource mNewsDataSource, ArticleFetchService mArticleFetchService) {
+    private NewsRepository(NewsDataSource mNewsDataSource, ArticleFetchService mArticleFetchService, String baseUrl) {
         this.mNewsDataSource = mNewsDataSource;
         this.mArticleFetchService = mArticleFetchService;
+        setBaseUrl(baseUrl);
     }
 
     @Override
@@ -26,9 +26,9 @@ public class NewsRepository implements NewsDataSource {
         mNewsDataSource.setBaseUrl(baseUrl);
     }
 
-    public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService) {
+    public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService, String baseUrl) {
         if (INSTANCE == null) {
-            INSTANCE = new NewsRepository(newsDataSource, articleFetchService);
+            INSTANCE = new NewsRepository(newsDataSource, articleFetchService, baseUrl);
         }
         return INSTANCE;
     }

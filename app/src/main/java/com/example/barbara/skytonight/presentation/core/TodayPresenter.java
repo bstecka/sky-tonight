@@ -1,8 +1,12 @@
 package com.example.barbara.skytonight.presentation.core;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
 import com.example.barbara.skytonight.entity.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
 import com.example.barbara.skytonight.data.CoreDataSource;
@@ -15,8 +19,6 @@ import com.example.barbara.skytonight.data.WeatherDataSource;
 import com.example.barbara.skytonight.entity.WeatherObject;
 import com.example.barbara.skytonight.data.repository.WeatherRepository;
 import com.example.barbara.skytonight.entity.AstroConstants;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,6 +36,14 @@ public class TodayPresenter implements TodayContract.Presenter {
         this.mWeatherRepository = mWeatherRepository;
         this.mISSRepository = mISSRepository;
         this.mTodayView = mTodayView;
+    }
+
+    public TodayPresenter(TodayContract.View mTodayView, Context context) {
+        this.mTodayView = mTodayView;
+        this.mAstroObjectRepository = AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(context));
+        this.mCoreRepository = CoreRepository.getInstance();
+        this.mWeatherRepository = WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(context));
+        this.mISSRepository = ISSRepository.getInstance(ISSRemoteDataSource.getInstance(context));
     }
 
     @Override

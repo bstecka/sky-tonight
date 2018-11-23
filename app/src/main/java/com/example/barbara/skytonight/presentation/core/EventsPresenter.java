@@ -1,8 +1,12 @@
 package com.example.barbara.skytonight.presentation.core;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
+import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
 import com.example.barbara.skytonight.entity.AstroEvent;
 import com.example.barbara.skytonight.data.CoreDataSource;
 import com.example.barbara.skytonight.data.repository.CoreRepository;
@@ -26,6 +30,15 @@ public class EventsPresenter implements EventsContract.Presenter {
         this.mCoreRepository = mCoreRepository;
         this.mEventsRepository = mEventsRepository;
         this.mEventsView = mEventsView;
+    }
+
+    public EventsPresenter(EventsContract.View mEventsView, Context context) {
+        this.mEventsView = mEventsView;
+        this.mCoreRepository = CoreRepository.getInstance();
+        this.mEventsRepository = EventsRepository.getInstance(
+                SolarEclipseRemoteDataSource.getInstance(context),
+                LunarEclipseRemoteDataSource.getInstance(context),
+                MeteorShowerRemoteDataSource.getInstance(context));
     }
 
     @Override

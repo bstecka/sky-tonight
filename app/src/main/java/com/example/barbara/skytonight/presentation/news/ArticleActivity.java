@@ -39,9 +39,7 @@ public class ArticleActivity extends AppCompatActivity {
         ArticleFragment articleFragment = (ArticleFragment) currentFragment;
         if (articleFragment == null) {
             articleFragment = new ArticleFragment();
-            NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-            newsRepository.setBaseUrl(getBaseUrlForLanguage());
-            articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
+            articleFragment.setPresenter(new ArticlePresenter(articleFragment, getBaseUrlForLanguage()));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             articleFragment.setPubDate(articlePubDate);
@@ -50,9 +48,7 @@ public class ArticleActivity extends AppCompatActivity {
             transaction.commit();
         }
         else {
-            NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-            newsRepository.setBaseUrl(getBaseUrlForLanguage());
-            articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
+            articleFragment.setPresenter(new ArticlePresenter(articleFragment, getBaseUrlForLanguage()));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             articleFragment.setPubDate(articlePubDate);
