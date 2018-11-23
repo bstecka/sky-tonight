@@ -1,5 +1,4 @@
 package com.example.barbara.skytonight.presentation.core;
-import android.content.Context;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.NewsDataSource;

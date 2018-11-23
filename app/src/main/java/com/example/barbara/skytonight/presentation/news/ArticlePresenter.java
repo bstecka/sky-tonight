@@ -20,11 +20,6 @@ public class ArticlePresenter implements ArticleContract.Presenter {
     private final NewsRepository mNewsRepository;
     private final ArticleContract.View mArticleView;
 
-    public ArticlePresenter(NewsRepository mNewsRepository, ArticleContract.View mArticleView) {
-        this.mNewsRepository = mNewsRepository;
-        this.mArticleView = mArticleView;
-    }
-
     public ArticlePresenter(ArticleContract.View mArticleView, String baseUrl) {
         this.mArticleView = mArticleView;
         Context context = mArticleView.getContext().getApplicationContext();

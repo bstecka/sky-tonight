@@ -30,14 +30,6 @@ public class TodayPresenter implements TodayContract.Presenter {
     private final ISSRepository mISSRepository;
     private final TodayContract.View mTodayView;
 
-    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, WeatherRepository mWeatherRepository, ISSRepository mISSRepository, TodayContract.View mTodayView) {
-        this.mAstroObjectRepository = mAstroObjectRepository;
-        this.mCoreRepository = mCoreRepository;
-        this.mWeatherRepository = mWeatherRepository;
-        this.mISSRepository = mISSRepository;
-        this.mTodayView = mTodayView;
-    }
-
     public TodayPresenter(TodayContract.View mTodayView, Context context) {
         this.mTodayView = mTodayView;
         this.mAstroObjectRepository = AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(context));
