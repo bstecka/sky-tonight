@@ -1,6 +1,4 @@
 package com.example.barbara.skytonight.presentation.details;
-import android.util.Log;
-
 import com.example.barbara.skytonight.data.MoonSunDataSource;
 import com.example.barbara.skytonight.data.remote.MoonSunRemoteDataSource;
 import com.example.barbara.skytonight.data.repository.MoonSunDataRepository;

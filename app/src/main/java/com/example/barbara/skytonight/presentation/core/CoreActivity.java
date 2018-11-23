@@ -20,20 +20,6 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.AstroEvent;
-import com.example.barbara.skytonight.data.repository.CoreRepository;
-import com.example.barbara.skytonight.data.repository.EventsRepository;
-import com.example.barbara.skytonight.data.repository.AstroObjectRepository;
-import com.example.barbara.skytonight.data.repository.ISSRepository;
-import com.example.barbara.skytonight.data.repository.NewsRepository;
-import com.example.barbara.skytonight.data.repository.WeatherRepository;
-import com.example.barbara.skytonight.data.remote.ArticleFetchService;
-import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.LunarEclipseRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.MeteorShowerRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.SolarEclipseRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
 import com.example.barbara.skytonight.presentation.settings.SettingsActivity;
 import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
@@ -59,25 +45,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.core_pager);
         viewPager.setPagingEnabled(false);
-        BottomBarAdapter pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
-        final TodayFragment todayFragment = new TodayFragment();
-        final NewsFragment newsFragment = new NewsFragment();
-        NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-        newsRepository.setBaseUrl(getBaseUrlForLanguage());
-        newsFragment.setPresenter(new NewsPresenter(newsRepository, newsFragment));
-        final CalendarFragment calendarFragment = new CalendarFragment();
-        calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
-        final EventsFragment eventsFragment = new EventsFragment();
-        final TodayPresenter presenter = new TodayPresenter(AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(this)), CoreRepository.getInstance(), WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(this)), ISSRepository.getInstance(ISSRemoteDataSource.getInstance(this)), todayFragment);
-        todayFragment.setPresenter(presenter);
-        mCorePresenter = new CorePresenter(presenter);
-        EventsPresenter eventsPresenter = new EventsPresenter(CoreRepository.getInstance(), EventsRepository.getInstance(SolarEclipseRemoteDataSource.getInstance(this), LunarEclipseRemoteDataSource.getInstance(this), MeteorShowerRemoteDataSource.getInstance(this)), eventsFragment);
-        eventsFragment.setPresenter(eventsPresenter);
-        pagerAdapter.addFragments(calendarFragment);
-        pagerAdapter.addFragments(todayFragment);
-        pagerAdapter.addFragments(eventsFragment);
-        pagerAdapter.addFragments(newsFragment);
-        viewPager.setAdapter(pagerAdapter);
+        viewPager.setAdapter(createBottomBarAdapter());
         viewPager.setCurrentItem(1);
         toolbar.setTitle(R.string.core_option_today);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
@@ -105,15 +73,6 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
                 return false;
             }
         });
-    }
-
-    private String getBaseUrlForLanguage() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
-        if (language.equals(AppConstants.LANG_PL))
-            return AppConstants.NEWS_URL_PL;
-        else
-            return AppConstants.NEWS_URL_EN;
     }
 
     @Override
@@ -172,5 +131,34 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     @Override
     public void onListFragmentInteraction(AstroEvent event) {
 
+    }
+
+    private BottomBarAdapter createBottomBarAdapter() {
+        BottomBarAdapter pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
+        final TodayFragment todayFragment = new TodayFragment();
+        final NewsFragment newsFragment = new NewsFragment();
+        final CalendarFragment calendarFragment = new CalendarFragment();
+        final EventsFragment eventsFragment = new EventsFragment();
+        newsFragment.setPresenter(new NewsPresenter(newsFragment, getApplicationContext()));
+        calendarFragment.setPresenter(new CalendarPresenter(calendarFragment));
+        eventsFragment.setPresenter(new EventsPresenter(eventsFragment, getApplicationContext()));
+        TodayPresenter presenter = new TodayPresenter(todayFragment, getApplicationContext());
+        todayFragment.setPresenter(presenter);
+        mCorePresenter = new CorePresenter(presenter);
+        pagerAdapter.addFragments(calendarFragment);
+        pagerAdapter.addFragments(todayFragment);
+        pagerAdapter.addFragments(eventsFragment);
+        pagerAdapter.addFragments(newsFragment);
+        newsFragment.setBaseUrlForLanguage(getBaseUrlForLanguage());
+        return pagerAdapter;
+    }
+
+    private String getBaseUrlForLanguage() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
+        if (language.equals(AppConstants.LANG_PL))
+            return AppConstants.NEWS_URL_PL;
+        else
+            return AppConstants.NEWS_URL_EN;
     }
 }

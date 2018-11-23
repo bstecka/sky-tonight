@@ -69,6 +69,10 @@ public class ArticleFragment extends Fragment implements ArticleContract.View {
         textView.refreshDrawableState();
     }
 
+    public void setBaseUrlForLanguage(String baseUrl) {
+        mPresenter.setBaseUrl(baseUrl);
+    }
+
     @Override
     public Activity getViewActivity() { return getActivity(); }
 

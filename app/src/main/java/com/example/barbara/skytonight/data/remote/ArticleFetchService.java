@@ -27,6 +27,7 @@ public class ArticleFetchService {
     public ArticleFetchService(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
+        baseUrl = AppConstants.NEWS_URL_EN;
     }
 
     public void setBaseUrl(String baseUrl){

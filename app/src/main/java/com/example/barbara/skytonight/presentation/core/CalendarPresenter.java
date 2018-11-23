@@ -74,10 +74,9 @@ public class CalendarPresenter implements CalendarContract.Presenter {
     }
 
     private int readFile(File file){
-        Scanner scanner = null;
         int count = 0;
         try {
-            scanner = new Scanner(file);
+            Scanner scanner = new Scanner(file);
             try {
                 while(scanner.hasNext()){
                     scanner.next();

@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.repository;
 
 import android.util.Log;
-
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.entity.NewsHeadline;
 import com.example.barbara.skytonight.data.remote.ArticleFetchService;

@@ -18,5 +18,6 @@ public interface ArticleContract {
     }
 
     interface Presenter extends BasePresenter {
+        void setBaseUrl(String baseUrl);
     }
 }
