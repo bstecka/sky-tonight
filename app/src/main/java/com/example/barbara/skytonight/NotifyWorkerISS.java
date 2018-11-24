@@ -13,8 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
-import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.repository.CoreRepository;
+import com.example.barbara.skytonight.data.LocationDataSource;
+import com.example.barbara.skytonight.data.repository.LocationRepository;
 import com.example.barbara.skytonight.data.ISSDataSource;
 import com.example.barbara.skytonight.data.repository.ISSRepository;
 import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
@@ -33,13 +33,13 @@ import static androidx.work.PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS;
 public class NotifyWorkerISS extends Worker {
 
     private Context context;
-    private final CoreRepository mCoreRepository;
+    private final LocationRepository mLocationRepository;
     private final ISSRepository mISSRepository;
 
     public NotifyWorkerISS(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         this.context = context;
-        this.mCoreRepository = CoreRepository.getInstance();
+        this.mLocationRepository = LocationRepository.getInstance();
         this.mISSRepository = ISSRepository.getInstance(ISSRemoteDataSource.getInstance(context));
     }
 
@@ -55,7 +55,7 @@ public class NotifyWorkerISS extends Worker {
     }
 
     private void triggerNotificationsForISS() {
-        mCoreRepository.getUserLocation(context, new CoreDataSource.GetUserLocationCallback() {
+        mLocationRepository.getUserLocation(context, new LocationDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
                 mISSRepository.getISSObject(Calendar.getInstance(), location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObject() {

@@ -1,4 +1,7 @@
 package com.example.barbara.skytonight.data.local;
+import android.content.Context;
+import android.os.Environment;
+
 import com.example.barbara.skytonight.data.VideoDataSource;
 
 import java.io.File;
@@ -22,9 +25,20 @@ public class VideoLocalDataSource implements VideoDataSource {
         this.storageDir = storageDir;
     }
 
+    private VideoLocalDataSource(Context context) {
+        this.storageDir = context.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+    }
+
     public static VideoLocalDataSource getInstance(File storageDir) {
         if (INSTANCE == null) {
             INSTANCE = new VideoLocalDataSource(storageDir);
+        }
+        return INSTANCE;
+    }
+
+    public static VideoLocalDataSource getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new VideoLocalDataSource(context);
         }
         return INSTANCE;
     }
