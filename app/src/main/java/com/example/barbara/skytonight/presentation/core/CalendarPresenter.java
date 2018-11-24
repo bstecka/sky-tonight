@@ -1,9 +1,6 @@
 package com.example.barbara.skytonight.presentation.core;
 
 import android.os.Environment;
-
-import com.example.barbara.skytonight.presentation.core.CalendarContract;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;

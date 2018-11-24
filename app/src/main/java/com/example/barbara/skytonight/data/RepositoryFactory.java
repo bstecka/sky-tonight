@@ -93,28 +93,28 @@ public class RepositoryFactory {
 
     public static NoteRepository getNoteRepository(Context context) {
         if (noteRepository == null) {
-            noteRepository = NoteRepository.getInstance(NoteLocalDataSource.getInstance(context));
+            noteRepository = NoteRepository.getInstance(NoteLocalDataSource.getInstance(context.getApplicationContext()));
         }
         return noteRepository;
     }
 
     public static PhotoRepository getPhotoRepository(Context context) {
         if (photoRepository == null) {
-            photoRepository = PhotoRepository.getInstance(PhotoLocalDataSource.getInstance(context));
+            photoRepository = PhotoRepository.getInstance(PhotoLocalDataSource.getInstance(context.getApplicationContext()));
         }
         return photoRepository;
     }
 
     public static VideoRepository getVideoRepository(Context context) {
         if (videoRepository == null) {
-            videoRepository = VideoRepository.getInstance(VideoLocalDataSource.getInstance(context));
+            videoRepository = VideoRepository.getInstance(VideoLocalDataSource.getInstance(context.getApplicationContext()));
         }
         return videoRepository;
     }
 
     public static WeatherRepository getWeatherRepository(Context context) {
         if (weatherRepository == null){
-            weatherRepository = WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(context));
+            weatherRepository = WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(context.getApplicationContext()));
         }
         return weatherRepository;
     }

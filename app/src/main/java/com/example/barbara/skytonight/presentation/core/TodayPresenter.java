@@ -4,9 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.LocationRepository;
 import com.example.barbara.skytonight.entity.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
@@ -32,10 +30,10 @@ public class TodayPresenter implements TodayContract.Presenter {
 
     public TodayPresenter(TodayContract.View mTodayView, Context context) {
         this.mTodayView = mTodayView;
-        this.mAstroObjectRepository = AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(context));
-        this.mLocationRepository = LocationRepository.getInstance();
-        this.mWeatherRepository = WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(context));
-        this.mISSRepository = ISSRepository.getInstance(ISSRemoteDataSource.getInstance(context));
+        this.mAstroObjectRepository = RepositoryFactory.getAstroObjectRepository(context);
+        this.mLocationRepository = RepositoryFactory.getLocationRepository();
+        this.mWeatherRepository = RepositoryFactory.getWeatherRepository(context);
+        this.mISSRepository = RepositoryFactory.getISSRepository(context);
     }
 
     @Override

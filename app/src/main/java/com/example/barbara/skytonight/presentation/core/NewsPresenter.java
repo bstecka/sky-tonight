@@ -3,8 +3,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.NewsDataSource;
-import com.example.barbara.skytonight.data.remote.ArticleFetchService;
-import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.NewsRepository;
 import com.example.barbara.skytonight.entity.NewsHeadline;
 
@@ -22,7 +21,7 @@ public class NewsPresenter implements NewsContract.Presenter {
     }
 
     public NewsPresenter(NewsContract.View mNewsView, Context context) {
-        this.mNewsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(context), new ArticleFetchService(context));
+        this.mNewsRepository = RepositoryFactory.getNewsRepository(context);
         this.mNewsView = mNewsView;
     }
 
