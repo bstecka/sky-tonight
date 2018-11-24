@@ -2,12 +2,11 @@ package com.example.barbara.skytonight.presentation.photos;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import com.example.barbara.skytonight.data.PhotoDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.PhotoRepository;
-import com.example.barbara.skytonight.data.local.PhotoLocalDataSource;
 import com.example.barbara.skytonight.entity.ImageFile;
 
 import java.io.File;
@@ -21,8 +20,7 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
 
     public PhotoGalleryPresenter(PhotoGalleryContract.View mPhotoGalleryView) {
         this.mPhotoGalleryView = mPhotoGalleryView;
-        File storageDir = mPhotoGalleryView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        this.photoRepository = PhotoRepository.getInstance(PhotoLocalDataSource.getInstance(storageDir));
+        this.photoRepository = RepositoryFactory.getPhotoRepository(mPhotoGalleryView.getContext());
     }
 
     @Override

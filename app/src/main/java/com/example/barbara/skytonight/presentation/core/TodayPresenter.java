@@ -4,13 +4,11 @@ import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
-import com.example.barbara.skytonight.data.remote.AstroObjectsRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.ISSRemoteDataSource;
-import com.example.barbara.skytonight.data.remote.WeatherRemoteDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
+import com.example.barbara.skytonight.data.repository.LocationRepository;
 import com.example.barbara.skytonight.entity.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
-import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.repository.CoreRepository;
+import com.example.barbara.skytonight.data.LocationDataSource;
 import com.example.barbara.skytonight.data.repository.AstroObjectRepository;
 import com.example.barbara.skytonight.data.ISSDataSource;
 import com.example.barbara.skytonight.entity.ISSObject;
@@ -25,22 +23,22 @@ import java.util.List;
 public class TodayPresenter implements TodayContract.Presenter {
 
     private final AstroObjectRepository mAstroObjectRepository;
-    private final CoreRepository mCoreRepository;
+    private final LocationRepository mLocationRepository;
     private final WeatherRepository mWeatherRepository;
     private final ISSRepository mISSRepository;
     private final TodayContract.View mTodayView;
 
     public TodayPresenter(TodayContract.View mTodayView, Context context) {
         this.mTodayView = mTodayView;
-        this.mAstroObjectRepository = AstroObjectRepository.getInstance(AstroObjectsRemoteDataSource.getInstance(context));
-        this.mCoreRepository = CoreRepository.getInstance();
-        this.mWeatherRepository = WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance(context));
-        this.mISSRepository = ISSRepository.getInstance(ISSRemoteDataSource.getInstance(context));
+        this.mAstroObjectRepository = RepositoryFactory.getAstroObjectRepository(context);
+        this.mLocationRepository = RepositoryFactory.getLocationRepository();
+        this.mWeatherRepository = RepositoryFactory.getWeatherRepository(context);
+        this.mISSRepository = RepositoryFactory.getISSRepository(context);
     }
 
     @Override
     public void start() {
-        mCoreRepository.getUserLocation(mTodayView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
+        mLocationRepository.getUserLocation(mTodayView.getCurrentActivity(), new LocationDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
                 Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());

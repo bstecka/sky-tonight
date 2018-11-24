@@ -10,27 +10,27 @@ import android.util.Log;
 import android.widget.Toast;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.AppConstants;
-import com.example.barbara.skytonight.data.CoreDataSource;
+import com.example.barbara.skytonight.data.LocationDataSource;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-public class CoreRepository implements CoreDataSource {
+public class LocationRepository implements LocationDataSource {
 
-    private static CoreRepository INSTANCE;
+    private static LocationRepository INSTANCE;
     private boolean requestedPermission = false;
 
-    private CoreRepository(){}
+    private LocationRepository(){}
 
-    public static CoreRepository getInstance() {
+    public static LocationRepository getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new CoreRepository();
+            INSTANCE = new LocationRepository();
         }
         return INSTANCE;
     }
 
     @Override
-    public void getUserLocation(final Context context, final CoreDataSource.GetUserLocationCallback callback) {
+    public void getUserLocation(final Context context, final LocationDataSource.GetUserLocationCallback callback) {
         boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean noCoarseLocationPermission = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         if (noFineLocationPermission && noCoarseLocationPermission) {
@@ -43,7 +43,7 @@ public class CoreRepository implements CoreDataSource {
                     if (location != null) {
                         callback.onDataLoaded(location);
                     } else {
-                        Log.e("CoreRepository", "mFusedLocationClient returned null");
+                        Log.e("LocationRepository", "mFusedLocationClient returned null");
                         callback.onDataNotAvailable();
                         Toast.makeText(context, R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
                     }
@@ -53,7 +53,7 @@ public class CoreRepository implements CoreDataSource {
     }
 
     @Override
-    public void getUserLocation(final Activity activity, final CoreDataSource.GetUserLocationCallback callback) {
+    public void getUserLocation(final Activity activity, final LocationDataSource.GetUserLocationCallback callback) {
         boolean noFineLocationPermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean noCoarseLocationPermission = ActivityCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         if (noFineLocationPermission && noCoarseLocationPermission) {
@@ -73,7 +73,7 @@ public class CoreRepository implements CoreDataSource {
                     if (location != null) {
                         callback.onDataLoaded(location);
                     } else {
-                        Log.e("CoreRepository", "mFusedLocationClient returned null");
+                        Log.e("LocationRepository", "mFusedLocationClient returned null");
                         callback.onDataNotAvailable();
                         Toast.makeText(activity.getApplicationContext(), R.string.core_no_location_toast, Toast.LENGTH_LONG).show();
                     }

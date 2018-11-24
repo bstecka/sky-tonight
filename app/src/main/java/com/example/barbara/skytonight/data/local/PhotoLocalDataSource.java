@@ -1,10 +1,11 @@
 package com.example.barbara.skytonight.data.local;
-
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import com.example.barbara.skytonight.data.PhotoDataSource;
 import com.example.barbara.skytonight.entity.ImageFile;
@@ -30,9 +31,20 @@ public class PhotoLocalDataSource implements PhotoDataSource {
         this.storageDir = storageDir;
     }
 
+    private PhotoLocalDataSource(Context context) {
+        this.storageDir = context.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    }
+
     public static PhotoLocalDataSource getInstance(File storageDir) {
         if (INSTANCE == null) {
             INSTANCE = new PhotoLocalDataSource(storageDir);
+        }
+        return INSTANCE;
+    }
+
+    public static PhotoLocalDataSource getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new PhotoLocalDataSource(context);
         }
         return INSTANCE;
     }

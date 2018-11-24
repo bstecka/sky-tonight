@@ -2,7 +2,7 @@
     <string name="app_name">SkyTonight</string>
     <string name="blank_fragment_news">This is a placeholder for the News fragment</string>
     <string name="blank_fragment_calendar">This is a placeholder for the Calendar fragment</string>
-    <string name="astro_object_alt">Altitude: %1$.1f</string>
+    <string name="astro_object_alt">Altitude: %1$.1f°</string>
     <string name="astro_object_az">Azimuth: </string>
     <string name="astro_event_peak">Peak: %1$s</string>
     <string name="astro_event_vis">Visibility:  %1$s</string>

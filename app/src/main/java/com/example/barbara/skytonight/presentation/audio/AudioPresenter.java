@@ -1,13 +1,11 @@
 package com.example.barbara.skytonight.presentation.audio;
 
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.AudioDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.AudioRepository;
-import com.example.barbara.skytonight.data.local.AudioLocalDataSource;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,8 +20,7 @@ public class AudioPresenter implements AudioContract.Presenter {
 
     public AudioPresenter(AudioContract.View mAudioView) {
         this.mAudioView = mAudioView;
-        File storageDir = mAudioView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DCIM);
-        this.audioRepository = AudioRepository.getInstance(AudioLocalDataSource.getInstance(storageDir));
+        this.audioRepository = RepositoryFactory.getAudioRepository(mAudioView.getContext());
     }
 
     @Override

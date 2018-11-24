@@ -1,4 +1,7 @@
 package com.example.barbara.skytonight.data.local;
+import android.content.Context;
+import android.os.Environment;
+
 import com.example.barbara.skytonight.data.AudioDataSource;
 
 import java.io.File;
@@ -22,9 +25,20 @@ public class AudioLocalDataSource implements AudioDataSource {
         this.storageDir = storageDir;
     }
 
+    private AudioLocalDataSource(Context context) {
+        this.storageDir = context.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DCIM);
+    }
+
     public static AudioLocalDataSource getInstance(File storageDir) {
         if (INSTANCE == null) {
             INSTANCE = new AudioLocalDataSource(storageDir);
+        }
+        return INSTANCE;
+    }
+
+    public static AudioLocalDataSource getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new AudioLocalDataSource(context);
         }
         return INSTANCE;
     }

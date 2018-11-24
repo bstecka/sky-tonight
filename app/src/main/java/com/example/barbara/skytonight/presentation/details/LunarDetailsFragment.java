@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.entity.LunarEclipseEvent;
-
-import java.util.Calendar;
 
 public class LunarDetailsFragment extends Fragment implements LunarDetailsContract.View {
 
@@ -40,6 +37,7 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
 
     @Override
     public void setMoonTimesTextView(String moonrise, String moonset) {
+        view.findViewById(R.id.title2).setVisibility(View.VISIBLE);
         TextView moonTimes = view.findViewById(R.id.moontimes);
         Context context = moonTimes.getContext();
         moonTimes.setText(context.getString(R.string.moontimes, moonrise, moonset));
@@ -99,7 +97,6 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
             partialEnds.setVisibility(View.GONE);
         }
         view.findViewById(R.id.title1).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.title2).setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -1,5 +1,4 @@
 package com.example.barbara.skytonight.presentation.news;
-import android.content.Context;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
@@ -8,8 +7,7 @@ import android.widget.TextView;
 import kevenchen.utils.WebImageView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.data.NewsDataSource;
-import com.example.barbara.skytonight.data.remote.ArticleFetchService;
-import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.NewsRepository;
 import com.example.barbara.skytonight.entity.ArticleContentWrapper;
 
@@ -22,8 +20,7 @@ public class ArticlePresenter implements ArticleContract.Presenter {
 
     public ArticlePresenter(ArticleContract.View mArticleView) {
         this.mArticleView = mArticleView;
-        Context context = mArticleView.getContext().getApplicationContext();
-        this.mNewsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(context), new ArticleFetchService(context));
+        this.mNewsRepository = RepositoryFactory.getNewsRepository(mArticleView.getContext());
     }
 
     @Override
