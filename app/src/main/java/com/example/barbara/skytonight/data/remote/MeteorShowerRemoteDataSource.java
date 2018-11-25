@@ -83,7 +83,7 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
                         Date peakDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("start_peak"));
                         peakCal.setTime(peakDate);
                         MeteorShowerEvent event = new MeteorShowerEvent(id, name, startCal, endCal, peakCal, zhr, RA, decl);
-                        event.calculateVisibility(latitude, longitude);
+                        event.isVisibilityLow(latitude, longitude);
                         events.add(event);
                     }
                 } catch (JSONException e) {
