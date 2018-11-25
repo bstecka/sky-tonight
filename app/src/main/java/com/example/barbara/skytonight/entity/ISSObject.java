@@ -28,22 +28,36 @@ public class ISSObject extends AstroObject {
     }
 
     private int getNextDuration(Calendar cal) {
-        int duration = 0;
-        for (int i = 0; i < durations.size() && i < flybyTimes.size() && duration == 0; i++){
-            Calendar flyby = flybyTimes.get(i);
-            if (flyby.getTimeInMillis() + duration * 1000 > cal.getTimeInMillis())
-                duration = durations.get(i);
+        Calendar nextFlyby = null;
+        int flybyIndex = 0, duration = 0;
+        for (int i = 0;  i < flybyTimes.size() && i < flybyTimes.size(); i++){
+            Calendar currentFlyby = flybyTimes.get(i);
+            if (currentFlyby.getTimeInMillis() + duration * 1000 > cal.getTimeInMillis()) {
+                if (nextFlyby == null) {
+                    nextFlyby = currentFlyby;
+                    flybyIndex = i;
+                }
+                else if (currentFlyby.getTimeInMillis() < nextFlyby.getTimeInMillis()) {
+                    nextFlyby = currentFlyby;
+                    flybyIndex = i;
+                }
+            }
         }
+        duration = durations.get(flybyIndex);
         return duration;
     }
 
     private Calendar getNextFlyby(Calendar cal) {
         Calendar nextFlyby = null;
-        for (int i = 0;  i < durations.size() && i < flybyTimes.size() && nextFlyby == null; i++){
+        for (int i = 0;  i < durations.size() && i < flybyTimes.size(); i++){
             int duration = durations.get(i);
-            Calendar flyby = flybyTimes.get(i);
-            if (flyby.getTimeInMillis() + duration * 1000 > cal.getTimeInMillis())
-                nextFlyby = flyby;
+            Calendar currentFlyby = flybyTimes.get(i);
+            if (currentFlyby.getTimeInMillis() + duration * 1000 > cal.getTimeInMillis()) {
+                if (nextFlyby == null)
+                    nextFlyby = currentFlyby;
+                else if (currentFlyby.getTimeInMillis() < nextFlyby.getTimeInMillis())
+                    nextFlyby = currentFlyby;
+            }
         }
         if (nextFlyby == null)
             nextFlyby = Calendar.getInstance();
