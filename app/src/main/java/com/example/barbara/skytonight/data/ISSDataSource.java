@@ -6,11 +6,11 @@ import java.util.Calendar;
 
 public interface ISSDataSource {
 
-    interface GetISSObject {
+    interface GetISSObjectCallback {
         void onDataLoaded(ISSObject issObject);
         void onDataNotAvailable();
     }
 
-    void getISSObject(Calendar time, double latitude, double longitude, GetISSObject callback);
+    void getISSObject(Calendar time, double latitude, double longitude, GetISSObjectCallback callback);
 
 }

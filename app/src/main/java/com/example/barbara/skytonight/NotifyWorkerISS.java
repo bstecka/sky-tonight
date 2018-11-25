@@ -58,7 +58,7 @@ public class NotifyWorkerISS extends Worker {
         mLocationRepository.getUserLocation(context, new LocationDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
-                mISSRepository.getISSObject(Calendar.getInstance(), location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObject() {
+                mISSRepository.getISSObject(Calendar.getInstance(), location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObjectCallback() {
                     @Override
                     public void onDataLoaded(ISSObject issObject) {
                         processISSObject(issObject);

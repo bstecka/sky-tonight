@@ -40,7 +40,7 @@ public class ISSRemoteDataSource implements ISSDataSource {
     }
 
     @Override
-    public void getISSObject(Calendar time, final double latitude, final double longitude, final ISSDataSource.GetISSObject callback) {
+    public void getISSObject(Calendar time, final double latitude, final double longitude, final GetISSObjectCallback callback) {
         final ArrayList<Calendar> flybyTimes = new ArrayList<>();
         final ArrayList<Integer> durations = new ArrayList<>();
         final ISSObject issObject = new ISSObject(flybyTimes, durations, time);
