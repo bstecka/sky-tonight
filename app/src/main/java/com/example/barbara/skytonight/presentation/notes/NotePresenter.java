@@ -1,12 +1,9 @@
 package com.example.barbara.skytonight.presentation.notes;
 
-import android.os.Environment;
 import com.example.barbara.skytonight.data.NoteDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.NoteRepository;
-import com.example.barbara.skytonight.data.local.NoteLocalDataSource;
 import com.example.barbara.skytonight.entity.NoteFile;
-
-import java.io.File;
 
 public class NotePresenter implements NoteContract.Presenter {
 
@@ -15,8 +12,7 @@ public class NotePresenter implements NoteContract.Presenter {
 
     public NotePresenter(NoteContract.View mNotesView) {
         this.mNotesView = mNotesView;
-        File storageDir = mNotesView.getViewActivity().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        this.noteRepository = NoteRepository.getInstance(NoteLocalDataSource.getInstance(storageDir));
+        this.noteRepository = RepositoryFactory.getNoteRepository(mNotesView.getContext());
     }
 
     @Override

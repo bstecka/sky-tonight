@@ -1,7 +1,5 @@
 package com.example.barbara.skytonight.entity;
 
-import android.util.Log;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -19,13 +17,6 @@ public class MeteorShowerEvent extends AstroEvent {
     private double rightAsc;
     private double decl;
     private boolean lowVisibility;
-
-    public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate) {
-        super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate, 0, 0);
-        this.peakDate = peakDate;
-        this.showerLongName = name + " Meteor Shower";
-        this.lowVisibility = false;
-    }
 
     public MeteorShowerEvent(int id, String name, Calendar startDate, Calendar endDate, Calendar peakDate, int zhr, double rightAsc, double decl) {
         super(id, "ms_" + name.toLowerCase().replace(' ', '_'), startDate, endDate, 0, 0);
@@ -55,7 +46,6 @@ public class MeteorShowerEvent extends AstroEvent {
             calendar.add(Calendar.HOUR_OF_DAY, 1);
         }
         double altAvg = (double) altSum/iterations;
-        //Log.e("M", getLongName() + " " + altAvg + " " + count + " " + maxAlt);
         if (altAvg < 15 || count < 4 || maxAlt < 20)
             lowVisibility = true;
     }
@@ -85,7 +75,8 @@ public class MeteorShowerEvent extends AstroEvent {
     }
 
     private double getGMST(Calendar date){
-        Calendar time = date;
+        Calendar time = Calendar.getInstance();
+        time.setTime(date.getTime());
         time.setTimeZone(TimeZone.getTimeZone("UT"));
         double H = time.get(Calendar.HOUR_OF_DAY) + time.get(Calendar.MINUTE)/60.0 + time.get(Calendar.SECOND)/3600.0;
         double JD = getJulianDate(time);

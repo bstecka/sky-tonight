@@ -2,6 +2,10 @@ package com.example.barbara.skytonight;
 
 public class AppConstants {
 
+    public static final CharSequence VERBOSE_NOTIFICATION_CHANNEL_NAME = "Verbose WorkManager Notifications";
+    public static String VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION = "Shows notifications whenever work starts";
+    public static final String CHANNEL_ID = "VERBOSE_NOTIFICATION" ;
+    public static final int NOTIFICATION_ID = 1;
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 99;
     public static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 98;
     public static double DEFAULT_LATITUDE = -27.104671;
@@ -17,4 +21,5 @@ public class AppConstants {
     public static String PREF_KEY_NOTIF_EVENTS = "notif-events";
     public static String LANG_PL = "pl";
     public static String LANG_EN = "en";
+
 }

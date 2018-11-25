@@ -1,10 +1,11 @@
 package com.example.barbara.skytonight.data.local;
-
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.AsyncTask;
+import android.os.Environment;
 
 import com.example.barbara.skytonight.data.PhotoDataSource;
 import com.example.barbara.skytonight.entity.ImageFile;
@@ -30,9 +31,20 @@ public class PhotoLocalDataSource implements PhotoDataSource {
         this.storageDir = storageDir;
     }
 
+    private PhotoLocalDataSource(Context context) {
+        this.storageDir = context.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    }
+
     public static PhotoLocalDataSource getInstance(File storageDir) {
         if (INSTANCE == null) {
             INSTANCE = new PhotoLocalDataSource(storageDir);
+        }
+        return INSTANCE;
+    }
+
+    public static PhotoLocalDataSource getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new PhotoLocalDataSource(context);
         }
         return INSTANCE;
     }
@@ -108,6 +120,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
     }
 
     private static class GetImageFilesTask extends AsyncTask<File[], ImageFile, ArrayList<ImageFile>> {
+
         GetImageFileCallback callback;
 
         GetImageFilesTask(GetImageFileCallback callback){
@@ -131,39 +144,37 @@ public class PhotoLocalDataSource implements PhotoDataSource {
         }
 
         private Matrix getRotationMatrix(String fileName) {
-            ExifInterface exif = null;
+            Matrix matrix = new Matrix();
             try {
-                exif = new ExifInterface(fileName);
+                ExifInterface exif = new ExifInterface(fileName);
+                switch (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)) {
+                    case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                        matrix.setScale(-1, 1);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_180:
+                        matrix.setRotate(180);
+                        break;
+                    case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                        matrix.setRotate(180);
+                        matrix.postScale(-1, 1);
+                        break;
+                    case ExifInterface.ORIENTATION_TRANSPOSE:
+                        matrix.setRotate(90);
+                        matrix.postScale(-1, 1);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_90:
+                        matrix.setRotate(90);
+                        break;
+                    case ExifInterface.ORIENTATION_TRANSVERSE:
+                        matrix.setRotate(-90);
+                        matrix.postScale(-1, 1);
+                        break;
+                    case ExifInterface.ORIENTATION_ROTATE_270:
+                        matrix.setRotate(-90);
+                        break;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            Matrix matrix = new Matrix();
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
-                    matrix.setScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    matrix.setRotate(180);
-                    break;
-                case ExifInterface.ORIENTATION_FLIP_VERTICAL:
-                    matrix.setRotate(180);
-                    matrix.postScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_TRANSPOSE:
-                    matrix.setRotate(90);
-                    matrix.postScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    matrix.setRotate(90);
-                    break;
-                case ExifInterface.ORIENTATION_TRANSVERSE:
-                    matrix.setRotate(-90);
-                    matrix.postScale(-1, 1);
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    matrix.setRotate(-90);
-                    break;
             }
             return matrix;
         }

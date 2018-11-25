@@ -13,6 +13,5 @@ public interface LunarEclipseDataSource {
     }
 
     void getLunarEclipses(double latitude, double longitude, GetLunarEclipsesCallback callback);
-
     void getLunarEclipses(double latitude, double longitude, int month, int year, GetLunarEclipsesCallback callback);
 }

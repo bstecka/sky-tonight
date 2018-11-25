@@ -22,6 +22,7 @@ import java.util.Locale;
 public class NotesRecyclerViewAdapter extends RecyclerView.Adapter<NotesRecyclerViewAdapter.ViewHolder> {
 
     private final List<NoteFile> mValues;
+
     public NotesRecyclerViewAdapter(List<NoteFile> items) {
         mValues = items;
     }

@@ -48,7 +48,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         final File file = mValues.get(position);
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
-        Date date = null;
+        Date date;
         try {
             date = sdf.parse(file.getName().substring(4, 18));
             calendar.setTime(date);
@@ -58,7 +58,6 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             e.printStackTrace();
             holder.mTextView.setText(file.getName());
         }
-        holder.mItem = String.valueOf(file.toString());
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,8 +76,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
             try {
-                FileInputStream fis = null;
-                fis = new FileInputStream(file.getAbsolutePath());
+                FileInputStream fis = new FileInputStream(file.getAbsolutePath());
                 mediaPlayer.setDataSource(fis.getFD());
                 mediaPlayer.prepare();
                 mediaPlayer.start();
@@ -96,13 +94,11 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             holder.mButton.setImageResource(R.drawable.ic_baseline_stop_24px);
             holder.isPlaying = true;
         }
-        else {
-            if (holder.isPlaying) {
-                mediaPlayer.release();
-                mediaPlayer = null;
-                holder.mButton.setImageResource(R.drawable.ic_play);
-                holder.isPlaying = false;
-            }
+        else if (holder.isPlaying) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+            holder.mButton.setImageResource(R.drawable.ic_play);
+            holder.isPlaying = false;
         }
     }
 
@@ -115,7 +111,6 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         final View mView;
         final FloatingActionButton mButton;
         final TextView mTextView;
-        public String mItem;
         private boolean isPlaying;
 
         public ViewHolder(final View view) {

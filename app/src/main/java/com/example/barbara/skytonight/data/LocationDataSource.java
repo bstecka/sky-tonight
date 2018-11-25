@@ -3,7 +3,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 
-public interface CoreDataSource {
+public interface LocationDataSource {
 
     interface GetUserLocationCallback {
         void onDataLoaded(Location location);

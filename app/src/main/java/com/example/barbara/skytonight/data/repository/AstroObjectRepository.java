@@ -1,17 +1,16 @@
 package com.example.barbara.skytonight.data.repository;
 
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
-import com.example.barbara.skytonight.data.TodaysDataSource;
 
 import java.util.Calendar;
 
-public class AstroObjectRepository implements TodaysDataSource {
+public class AstroObjectRepository implements AstroObjectsDataSource {
 
     private static AstroObjectRepository INSTANCE = null;
-    private final AstroObjectsDataSource mAstroObjectsRemoteDataSource;
+    private final AstroObjectsDataSource mAstroObjectsDataSource;
 
-    private AstroObjectRepository(AstroObjectsDataSource astroObjectsRemoteDataSource) {
-        mAstroObjectsRemoteDataSource = astroObjectsRemoteDataSource;
+    private AstroObjectRepository(AstroObjectsDataSource astroObjectsDataSource) {
+        mAstroObjectsDataSource = astroObjectsDataSource;
     }
 
     public static AstroObjectRepository getInstance(AstroObjectsDataSource astroObjectsRemoteDataSource) {
@@ -25,12 +24,8 @@ public class AstroObjectRepository implements TodaysDataSource {
         INSTANCE = null;
     }
 
-    private void getAstroObjectFromRemoteRepository(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
-        mAstroObjectsRemoteDataSource.getAstroObject(time, objectId, callback);
-    }
-
     @Override
     public void getAstroObject(Calendar time, int objectId, AstroObjectsDataSource.GetAstroObjectsCallback callback) {
-        getAstroObjectFromRemoteRepository(time, objectId, callback);
+        mAstroObjectsDataSource.getAstroObject(time, objectId, callback);
     }
 }

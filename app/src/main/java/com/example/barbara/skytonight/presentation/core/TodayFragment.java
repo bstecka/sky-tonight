@@ -70,32 +70,6 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
-    public int getTimeOverhead() {
-        int overhead = 0;
-        if (getView() != null) {
-            SeekBar seekBar = getView().findViewById(R.id.seekBar);
-            overhead = seekBar.getProgress();
-        }
-        return overhead;
-    }
-
-    private void updateTimeTextView() {
-        if (getView() != null) {
-            TextView textView = getView().findViewById(R.id.timeTextView);
-            if (getTimeOverhead() == 0)
-                textView.setText(R.string.time_now);
-            else if (getTimeOverhead() == 1)
-                textView.setText(R.string.time_now_one);
-            else {
-                Calendar time = Calendar.getInstance();
-                time.add(Calendar.HOUR, getTimeOverhead());
-                DateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                textView.setText(getString(R.string.time_from_now, getTimeOverhead(), sdf.format(time.getTime())));
-            }
-        }
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_today_list, container, false);
         SeekBar seekBar = view.findViewById(R.id.seekBar);
@@ -121,14 +95,22 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public int getTimeOverhead() {
+        int overhead = 0;
+        if (getView() != null) {
+            SeekBar seekBar = getView().findViewById(R.id.seekBar);
+            overhead = seekBar.getProgress();
+        }
+        return overhead;
+    }
+
+    @Override
     public void refreshLocationInAdapter(Location location) {
-        //Log.e("refreshLocationInAdapter", "mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
         mAdapter.setLatLng(location.getLatitude(), location.getLongitude());
     }
 
     @Override
     public void updateWeatherView(WeatherObject currentWeather) {
-        //Log.e("TodayFragment", currentWeather.toString());
         if (getView() != null && getContext() != null) {
             ConstraintLayout layout = getView().findViewById(R.id.weatherLayout);
             layout.setVisibility(View.VISIBLE);
@@ -194,10 +176,19 @@ public class TodayFragment extends Fragment implements TodayContract.View {
         void onListFragmentInteraction(String item);
     }
 
-    public static TodayFragment newInstance() {
-        TodayFragment fragment = new TodayFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+    private void updateTimeTextView() {
+        if (getView() != null) {
+            TextView textView = getView().findViewById(R.id.timeTextView);
+            if (getTimeOverhead() == 0)
+                textView.setText(R.string.time_now);
+            else if (getTimeOverhead() == 1)
+                textView.setText(R.string.time_now_one);
+            else {
+                Calendar time = Calendar.getInstance();
+                time.add(Calendar.HOUR, getTimeOverhead());
+                DateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                textView.setText(getString(R.string.time_from_now, getTimeOverhead(), sdf.format(time.getTime())));
+            }
+        }
     }
 }

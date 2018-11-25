@@ -1,12 +1,14 @@
 package com.example.barbara.skytonight.presentation.core;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.example.barbara.skytonight.data.RepositoryFactory;
+import com.example.barbara.skytonight.data.repository.LocationRepository;
 import com.example.barbara.skytonight.entity.AstroObject;
 import com.example.barbara.skytonight.data.AstroObjectsDataSource;
-import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.repository.CoreRepository;
+import com.example.barbara.skytonight.data.LocationDataSource;
 import com.example.barbara.skytonight.data.repository.AstroObjectRepository;
 import com.example.barbara.skytonight.data.ISSDataSource;
 import com.example.barbara.skytonight.entity.ISSObject;
@@ -15,31 +17,28 @@ import com.example.barbara.skytonight.data.WeatherDataSource;
 import com.example.barbara.skytonight.entity.WeatherObject;
 import com.example.barbara.skytonight.data.repository.WeatherRepository;
 import com.example.barbara.skytonight.entity.AstroConstants;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 public class TodayPresenter implements TodayContract.Presenter {
 
     private final AstroObjectRepository mAstroObjectRepository;
-    private final CoreRepository mCoreRepository;
+    private final LocationRepository mLocationRepository;
     private final WeatherRepository mWeatherRepository;
     private final ISSRepository mISSRepository;
     private final TodayContract.View mTodayView;
-    private ArrayList<WeatherObject> weatherObjects;
 
-    public TodayPresenter(AstroObjectRepository mAstroObjectRepository, CoreRepository mCoreRepository, WeatherRepository mWeatherRepository, ISSRepository mISSRepository, TodayContract.View mTodayView) {
-        this.mAstroObjectRepository = mAstroObjectRepository;
-        this.mCoreRepository = mCoreRepository;
-        this.mWeatherRepository = mWeatherRepository;
-        this.mISSRepository = mISSRepository;
+    public TodayPresenter(TodayContract.View mTodayView, Context context) {
         this.mTodayView = mTodayView;
+        this.mAstroObjectRepository = RepositoryFactory.getAstroObjectRepository(context);
+        this.mLocationRepository = RepositoryFactory.getLocationRepository();
+        this.mWeatherRepository = RepositoryFactory.getWeatherRepository(context);
+        this.mISSRepository = RepositoryFactory.getISSRepository(context);
     }
 
     @Override
     public void start() {
-        mCoreRepository.getUserLocation(mTodayView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback() {
+        mLocationRepository.getUserLocation(mTodayView.getCurrentActivity(), new LocationDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
                 Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
@@ -81,12 +80,10 @@ public class TodayPresenter implements TodayContract.Presenter {
 
     private void loadWeather(Location location){
         final Calendar time = Calendar.getInstance();
-        int overhead = mTodayView.getTimeOverhead();
-        time.add(Calendar.HOUR, overhead);
+        time.add(Calendar.HOUR, mTodayView.getTimeOverhead());
         mWeatherRepository.getWeatherObjects(location.getLatitude(), location.getLongitude(), new WeatherDataSource.GetWeatherObjectsCallback() {
             @Override
             public void onDataLoaded(List<WeatherObject> weatherObjectList) {
-                weatherObjects = (ArrayList<WeatherObject>) weatherObjectList;
                 int index = -1;
                 for (int i = 0; i < weatherObjectList.size() && index == -1; i++){
                     if (weatherObjectList.get(i).getTime().getTimeInMillis() >= time.getTimeInMillis())

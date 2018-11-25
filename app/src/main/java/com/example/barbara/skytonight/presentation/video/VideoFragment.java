@@ -27,7 +27,6 @@ public class VideoFragment extends Fragment implements VideoContract.View {
     static final int REQUEST_VIDEO_CAPTURE = 1;
     private VideoContract.Presenter mPresenter;
     private VideoRecyclerViewAdapter mAdapter;
-    private RecyclerView recyclerView;
     private ArrayList<File> fileList;
     private Calendar selectedDate;
     private View view;
@@ -58,7 +57,7 @@ public class VideoFragment extends Fragment implements VideoContract.View {
             }
         });
         mAdapter = new VideoRecyclerViewAdapter(fileList);
-        recyclerView = view.findViewById(R.id.videoRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.videoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         return view;

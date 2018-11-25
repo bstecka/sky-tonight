@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.data.local;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.barbara.skytonight.data.NoteDataSource;
@@ -27,9 +29,20 @@ public class NoteLocalDataSource implements NoteDataSource {
         this.storageDir = storageDir;
     }
 
+    private NoteLocalDataSource(Context context) {
+        this.storageDir = context.getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+    }
+
     public static NoteLocalDataSource getInstance(File storageDir) {
         if (INSTANCE == null) {
             INSTANCE = new NoteLocalDataSource(storageDir);
+        }
+        return INSTANCE;
+    }
+
+    public static NoteLocalDataSource getInstance(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new NoteLocalDataSource(context);
         }
         return INSTANCE;
     }

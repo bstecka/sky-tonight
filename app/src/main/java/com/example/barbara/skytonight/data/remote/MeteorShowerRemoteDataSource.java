@@ -49,8 +49,17 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
     }
 
     public void getMeteorShowers(final double latitude, final double longitude, int month, int year, final GetMeteorShowersCallback callback) {
-        final List<MeteorShowerEvent> events = new ArrayList<>();
         String url = this.url + "&month=" + month + "&year=" + year;
+        getMeteorShowers(url, latitude, longitude, callback);
+    }
+
+    @Override
+    public void getMeteorShowers(final double latitude, final double longitude, final GetMeteorShowersCallback callback) {
+        getMeteorShowers(url, latitude, longitude, callback);
+    }
+
+    private void getMeteorShowers(String url, final double latitude, final double longitude, final GetMeteorShowersCallback callback) {
+        final List<MeteorShowerEvent> events = new ArrayList<>();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -75,48 +84,6 @@ public class MeteorShowerRemoteDataSource implements MeteorShowerDataSource {
                         peakCal.setTime(peakDate);
                         MeteorShowerEvent event = new MeteorShowerEvent(id, name, startCal, endCal, peakCal, zhr, RA, decl);
                         event.calculateVisibility(latitude, longitude);
-                        events.add(event);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                    Log.e("RemoteDataSource", "ParseException");
-                }
-                callback.onDataLoaded(events);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("RemoteDataSource", error.toString());
-                callback.onDataNotAvailable();
-            }
-        });
-        queue.add(jsonObjectRequest);
-    }
-
-    @Override
-    public void getMeteorShowers(final double latitude, final double longitude, final GetMeteorShowersCallback callback) {
-        final List<MeteorShowerEvent> events = new ArrayList<>();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray arr = response.getJSONArray("events");
-                    for (int i = 0; i < arr.length(); i++) {
-                        JSONObject object = arr.getJSONObject(i);
-                        int id = object.getInt("id");
-                        String name = object.getString("name");
-                        Calendar startCal = Calendar.getInstance();
-                        Date startDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("start_date"));
-                        startCal.setTime(startDate);
-                        Calendar endCal = Calendar.getInstance();
-                        Date endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("end_date"));
-                        endCal.setTime(endDate);
-                        Calendar peakCal = Calendar.getInstance();
-                        Date peakDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.getDefault()).parse(object.getString("start_peak"));
-                        peakCal.setTime(peakDate);
-                        MeteorShowerEvent event = new MeteorShowerEvent(id, name, startCal, endCal, peakCal);
                         events.add(event);
                     }
                 } catch (JSONException e) {

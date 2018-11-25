@@ -11,7 +11,7 @@ public interface VideoDataSource {
     }
 
     File createFile(Calendar date);
-    void readFilesForDay(Calendar date, VideoDataSource.GetVideoFilesCallback callback);
-    void readFilesForWeek(final Calendar date, VideoDataSource.GetVideoFilesCallback callback);
-    void readFilesForMonth(int month, int year, VideoDataSource.GetVideoFilesCallback callback);
+    void readFilesForDay(Calendar date, GetVideoFilesCallback callback);
+    void readFilesForWeek(final Calendar date, GetVideoFilesCallback callback);
+    void readFilesForMonth(int month, int year, GetVideoFilesCallback callback);
 }

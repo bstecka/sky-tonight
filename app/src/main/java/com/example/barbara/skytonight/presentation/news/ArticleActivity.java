@@ -10,9 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.data.repository.NewsRepository;
-import com.example.barbara.skytonight.data.remote.ArticleFetchService;
-import com.example.barbara.skytonight.data.remote.NewsRemoteDataSource;
 import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
 
@@ -39,9 +36,7 @@ public class ArticleActivity extends AppCompatActivity {
         ArticleFragment articleFragment = (ArticleFragment) currentFragment;
         if (articleFragment == null) {
             articleFragment = new ArticleFragment();
-            NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-            newsRepository.setBaseUrl(getBaseUrlForLanguage());
-            articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
+            articleFragment.setPresenter(new ArticlePresenter(articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             articleFragment.setPubDate(articlePubDate);
@@ -50,12 +45,11 @@ public class ArticleActivity extends AppCompatActivity {
             transaction.commit();
         }
         else {
-            NewsRepository newsRepository = NewsRepository.getInstance(NewsRemoteDataSource.getInstance(this), new ArticleFetchService(this));
-            newsRepository.setBaseUrl(getBaseUrlForLanguage());
-            articleFragment.setPresenter(new ArticlePresenter(newsRepository, articleFragment));
+            articleFragment.setPresenter(new ArticlePresenter(articleFragment));
             articleFragment.setArticleUrl(articleUrl);
             articleFragment.setTitle(articleTitle);
             articleFragment.setPubDate(articlePubDate);
+            articleFragment.setBaseUrlForLanguage(getBaseUrlForLanguage());
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

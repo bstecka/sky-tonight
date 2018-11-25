@@ -1,8 +1,6 @@
 package com.example.barbara.skytonight.presentation.details;
-import android.util.Log;
-
 import com.example.barbara.skytonight.data.MoonSunDataSource;
-import com.example.barbara.skytonight.data.remote.MoonSunRemoteDataSource;
+import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.MoonSunDataRepository;
 import com.example.barbara.skytonight.entity.LunarEclipseEvent;
 import com.example.barbara.skytonight.entity.MoonSunData;
@@ -19,7 +17,7 @@ public class LunarDetailsPresenter implements LunarDetailsContract.Presenter {
 
     public LunarDetailsPresenter(LunarDetailsContract.View view, LunarEclipseEvent event) {
         this.view = view;
-        this.moonSunDataRepository = MoonSunDataRepository.getInstance(MoonSunRemoteDataSource.getInstance(view.getContext()));
+        this.moonSunDataRepository = RepositoryFactory.getMoonSunDataRepository(view.getContext());
         this.event = event;
     }
 
@@ -32,20 +30,18 @@ public class LunarDetailsPresenter implements LunarDetailsContract.Presenter {
             moonSunDataRepository.getMoonSunData(time, latitude, longitude, new MoonSunDataSource.GetMoonSunDataCallback(){
                 @Override
                 public void onDataLoaded(MoonSunData moonSunData) {
-                    Log.e("Presenter", moonSunData.toString());
-                    Log.e("Presenter", event.toString());
                     setDataInView(moonSunData, event);
                 }
 
                 @Override
                 public void onDataNotAvailable() {
-
+                    setDataInView(event);
                 }
             });
         }
     }
 
-    private void setDataInView(MoonSunData moonSunData, LunarEclipseEvent event) {
+    private void setDataInView(LunarEclipseEvent event) {
         view.setDateTextViews(getStringForCalendar(event.getPartialBegins()),
                 getStringForCalendar(event.getPartialEnds()),
                 getStringForCalendar(event.getTotalBegins()),
@@ -53,9 +49,13 @@ public class LunarDetailsPresenter implements LunarDetailsContract.Presenter {
                 getStringForCalendar(event.getPeak()),
                 getStringForCalendar(event.getPenunmbralBegins()),
                 getStringForCalendar(event.getPenunmbralEnds()));
+        view.setTitle(event.getName(), new SimpleDateFormat("MMM dd yyyy", Locale.getDefault()).format(event.getPeakDate()));
+    }
+
+    private void setDataInView(MoonSunData moonSunData, LunarEclipseEvent event) {
+        setDataInView(event);
         view.setMoonTimesTextView(getStringForCalendar(moonSunData.getMoonrise()), getStringForCalendar(moonSunData.getMoonset()));
         view.setSunTimesTextView(getStringForCalendar(moonSunData.getSunrise()), getStringForCalendar(moonSunData.getSunset()));
-        view.setTitle(event.getName(), new SimpleDateFormat("MMM dd yyyy", Locale.getDefault()).format(event.getPeakDate()));
     }
 
     private String getStringForCalendar(Calendar calendar) {

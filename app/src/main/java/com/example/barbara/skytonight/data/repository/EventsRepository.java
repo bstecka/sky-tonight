@@ -39,7 +39,8 @@ public class EventsRepository implements EventsDataSource {
         INSTANCE = null;
     }
 
-    private void getEventsFromRemoteRepository(final double latitude, final double longitude, int month, int year, final GetEventsCallback callback) {
+    @Override
+    public void getEvents(final double latitude, final double longitude, int month, int year, final GetEventsCallback callback) {
         final List<AstroEvent> eventList = new ArrayList<>();
         mSolarEclipseDataSource.getSolarEclipses(latitude, longitude, month, year, new SolarEclipseDataSource.GetSolarEclipsesCallback() {
             @Override
@@ -79,7 +80,8 @@ public class EventsRepository implements EventsDataSource {
         });
     }
 
-    private void getEventsFromRemoteRepository(final double latitude, final double longitude, final GetEventsCallback callback) {
+    @Override
+    public void getEvents(final double latitude, final double longitude, final GetEventsCallback callback) {
         final List<AstroEvent> eventList = new ArrayList<>();
         mSolarEclipseDataSource.getSolarEclipses(latitude, longitude, new SolarEclipseDataSource.GetSolarEclipsesCallback() {
             @Override
@@ -117,15 +119,5 @@ public class EventsRepository implements EventsDataSource {
                 callback.onDataNotAvailable();
             }
         });
-    }
-
-    @Override
-    public void getEvents(final double latitude, final double longitude, GetEventsCallback callback) {
-        getEventsFromRemoteRepository(latitude, longitude, callback);
-    }
-
-    @Override
-    public void getEvents(final double latitude, final double longitude, int month, int year, GetEventsCallback callback) {
-        getEventsFromRemoteRepository(latitude, longitude, month, year, callback);
     }
 }

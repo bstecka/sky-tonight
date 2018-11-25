@@ -31,8 +31,6 @@ import java.util.Locale;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import static com.example.barbara.skytonight.Constants.CHANNEL_ID;
-
 public class NotifyWorker extends Worker {
 
     private Context context;
@@ -80,10 +78,6 @@ public class NotifyWorker extends Worker {
         long timeWindowMilis = 60 * 1000 * 12; //NOTIFY 12 HOURS BEFORE THE EVENT
         long timeCushion = 60 * 1000;
         Calendar now = Calendar.getInstance();
-        /*Calendar nowTesting = Calendar.getInstance();
-        nowTesting.add(Calendar.DATE, 1);
-        nowTesting.add(Calendar.HOUR, 9);
-        now = nowTesting;*/
         for (int i = 0; i < events.size(); i++) {
             AstroEvent event = events.get(i);
             long diff = event.getPeakDate().getTime() - now.getTime().getTime();
@@ -114,11 +108,11 @@ public class NotifyWorker extends Worker {
 
     private void makeStatusNotification(String title, String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = Constants.VERBOSE_NOTIFICATION_CHANNEL_NAME;
-            String description = Constants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION;
+            CharSequence name = AppConstants.VERBOSE_NOTIFICATION_CHANNEL_NAME;
+            String description = AppConstants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION;
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel =
-                    new NotificationChannel(CHANNEL_ID, name, importance);
+                    new NotificationChannel(AppConstants.CHANNEL_ID, name, importance);
             channel.setDescription(description);
 
             NotificationManager notificationManager =
@@ -128,12 +122,12 @@ public class NotifyWorker extends Worker {
                 notificationManager.createNotificationChannel(channel);
             }
         }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, AppConstants.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[0]);
-        NotificationManagerCompat.from(context).notify(Constants.NOTIFICATION_ID, builder.build());
+        NotificationManagerCompat.from(context).notify(AppConstants.NOTIFICATION_ID, builder.build());
     }
 }

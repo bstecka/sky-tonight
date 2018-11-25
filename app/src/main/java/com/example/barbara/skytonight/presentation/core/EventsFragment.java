@@ -27,7 +27,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     private OnListFragmentInteractionListener mListener;
     private EventsRecyclerViewAdapter mAdapter;
     private Context context;
-    private RecyclerView recyclerView;
     private TextView noEventsTextView;
     private TextView monthTextView;
     ArrayList<AstroEvent> list;
@@ -52,41 +51,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             hideNoEventsText();
     }
 
-    private void displayNoEventsText(){
-        noEventsTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void hideNoEventsText(){
-        noEventsTextView.setVisibility(View.INVISIBLE);
-    }
-
-    private void goForwards() {
-        if (currentlyDisplayedMonth < 11) {
-            currentlyDisplayedMonth++;
-        }
-        else {
-            currentlyDisplayedMonth = 0;
-            currentlyDisplayedYear++;
-        }
-    }
-
-    private void goBackwards() {
-        if (currentlyDisplayedMonth > 0 && !(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH) )) {
-            currentlyDisplayedMonth--;
-        }
-        else if (currentlyDisplayedYear > Calendar.getInstance().get(Calendar.YEAR)){
-            currentlyDisplayedMonth = 11;
-            currentlyDisplayedYear--;
-        }
-    }
-
-    public static EventsFragment newInstance() {
-        EventsFragment fragment = new EventsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,24 +70,13 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         }
     }
 
-    private void setCurrentMonthTextView(){
-        try {
-            String resourceString = "month_" + currentlyDisplayedMonth;
-            int resourceStringId = context.getResources().getIdentifier(resourceString, "string", context.getPackageName());
-            monthTextView.setText(context.getResources().getString(resourceStringId, currentlyDisplayedYear));
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-            monthTextView.setText(R.string.month_unknown);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_events_list, container, false);
         context = view.getContext();
         noEventsTextView = view.findViewById(R.id.noEventsTextView);
         monthTextView = view.findViewById(R.id.monthTextView);
-        recyclerView = view.findViewById(R.id.photoRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mAdapter);
         AppCompatImageButton nextMonthButton = view.findViewById(R.id.nextMonthButton);
@@ -175,9 +128,6 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             displayNoEventsText();
         else
             hideNoEventsText();
-        for (int i = 0; i < list.size(); i++){
-            //Log.e("Fragment updateList", list.get(i).getLongName() + " " + list.get(i).getLatitude() + " " + list.get(i).getLongitude());
-        }
         mAdapter.notifyDataSetChanged();
     }
 
@@ -199,5 +149,44 @@ public class EventsFragment extends Fragment implements EventsContract.View {
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(AstroEvent event);
+    }
+
+    private void setCurrentMonthTextView(){
+        try {
+            String resourceString = "month_" + currentlyDisplayedMonth;
+            int resourceStringId = context.getResources().getIdentifier(resourceString, "string", context.getPackageName());
+            monthTextView.setText(context.getResources().getString(resourceStringId, currentlyDisplayedYear));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            monthTextView.setText(R.string.month_unknown);
+        }
+    }
+
+    private void displayNoEventsText(){
+        noEventsTextView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideNoEventsText(){
+        noEventsTextView.setVisibility(View.INVISIBLE);
+    }
+
+    private void goForwards() {
+        if (currentlyDisplayedMonth < 11) {
+            currentlyDisplayedMonth++;
+        }
+        else {
+            currentlyDisplayedMonth = 0;
+            currentlyDisplayedYear++;
+        }
+    }
+
+    private void goBackwards() {
+        if (currentlyDisplayedMonth > 0 && !(currentlyDisplayedYear == Calendar.getInstance().get(Calendar.YEAR) && currentlyDisplayedMonth == Calendar.getInstance().get(Calendar.MONTH) )) {
+            currentlyDisplayedMonth--;
+        }
+        else if (currentlyDisplayedYear > Calendar.getInstance().get(Calendar.YEAR)){
+            currentlyDisplayedMonth = 11;
+            currentlyDisplayedYear--;
+        }
     }
 }

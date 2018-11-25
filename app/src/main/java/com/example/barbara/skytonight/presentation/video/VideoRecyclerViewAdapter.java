@@ -40,10 +40,9 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final File file = mValues.get(position);
         final Context context = holder.mTextView.getContext();
-        holder.mItem = String.valueOf(file.toString());
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
-        Date date = null;
+        Date date;
         try {
             date = sdf.parse(file.getName().substring(4, 18));
             calendar.setTime(date);
@@ -82,7 +81,6 @@ public class VideoRecyclerViewAdapter extends RecyclerView.Adapter<VideoRecycler
         final View mView;
         final FloatingActionButton mButton;
         final TextView mTextView;
-        public String mItem;
 
         public ViewHolder(final View view) {
             super(view);

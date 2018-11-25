@@ -3,7 +3,7 @@
     <string name="app_name">SkyTonight</string>
     <string name="blank_fragment_news">Placeholder wiadomości</string>
     <string name="blank_fragment_calendar">Placeholder kalendarza</string>
-    <string name="astro_object_alt">Wysokość: %1$.1f</string>
+    <string name="astro_object_alt">Wysokość: %1$.1f°</string>
     <string name="astro_object_az">Azymut:</string>
     <string name="astro_event_peak">Kulminacja: %1$s</string>
     <string name="astro_event_vis">Widoczność: %1$s</string>

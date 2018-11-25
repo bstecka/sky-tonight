@@ -12,6 +12,5 @@ public interface EventsDataSource {
     }
 
     void getEvents(double latitude, double longitude, GetEventsCallback callback);
-
     void getEvents(double latitude, double longitude, int month, int year, GetEventsCallback callback);
 }

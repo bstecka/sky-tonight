@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.entity.NewsHeadline;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.VolleySingleton;
@@ -33,18 +34,19 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     private static NewsRemoteDataSource INSTANCE;
     private RequestQueue queue;
-    private String url;
+    private String baseUrl;
 
     private NewsRemoteDataSource() {}
 
     @Override
     public void setBaseUrl(String baseUrl) {
-        this.url = baseUrl;
+        this.baseUrl = baseUrl;
     }
 
     private NewsRemoteDataSource(Context context) {
         VolleySingleton singleton = VolleySingleton.getInstance(context);
         queue = singleton.getRequestQueue();
+        baseUrl = AppConstants.NEWS_URL_EN;
     }
 
     public static NewsRemoteDataSource getInstance(Context context) {
@@ -57,8 +59,8 @@ public class NewsRemoteDataSource implements NewsDataSource {
     @Override
     public void getNewsHeadlines(final GetNewsHeadlinesCallback callback) {
         final List<NewsHeadline> newsHeadlines = new ArrayList<>();
-        Log.e("getNewsHeadlines", url);
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        Log.e("getNewsHeadlines", baseUrl);
+        StringRequest request = new StringRequest(Request.Method.GET, baseUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 SAXReader reader = new SAXReader();
@@ -83,10 +85,11 @@ public class NewsRemoteDataSource implements NewsDataSource {
                         NewsHeadline newsHeadline = new NewsHeadline(title, link, calendar);
                         newsHeadlines.add(newsHeadline);
                     }
+                    callback.onDataLoaded(newsHeadlines);
                 } catch (DocumentException e) {
                     e.printStackTrace();
+                    callback.onDataNotAvailable();
                 }
-                callback.onDataLoaded(newsHeadlines);
             }
         },
         new Response.ErrorListener() {

@@ -12,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.barbara.skytonight.R;
-import com.example.barbara.skytonight.entity.LunarEclipseEvent;
-
-import java.util.Calendar;
 
 public class LunarDetailsFragment extends Fragment implements LunarDetailsContract.View {
 
@@ -40,6 +37,7 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
 
     @Override
     public void setMoonTimesTextView(String moonrise, String moonset) {
+        view.findViewById(R.id.title2).setVisibility(View.VISIBLE);
         TextView moonTimes = view.findViewById(R.id.moontimes);
         Context context = moonTimes.getContext();
         moonTimes.setText(context.getString(R.string.moontimes, moonrise, moonset));
@@ -76,8 +74,6 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
         TextView penBegins = view.findViewById(R.id.penunmbralBegins);
         TextView penEnds = view.findViewById(R.id.penunmbralEnds);
         Context context = partialBegins.getContext();
-        partialBegins.setText(context.getString(R.string.part_begins, partB));
-        partialEnds.setText(context.getString(R.string.part_ends, partE));
         greatest.setText(context.getString(R.string.greatest_eclipse, gr));
         if (tB.length() > 1) {
             totalBegins.setText(context.getString(R.string.total_begins, tB));
@@ -93,8 +89,14 @@ public class LunarDetailsFragment extends Fragment implements LunarDetailsContra
             penBegins.setVisibility(View.GONE);
             penEnds.setVisibility(View.GONE);
         }
+        if (partB.length() > 1) {
+            partialBegins.setText(context.getString(R.string.part_begins, partB));
+            partialEnds.setText(context.getString(R.string.part_ends, partE));
+        } else {
+            partialBegins.setVisibility(View.GONE);
+            partialEnds.setVisibility(View.GONE);
+        }
         view.findViewById(R.id.title1).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.title2).setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -6,10 +6,10 @@ import java.util.Calendar;
 public class MoonSunDataRepository implements MoonSunDataSource {
 
     private static MoonSunDataRepository INSTANCE = null;
-    private final MoonSunDataSource moonSunDataSource;
+    private final MoonSunDataSource mMoonDataSource;
 
-    private MoonSunDataRepository(MoonSunDataSource moonSunDataSource) {
-        this.moonSunDataSource = moonSunDataSource;
+    private MoonSunDataRepository(MoonSunDataSource mMoonDataSource) {
+        this.mMoonDataSource = mMoonDataSource;
     }
 
     public static MoonSunDataRepository getInstance(MoonSunDataSource moonSunDataSource) {
@@ -25,6 +25,6 @@ public class MoonSunDataRepository implements MoonSunDataSource {
 
     @Override
     public void getMoonSunData(Calendar time, double latitude, double longitude, GetMoonSunDataCallback callback) {
-        moonSunDataSource.getMoonSunData(time, latitude, longitude, callback);
+        mMoonDataSource.getMoonSunData(time, latitude, longitude, callback);
     }
 }

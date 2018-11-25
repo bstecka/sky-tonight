@@ -1,6 +1,5 @@
 package com.example.barbara.skytonight.presentation.core;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,25 +19,20 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     private OnListFragmentInteractionListener mListener;
     private NewsRecyclerViewAdapter mAdapter;
     private NewsContract.Presenter mPresenter;
-    private Context context;
-    private RecyclerView recyclerView;
     ArrayList<NewsHeadline> list;
 
     public NewsFragment() {
         list = new ArrayList<>();
     }
 
-    public static NewsFragment newInstance(String param1, String param2) {
-        NewsFragment fragment = new NewsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
+    }
+
+    public void setBaseUrlForLanguage(String baseUrl) {
+        mPresenter.setBaseUrl(baseUrl);
     }
 
     @Override
@@ -50,8 +44,8 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_news, container, false);
-        recyclerView = view.findViewById(R.id.newsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        RecyclerView recyclerView = view.findViewById(R.id.newsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -85,11 +79,6 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         this.list.clear();
         this.list.addAll(list);
         mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public Activity getCurrentActivity() {
-        return getActivity();
     }
 
     @Override

@@ -19,8 +19,6 @@ public class MoonSunData {
         this.sunset = sunset;
     }
 
-    public MoonSunData() {}
-
     public Calendar getMoonrise() {
         return moonrise;
     }

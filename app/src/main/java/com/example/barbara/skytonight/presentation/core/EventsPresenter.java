@@ -1,11 +1,13 @@
 package com.example.barbara.skytonight.presentation.core;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
+import com.example.barbara.skytonight.data.RepositoryFactory;
+import com.example.barbara.skytonight.data.repository.LocationRepository;
 import com.example.barbara.skytonight.entity.AstroEvent;
-import com.example.barbara.skytonight.data.CoreDataSource;
-import com.example.barbara.skytonight.data.repository.CoreRepository;
+import com.example.barbara.skytonight.data.LocationDataSource;
 import com.example.barbara.skytonight.data.EventsDataSource;
 import com.example.barbara.skytonight.data.repository.EventsRepository;
 import com.example.barbara.skytonight.AppConstants;
@@ -18,14 +20,20 @@ import java.util.List;
 
 public class EventsPresenter implements EventsContract.Presenter {
 
-    private final CoreRepository mCoreRepository;
+    private final LocationRepository mLocationRepository;
     private final EventsRepository mEventsRepository;
     private final EventsContract.View mEventsView;
 
-    public EventsPresenter(CoreRepository mCoreRepository, EventsRepository mEventsRepository, EventsContract.View mEventsView) {
-        this.mCoreRepository = mCoreRepository;
+    public EventsPresenter(LocationRepository mLocationRepository, EventsRepository mEventsRepository, EventsContract.View mEventsView) {
+        this.mLocationRepository = mLocationRepository;
         this.mEventsRepository = mEventsRepository;
         this.mEventsView = mEventsView;
+    }
+
+    public EventsPresenter(EventsContract.View mEventsView, Context context) {
+        this.mEventsView = mEventsView;
+        this.mLocationRepository = RepositoryFactory.getLocationRepository();
+        this.mEventsRepository = RepositoryFactory.getEventsRepository(context);
     }
 
     @Override
@@ -35,7 +43,7 @@ public class EventsPresenter implements EventsContract.Presenter {
 
     @Override
     public void showEventsForMonth(final int month, final int year){
-        mCoreRepository.getUserLocation(mEventsView.getCurrentActivity(), new CoreDataSource.GetUserLocationCallback()  {
+        mLocationRepository.getUserLocation(mEventsView.getCurrentActivity(), new LocationDataSource.GetUserLocationCallback()  {
             @Override
             public void onDataLoaded(Location location) {
                 getEventsForMonth(location.getLatitude(), location.getLongitude(), month, year);
@@ -76,28 +84,4 @@ public class EventsPresenter implements EventsContract.Presenter {
             }
         });
     }
-
-    /*private void getEvents(double latitude, double longitude) {
-        mEventsView.clearList();
-        mEventsRepository.getEvents(latitude, longitude, new EventsDataSource.GetEventsCallback() {
-            @Override
-            public void onDataLoaded(List<AstroEvent> events) {
-                ArrayList<AstroEvent> arrayList = (ArrayList<AstroEvent>) events;
-                if (arrayList.size() > 0) {
-                    Collections.sort(arrayList, new Comparator<AstroEvent>() {
-                        @Override
-                        public int compare(final AstroEvent object1, final AstroEvent object2) {
-                            return object1.getStartDate().compareTo(object2.getStartDate());
-                        }
-                    });
-                }
-                mEventsView.updateList(arrayList);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-                Log.e("EventsPresenter", "DataNotAvailable");
-            }
-        });
-    }*/
 }
