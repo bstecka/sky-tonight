@@ -153,16 +153,7 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         pagerAdapter.addFragments(todayFragment);
         pagerAdapter.addFragments(eventsFragment);
         pagerAdapter.addFragments(newsFragment);
-        newsFragment.setBaseUrlForLanguage(getBaseUrlForLanguage());
+        newsFragment.setBaseUrlForLanguage();
         return pagerAdapter;
-    }
-
-    private String getBaseUrlForLanguage() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
-        if (language.equals(AppConstants.LANG_PL))
-            return AppConstants.NEWS_URL_PL;
-        else
-            return AppConstants.NEWS_URL_EN;
     }
 }

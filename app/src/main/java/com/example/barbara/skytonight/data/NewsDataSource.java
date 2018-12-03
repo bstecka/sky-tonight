@@ -13,11 +13,6 @@ public interface NewsDataSource {
         void onDataNotAvailable();
     }
 
-    interface GetNewsArticleCallback {
-        void onDataLoaded(ArrayList<ArticleContentWrapper> articleChunks);
-        void onDataNotAvailable();
-    }
-
     void getNewsHeadlines(GetNewsHeadlinesCallback callback);
     void setBaseUrl(String baseUrl);
 }

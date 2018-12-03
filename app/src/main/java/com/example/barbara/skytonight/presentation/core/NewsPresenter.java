@@ -1,7 +1,11 @@
 package com.example.barbara.skytonight.presentation.core;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.NewsRepository;
@@ -14,20 +18,17 @@ public class NewsPresenter implements NewsContract.Presenter {
 
     private final NewsRepository mNewsRepository;
     private final NewsContract.View mNewsView;
-
-    public NewsPresenter(NewsRepository mNewsRepository, NewsContract.View mNewsView) {
-        this.mNewsRepository = mNewsRepository;
-        this.mNewsView = mNewsView;
-    }
+    private final Context context;
 
     public NewsPresenter(NewsContract.View mNewsView, Context context) {
         this.mNewsRepository = RepositoryFactory.getNewsRepository(context);
         this.mNewsView = mNewsView;
+        this.context = context;
     }
 
     @Override
-    public void setBaseUrl(String baseUrl) {
-        this.mNewsRepository.setBaseUrl(baseUrl);
+    public void setUrlsForLanguage() {
+        this.mNewsRepository.setUrls(getUrlsForLanguage());
     }
 
     @Override
@@ -49,5 +50,14 @@ public class NewsPresenter implements NewsContract.Presenter {
                 Log.e("NewsPresenter", "DataNotAvailable");
             }
         });
+    }
+
+    private String[] getUrlsForLanguage() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String language = preferences.getString(AppConstants.PREF_KEY_LANG, AppConstants.LANG_EN);
+        if (language.equals(AppConstants.LANG_PL))
+            return AppConstants.NEWS_PL;
+        else
+            return AppConstants.NEWS_EN;
     }
 }

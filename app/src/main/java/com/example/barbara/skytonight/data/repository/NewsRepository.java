@@ -4,43 +4,40 @@ import android.content.Context;
 import android.util.Log;
 import com.example.barbara.skytonight.data.NewsDataSource;
 import com.example.barbara.skytonight.entity.NewsHeadline;
-import com.example.barbara.skytonight.data.remote.ArticleFetchService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class NewsRepository implements NewsDataSource {
 
     private static NewsRepository INSTANCE = null;
     private NewsDataSource mNewsDataSource;
-    private ArticleFetchService mArticleFetchService;
+    private String[] urls;
 
-    private NewsRepository(NewsDataSource mNewsDataSource, ArticleFetchService mArticleFetchService) {
+    private NewsRepository(NewsDataSource mNewsDataSource) {
         this.mNewsDataSource = mNewsDataSource;
-        this.mArticleFetchService = mArticleFetchService;
     }
 
-    private NewsRepository(NewsDataSource mNewsDataSource, Context context) {
-        this.mNewsDataSource = mNewsDataSource;
-        this.mArticleFetchService = new ArticleFetchService(context);
+    public void setUrls(String[] urls) {
+        this.urls = urls;
+        mNewsDataSource.setBaseUrl(urls[0]);
     }
 
-    @Override
-    public void setBaseUrl(String baseUrl) {
-        mArticleFetchService.setBaseUrl(baseUrl);
-        mNewsDataSource.setBaseUrl(baseUrl);
+    public void setBaseUrl(String url) {
+        mNewsDataSource.setBaseUrl(url);
     }
 
-    public static NewsRepository getInstance(NewsDataSource newsDataSource, ArticleFetchService articleFetchService) {
+    public static NewsRepository getInstance(NewsDataSource newsDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new NewsRepository(newsDataSource, articleFetchService);
+            INSTANCE = new NewsRepository(newsDataSource);
         }
         return INSTANCE;
     }
 
     public static NewsRepository getInstance(NewsDataSource newsDataSource, Context context) {
         if (INSTANCE == null) {
-            INSTANCE = new NewsRepository(newsDataSource, context);
+            INSTANCE = new NewsRepository(newsDataSource);
         }
         return INSTANCE;
     }
@@ -52,22 +49,21 @@ public class NewsRepository implements NewsDataSource {
     @Override
     public void getNewsHeadlines(final GetNewsHeadlinesCallback callback) {
         final List<NewsHeadline> list = new ArrayList<>();
-        mNewsDataSource.getNewsHeadlines(new GetNewsHeadlinesCallback() {
-            @Override
-            public void onDataLoaded(List<NewsHeadline> newsHeadlines) {
-                list.addAll(newsHeadlines);
-                callback.onDataLoaded(list);
-            }
+        for (String url : urls) {
+            mNewsDataSource.setBaseUrl(url);
+            mNewsDataSource.getNewsHeadlines(new GetNewsHeadlinesCallback() {
+                @Override
+                public void onDataLoaded(List<NewsHeadline> newsHeadlines) {
+                    list.addAll(newsHeadlines);
+                    callback.onDataLoaded(list);
+                }
 
-            @Override
-            public void onDataNotAvailable() {
-                Log.e("NewsRepository", "onDataNotAvailable");
-                callback.onDataNotAvailable();
-            }
-        });
-    }
-
-    public void getNewsArticle(String url, GetNewsArticleCallback callback) {
-        mArticleFetchService.getNewsArticle(url, callback);
+                @Override
+                public void onDataNotAvailable() {
+                    Log.e("NewsRepository", "onDataNotAvailable");
+                    callback.onDataNotAvailable();
+                }
+            });
+        }
     }
 }
