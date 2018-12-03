@@ -10,7 +10,7 @@ import com.example.barbara.skytonight.entity.WeatherObject;
 
 public class TodayContract {
 
-    interface View extends BaseView<Presenter> {
+    public interface View extends BaseView<Presenter> {
         void clearList();
         void updateList(AstroObject object);
         void deleteFromList(int id);
@@ -20,6 +20,6 @@ public class TodayContract {
         int getTimeOverhead();
     }
 
-    interface Presenter extends BasePresenter {
+    public interface Presenter extends BasePresenter {
     }
 }

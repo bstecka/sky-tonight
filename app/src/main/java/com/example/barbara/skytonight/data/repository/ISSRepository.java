@@ -25,7 +25,7 @@ public class ISSRepository implements ISSDataSource {
     }
     
     @Override
-    public void getISSObject(Calendar time, double latitude, double longitude, GetISSObject callback) {
+    public void getISSObject(Calendar time, double latitude, double longitude, GetISSObjectCallback callback) {
         mISSDataSource.getISSObject(time, latitude, longitude, callback);
     }
 }

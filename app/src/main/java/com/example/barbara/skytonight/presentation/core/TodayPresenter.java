@@ -36,6 +36,14 @@ public class TodayPresenter implements TodayContract.Presenter {
         this.mISSRepository = RepositoryFactory.getISSRepository(context);
     }
 
+    public TodayPresenter(TodayContract.View mTodayView, AstroObjectRepository astroObjectRepository, LocationRepository locationRepository, WeatherRepository weatherRepository, ISSRepository issRepository) {
+        this.mTodayView = mTodayView;
+        this.mAstroObjectRepository = astroObjectRepository;
+        this.mLocationRepository = locationRepository;
+        this.mWeatherRepository = weatherRepository;
+        this.mISSRepository = issRepository;
+    }
+
     @Override
     public void start() {
         mLocationRepository.getUserLocation(mTodayView.getCurrentActivity(), new LocationDataSource.GetUserLocationCallback() {
@@ -43,8 +51,8 @@ public class TodayPresenter implements TodayContract.Presenter {
             public void onDataLoaded(Location location) {
                 Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                 mTodayView.refreshLocationInAdapter(location);
-                loadISS(location);
-                loadWeather(location);
+                loadISS(location.getLatitude(), location.getLongitude());
+                loadWeather(location.getLatitude(), location.getLongitude());
                 showObjects();
             }
 
@@ -61,11 +69,11 @@ public class TodayPresenter implements TodayContract.Presenter {
         });
     }
 
-    private void loadISS(Location location){
+    public void loadISS(double latitude, double longitude){
         final Calendar time = Calendar.getInstance();
         int overhead = mTodayView.getTimeOverhead();
         time.add(Calendar.HOUR, overhead);
-        mISSRepository.getISSObject(time, location.getLatitude(), location.getLongitude(), new ISSDataSource.GetISSObject() {
+        mISSRepository.getISSObject(time, latitude, longitude, new ISSDataSource.GetISSObjectCallback() {
             @Override
             public void onDataLoaded(ISSObject issObject) {
                 mTodayView.updateList(issObject);
@@ -73,15 +81,15 @@ public class TodayPresenter implements TodayContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                Log.e("TodayPresenter", "ISS station not available");
+                //Log.e("TodayPresenter", "ISS station not available");
             }
         });
     }
 
-    private void loadWeather(Location location){
+    public void loadWeather(double latitude, double longitude){
         final Calendar time = Calendar.getInstance();
         time.add(Calendar.HOUR, mTodayView.getTimeOverhead());
-        mWeatherRepository.getWeatherObjects(location.getLatitude(), location.getLongitude(), new WeatherDataSource.GetWeatherObjectsCallback() {
+        mWeatherRepository.getWeatherObjects(latitude, longitude, new WeatherDataSource.GetWeatherObjectsCallback() {
             @Override
             public void onDataLoaded(List<WeatherObject> weatherObjectList) {
                 int index = -1;
@@ -95,12 +103,12 @@ public class TodayPresenter implements TodayContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                Log.e("TodayPresenter", "Weather not available");
+                //Log.e("TodayPresenter", "Weather not available");
             }
         });
     }
 
-    private void showObjects(){
+    public void showObjects(){
         final Calendar time = Calendar.getInstance();
         int overhead = mTodayView.getTimeOverhead();
         time.add(Calendar.HOUR, overhead);
@@ -114,7 +122,7 @@ public class TodayPresenter implements TodayContract.Presenter {
                 }
                 @Override
                 public void onDataNotAvailable() {
-                    Log.e("TodayPresenter", "AstroObject not available");
+                    //Log.e("TodayPresenter", "AstroObject not available");
                 }
             });
         }

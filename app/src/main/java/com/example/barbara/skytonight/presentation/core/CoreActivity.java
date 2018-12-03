@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.AstroEvent;
+import com.example.barbara.skytonight.presentation.InfoActivity;
 import com.example.barbara.skytonight.presentation.settings.SettingsActivity;
 import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
@@ -47,7 +48,6 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
         viewPager.setPagingEnabled(false);
         viewPager.setAdapter(createBottomBarAdapter());
         viewPager.setCurrentItem(1);
-        toolbar.setTitle(R.string.core_option_today);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -89,6 +89,10 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 this.startActivity(intent);
                 finish();
+                return true;
+            case R.id.action_info:
+                Intent intent2 = new Intent(this, InfoActivity.class);
+                this.startActivity(intent2);
                 return true;
         }
         return super.onOptionsItemSelected(item);
