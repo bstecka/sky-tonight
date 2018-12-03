@@ -26,8 +26,7 @@ public class AstroUnitConverter {
         zhor = x * Math.cos(Math.toRadians(latitude)) + z * Math.sin(Math.toRadians(latitude));
         double azimuth = Math.toDegrees(Math.atan2(yhor, xhor)) + 180;
         double altitude = Math.toDegrees(Math.asin(zhor));
-        System.out.println(azimuth + " " + altitude);
-        return new Pair<>((Double) azimuth, (Double) altitude);
+        return new Pair<>(azimuth, altitude);
     }
 
     public double getJulianDate(Calendar date) {
@@ -68,7 +67,6 @@ public class AstroUnitConverter {
             JD0 = Math.floor(JD) - 0.5;
         double D0 = JD0 - AstroConstants.JD_2000JAN01;
         double GMST = (GMST_CONST + GMST_FACTOR_D0 * D0 + GMST_FACTOR_H * H) * 15;
-        System.out.println(GMST);
         return GMST % 360.0;
     }
 

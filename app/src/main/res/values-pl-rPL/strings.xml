@@ -189,4 +189,13 @@
     <string name="detail_title_3">Mapa widoczności:</string>
     <string name="moontimes">Księżyc wschodzi o %1$s i zachodzi o %2$s.</string>
     <string name="suntimes">Słońce zachodzi o %1$s.</string>
+    <string name="app_info">SkyTonight 1.0 2018</string>
+    <string name="app_author">Autorem jest Barbara Stecka, Politechnika Wrocławska</string>
+    <string name="app_acknowledgements_note">Autor składa podziękowania osobom i organizacjom udostępniającym dane astronomiczne wykorzystywane przez tę aplikację.</string>
+    <string name="app_acknowledgements">Podziękowania:</string>
+    <string name="app_eclipse">Prognozy zaćmień - Fred Espenak, www.eclipsewise.com.</string>
+    <string name="app_meteor">Dane deszczy meteorów - International Meteor Organization, www.imo.net.</string>
+    <string name="app_images">Astrofotografie dostarczone przez NASA, www.nasa.gov. Wykorzystywane zgodnie z warunkami Media Usage Guidelines, do celów edukacyjnych/informacyjnych.</string>
+    <string name="app_weather">Prognoza pogody dostarczana przez OpenWeatherMap, www.openweathermap.org.</string>
+    <string name="app_news">Wiadomości astronomiczne odsyłają do www.space.com oraz www.astronet.pl.</string>
 </resources>

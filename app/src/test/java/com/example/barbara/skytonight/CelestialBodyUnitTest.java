@@ -62,24 +62,25 @@ public class CelestialBodyUnitTest {
     }
 
     @Test
-    public void phaseId_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void phaseIdWaxing_isCorrect() {
+        CelestialBody celestialBody = new CelestialBody(1, "test", 0, 0, 25, true, null);
+        assertEquals(3, celestialBody.getPhaseId());
     }
 
     @Test
+    public void phaseIdWaning_isCorrect() {
+        CelestialBody celestialBody = new CelestialBody(1, "test", 0, 0, 25, false, null);
+        assertEquals(17, celestialBody.getPhaseId());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void azAltForNull_throwsIllegalArgumentException() {
-        boolean caughtException = false;
         final double RA = 245.4713;
         final double DECL = -21.2128;
         final double LATITUDE = 51.1125;
         final double LONGITUDE = 17.1216;
         CelestialBody celestialBody = new CelestialBody(1, "test", RA, DECL, 0, false, null);
-        try {
-            double az = celestialBody.getAzimuth(LATITUDE, LONGITUDE);
-        } catch (IllegalArgumentException e) {
-            caughtException = true;
-        }
-        assertTrue(caughtException);
+        celestialBody.getAzimuth(LATITUDE, LONGITUDE);
     }
 
 }
