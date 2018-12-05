@@ -47,6 +47,13 @@ public class AudioPresenter implements AudioContract.Presenter {
     }
 
     @Override
+    public void deleteFiles(List<File> fileList){
+        audioRepository.deleteFiles(fileList);
+        mAudioView.clearListInView();
+        readFiles();
+    }
+
+    @Override
     public void stopRecording() {
         mRecorder.stop();
         mRecorder.release();

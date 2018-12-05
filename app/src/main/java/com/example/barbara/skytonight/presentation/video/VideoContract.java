@@ -10,6 +10,7 @@ import com.example.barbara.skytonight.presentation.BaseView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class VideoContract {
 
@@ -28,5 +29,6 @@ public class VideoContract {
 
     interface Presenter extends BasePresenter {
         void dispatchTakeVideoIntent();
+        void deleteFiles(List<File> fileList);
     }
 }

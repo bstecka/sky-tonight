@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +27,20 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
 
     private final List<File> mValues;
     private MediaPlayer mediaPlayer;
+    private final List<File> selectedFiles;
+    private boolean inDeleteMode = false;
 
     public AudioRecyclerViewAdapter(List<File> items) {
         mValues = items;
+        selectedFiles = new ArrayList<>();
+    }
+
+    public void clearSelectedFiles() {
+        selectedFiles.clear();
+    }
+
+    public List<File> getSelectedFiles() {
+        return selectedFiles;
     }
 
     public void releaseMediaPlayer() {
@@ -34,6 +48,10 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             mediaPlayer.release();
             mediaPlayer = null;
         }
+    }
+
+    public void setDeleteMode(boolean value) {
+        inDeleteMode = value;
     }
 
     @NonNull
@@ -46,6 +64,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final File file = mValues.get(position);
+        CheckBox checkBox = holder.mView.findViewById(R.id.checkBox);
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
         Date date;
@@ -58,7 +77,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             e.printStackTrace();
             holder.mTextView.setText(file.getName());
         }
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClick(holder, file);
@@ -68,6 +87,20 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
             @Override
             public void onClick(View v) {
                 onItemClick(holder, file);
+            }
+        });
+        if (inDeleteMode)
+            holder.mView.findViewById(R.id.checkBox).setVisibility(View.VISIBLE);
+        else
+            holder.mView.findViewById(R.id.checkBox).setVisibility(View.INVISIBLE);
+        checkBox.setChecked(false);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    selectedFiles.add(file);
+                else
+                    selectedFiles.remove(file);
             }
         });
     }
