@@ -199,4 +199,5 @@
     <string name="app_weather">Weather forecast by OpenWeatherMap, www.openweathermap.org.</string>
     <string name="app_news">Astronomy news links to www.space.com, www.astronomy.com, www.space24.pl and www.astronet.pl.</string>
     <string name="topbar_menu_delete">Delete items</string>
+    <string name="topbar_menu_cancel">Cancel</string>
 </resources>

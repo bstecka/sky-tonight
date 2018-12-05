@@ -5,6 +5,10 @@
         android:title="@string/topbar_menu_delete"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/action_cancel"
+        android:title="@string/topbar_menu_cancel"
+        app:showAsAction="never"/>
+
     <item android:id="@+id/action_delete_selected"
         android:title="@string/topbar_menu_delete"
         app:showAsAction="always"/>

@@ -76,7 +76,7 @@ public class SimplePhotoRecyclerViewAdapter extends RecyclerView.Adapter<SimpleP
             holder.mTextView.setText(imageFile.getFile().getName());
         }
         holder.mImageView.setImageBitmap(imageFile.getBitmap());
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onItemClick(context, imageFile.getFile());

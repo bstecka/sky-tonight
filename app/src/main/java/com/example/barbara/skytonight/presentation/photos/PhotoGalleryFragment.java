@@ -83,16 +83,26 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
         inflater.inflate(R.menu.topbar_list_menu, menu);
         MenuItem deleteSelectedAction = menu.findItem(R.id.action_delete_selected);
         deleteSelectedAction.setVisible(false);
+        MenuItem cancel = menu.findItem(R.id.action_cancel);
+        cancel.setVisible(false);
         super.onCreateOptionsMenu(menu,inflater);
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu){
         MenuItem deleteSelectedAction = menu.findItem(R.id.action_delete_selected);
-        if (inDeleteMode)
+        MenuItem cancelAction = menu.findItem(R.id.action_cancel);
+        MenuItem enterDeleteMode = menu.findItem(R.id.action_delete);
+        if (inDeleteMode) {
             deleteSelectedAction.setVisible(true);
-        else
+            cancelAction.setVisible(true);
+            enterDeleteMode.setVisible(false);
+        }
+        else {
             deleteSelectedAction.setVisible(false);
+            cancelAction.setVisible(false);
+            enterDeleteMode.setVisible(true);
+        }
         super.onPrepareOptionsMenu(menu);
     }
 
@@ -116,6 +126,14 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
                 List<File> selectedFiles = mAdapter.getSelectedFiles();
                 Log.e("onOptionsItemSelected", selectedFiles.size() + "");
                 mPresenter.deleteFiles(selectedFiles);
+                return true;
+            case R.id.action_cancel:
+                inDeleteMode = false;
+                if (getActivity() != null)
+                    getActivity().invalidateOptionsMenu();
+                mAdapter.setDeleteMode(false);
+                mAdapter.clearSelectedFiles();
+                mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
                 return true;
         }
         return super.onOptionsItemSelected(item);
