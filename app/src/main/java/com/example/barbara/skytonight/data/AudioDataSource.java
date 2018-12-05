@@ -15,4 +15,5 @@ public interface AudioDataSource {
     void readFilesForDay(Calendar date, GetAudioFilesCallback callback);
     void readFilesForWeek(final Calendar date, GetAudioFilesCallback callback);
     void readFilesForMonth(int month, int year, GetAudioFilesCallback callback);
+    void deleteFiles(List<File> fileList);
 }

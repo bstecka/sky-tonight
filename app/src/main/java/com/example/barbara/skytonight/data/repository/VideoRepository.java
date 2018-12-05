@@ -4,6 +4,7 @@ import com.example.barbara.skytonight.data.VideoDataSource;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 public class VideoRepository implements VideoDataSource {
 
@@ -39,5 +40,10 @@ public class VideoRepository implements VideoDataSource {
     @Override
     public void readFilesForMonth(int month, int year, GetVideoFilesCallback callback) {
         mVideoDataSource.readFilesForMonth(month, year, callback);
+    }
+
+    @Override
+    public void deleteFiles(List<File> fileList) {
+        mVideoDataSource.deleteFiles(fileList);
     }
 }
