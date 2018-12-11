@@ -9,6 +9,7 @@ import com.example.barbara.skytonight.presentation.BaseView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AudioContract {
 
@@ -27,5 +28,6 @@ public class AudioContract {
     interface Presenter extends BasePresenter {
         void startRecording();
         void stopRecording();
+        void deleteFiles(List<File> fileList);
     }
 }

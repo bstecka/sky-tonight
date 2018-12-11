@@ -42,6 +42,13 @@ public class VideoPresenter implements VideoContract.Presenter {
         }
     }
 
+    @Override
+    public void deleteFiles(List<File> fileList){
+        videoRepository.deleteFiles(fileList);
+        mVideoView.clearListInView();
+        readFiles();
+    }
+
     private void readFilesForDay(Calendar selectedDate) {
         final ArrayList<File> list = mVideoView.getFileList();
         videoRepository.readFilesForDay(selectedDate, new VideoDataSource.GetVideoFilesCallback() {

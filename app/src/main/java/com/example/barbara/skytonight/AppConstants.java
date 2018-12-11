@@ -15,11 +15,15 @@ public class AppConstants {
             "batch=1&COMMAND='%d'&MAKE_EPHEM='YES'&TABLE_TYPE='OBSERVER'" +
             "&START_TIME='%s'&STOP_TIME='%s'&STEP_SIZE='30m'&CSV_FORMAT='YES'";
     public static String NEWS_URL_PL = "https://news.astronet.pl/index.php/feed/";
+    public static String NEWS_URL_PL_2 = "https://www.space24.pl/feed/?category=188&type=&limit=10";
     public static String NEWS_URL_EN = "https://www.space.com/home/feed/site.xml";
+    public static String NEWS_URL_EN_2 = "http://www.astronomy.com/rss/news";
     public static String PREF_KEY_LANG = "language";
     public static String PREF_KEY_NOTIF_ISS = "notif-iss";
     public static String PREF_KEY_NOTIF_EVENTS = "notif-events";
     public static String LANG_PL = "pl";
     public static String LANG_EN = "en";
+    public static String[] NEWS_PL = {NEWS_URL_PL, NEWS_URL_PL_2};
+    public static String[] NEWS_EN = {NEWS_URL_EN, NEWS_URL_EN_2};
 
 }

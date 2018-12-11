@@ -4,6 +4,7 @@ import com.example.barbara.skytonight.data.AudioDataSource;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 public class AudioRepository implements AudioDataSource {
 
@@ -39,5 +40,10 @@ public class AudioRepository implements AudioDataSource {
     @Override
     public void readFilesForMonth(int month, int year, GetAudioFilesCallback callback) {
         mAudioDataSource.readFilesForMonth(month, year, callback);
+    }
+
+    @Override
+    public void deleteFiles(List<File> fileList) {
+        mAudioDataSource.deleteFiles(fileList);
     }
 }

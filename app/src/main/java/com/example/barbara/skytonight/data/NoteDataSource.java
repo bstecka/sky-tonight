@@ -2,7 +2,9 @@ package com.example.barbara.skytonight.data;
 
 import com.example.barbara.skytonight.entity.NoteFile;
 
+import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 public interface NoteDataSource {
 
@@ -14,5 +16,6 @@ public interface NoteDataSource {
     void readNotesForDay(Calendar selectedDate, GetNoteFilesCallback callback);
     void readNotesForWeek(final Calendar selectedDate, GetNoteFilesCallback callback);
     void readNotesForMonth(int month, int year, GetNoteFilesCallback callback);
+    void deleteFiles(List<File> fileList);
     void saveFile(Calendar date, String content);
 }

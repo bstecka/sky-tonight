@@ -32,7 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
             settingsFragment = new SettingsFragment();
             settingsFragment.setPresenter(new SettingsPresenter(settingsFragment));
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.articleFragment, settingsFragment);
+            transaction.add(R.id.settingsFragment, settingsFragment);
             transaction.commit();
         } else {
             settingsFragment.setPresenter(new SettingsPresenter(settingsFragment));

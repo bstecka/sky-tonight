@@ -1,5 +1,6 @@
 package com.example.barbara.skytonight.presentation.video;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,10 +11,16 @@ import android.view.MenuItem;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.AppConstants;
 import com.example.barbara.skytonight.presentation.core.CalendarContract;
+import com.example.barbara.skytonight.presentation.util.LocaleHelper;
 
 import java.util.Calendar;
 
 public class VideoActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.onAttach(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

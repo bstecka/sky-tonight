@@ -12,6 +12,7 @@ import com.example.barbara.skytonight.entity.ImageFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
 
@@ -40,6 +41,13 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
                 mPhotoGalleryView.startPhotoActivity(takePictureIntent);
             }
         }
+    }
+
+    @Override
+    public void deleteFiles(List<File> fileList){
+        photoRepository.deleteFiles(fileList);
+        mPhotoGalleryView.clearListInView();
+        readPhotosAsync();
     }
 
     private void readPhotosForDay(Calendar selectedDate) {

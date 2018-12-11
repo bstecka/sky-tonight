@@ -69,12 +69,16 @@ public class NewsRemoteDataSource implements NewsDataSource {
                     Document document = reader.read(in);
                     List<Node> list = document.selectNodes("//channel/item");
                     int count = 0;
+                    SimpleDateFormat sdf;
+                    if (list.get(0).selectSingleNode(".//pubDate").getText().contains(" CET"))
+                        sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.UK);
+                    else
+                        sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
                     for (Iterator<Node> iter = list.iterator(); iter.hasNext() && count < 20; count++) {
                         Element element = (Element) iter.next();
                         String title = element.selectSingleNode(".//title").getText();
                         String link = element.selectSingleNode(".//link").getText();
                         String pubDate = element.selectSingleNode(".//pubDate").getText();
-                        SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
                         Calendar calendar = Calendar.getInstance();
                         try {
                             calendar.setTime(sdf.parse(pubDate));

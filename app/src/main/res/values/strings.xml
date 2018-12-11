@@ -57,7 +57,7 @@
     <string name="core_option_news">News</string>
     <string name="core_option_events">Events</string>
     <string name="topbar_menu_settings">Settings</string>
-    <string name="topbar_menu_info">Acknowledgments</string>
+    <string name="topbar_menu_info">Acknowledgements</string>
     <string name="core_no_location_toast">Location not enabled - displaying the sky over the Easter Island.</string>
     <string name="core_yes_location_toast">Your location was successfully updated.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -197,5 +197,7 @@
     <string name="app_meteor">Meteor Shower data by International Meteor Organization, www.imo.net.</string>
     <string name="app_images">Space photos provided by NASA, www.nasa.gov. Used in accordance with Media Usage Guidelines, for educational/informational purposes.</string>
     <string name="app_weather">Weather forecast by OpenWeatherMap, www.openweathermap.org.</string>
-    <string name="app_news">Astronomy news links to www.space.com and www.astronet.pl.</string>
+    <string name="app_news">Astronomy news link to www.space.com, www.astronomy.com, www.space24.pl and www.astronet.pl.</string>
+    <string name="topbar_menu_delete">Delete items</string>
+    <string name="topbar_menu_cancel">Cancel</string>
 </resources>

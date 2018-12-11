@@ -10,6 +10,7 @@ import com.example.barbara.skytonight.entity.NoteFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class NotesListPresenter implements NotesListContract.Presenter {
 
@@ -24,6 +25,13 @@ public class NotesListPresenter implements NotesListContract.Presenter {
 
     @Override
     public void start() {
+        mNotesListView.clearListInView();
+        readNotesAsync();
+    }
+
+    @Override
+    public void deleteFiles(List<File> fileList){
+        noteRepository.deleteFiles(fileList);
         mNotesListView.clearListInView();
         readNotesAsync();
     }

@@ -85,10 +85,6 @@
             android:name=".presentation.video.FullVideoActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".presentation.news.ArticleActivity"
-            android:label="@string/title_activity_article"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Primary" />
-        <activity
             android:name=".presentation.settings.SettingsActivity"
             android:label="@string/title_activity_setting" />
         <activity

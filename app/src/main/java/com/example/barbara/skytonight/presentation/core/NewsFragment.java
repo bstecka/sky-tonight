@@ -13,6 +13,8 @@ import com.example.barbara.skytonight.entity.AstroEvent;
 import com.example.barbara.skytonight.entity.NewsHeadline;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class NewsFragment extends Fragment implements NewsContract.View {
 
@@ -31,8 +33,12 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         mPresenter.start();
     }
 
-    public void setBaseUrlForLanguage(String baseUrl) {
-        mPresenter.setBaseUrl(baseUrl);
+    public void setBaseUrlForLanguage() {
+        mPresenter.setUrlsForLanguage();
+    }
+
+    public Context getViewContext() {
+        return getContext();
     }
 
     @Override
@@ -77,6 +83,14 @@ public class NewsFragment extends Fragment implements NewsContract.View {
     @Override
     public void updateList(ArrayList<NewsHeadline> list) {
         this.list.clear();
+        Collections.sort(list, new Comparator<NewsHeadline>() {
+            @Override
+            public int compare(NewsHeadline o1, NewsHeadline o2) {
+                if (o1.getPubDate().getTimeInMillis() == o2.getPubDate().getTimeInMillis())
+                    return 0;
+                return o1.getPubDate().getTimeInMillis() > o2.getPubDate().getTimeInMillis() ? -1 : 1;
+            }
+        });
         this.list.addAll(list);
         mAdapter.notifyDataSetChanged();
     }

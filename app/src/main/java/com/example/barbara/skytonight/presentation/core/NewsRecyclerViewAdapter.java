@@ -2,6 +2,7 @@ package com.example.barbara.skytonight.presentation.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.NewsHeadline;
 import com.example.barbara.skytonight.presentation.core.NewsFragment.OnListFragmentInteractionListener;
-import com.example.barbara.skytonight.presentation.news.ArticleActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -46,10 +46,8 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ArticleActivity.class);
-                intent.putExtra("articleUrl", newsObject.getUrl());
-                intent.putExtra("articleTitle", newsObject.getTitle());
-                intent.putExtra("articlePubDate", sdf.format(newsObject.getPubDate().getTime()));
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(newsObject.getUrl()));
                 context.startActivity(intent);
             }
         });

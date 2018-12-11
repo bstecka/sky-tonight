@@ -4,6 +4,7 @@ import com.example.barbara.skytonight.data.PhotoDataSource;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 public class PhotoRepository implements PhotoDataSource {
 
@@ -19,6 +20,11 @@ public class PhotoRepository implements PhotoDataSource {
             INSTANCE = new PhotoRepository(photoDataSource);
         }
         return INSTANCE;
+    }
+
+    @Override
+    public void deleteFiles(List<File> fileList){
+        mPhotoDataSource.deleteFiles(fileList);
     }
 
     @Override
