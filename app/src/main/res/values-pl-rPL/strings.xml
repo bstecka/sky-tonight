@@ -198,4 +198,6 @@
     <string name="app_images">Astrofotografie dostarczone przez NASA, www.nasa.gov. Wykorzystywane zgodnie z warunkami Media Usage Guidelines, do celów edukacyjnych/informacyjnych.</string>
     <string name="app_weather">Prognoza pogody dostarczana przez OpenWeatherMap, www.openweathermap.org.</string>
     <string name="app_news">Wiadomości astronomiczne odsyłają do www.space.com, www.astronomy.com, www.space24.pl oraz www.astronet.pl.</string>
+    <string name="topbar_menu_delete">Usuń pliki</string>
+    <string name="topbar_menu_cancel">Przerwij</string>
 </resources>

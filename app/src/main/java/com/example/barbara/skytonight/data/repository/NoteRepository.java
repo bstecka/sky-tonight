@@ -2,7 +2,9 @@ package com.example.barbara.skytonight.data.repository;
 
 import com.example.barbara.skytonight.data.NoteDataSource;
 
+import java.io.File;
 import java.util.Calendar;
+import java.util.List;
 
 public class NoteRepository implements NoteDataSource {
 
@@ -38,5 +40,10 @@ public class NoteRepository implements NoteDataSource {
     @Override
     public void readNotesForMonth(int month, int year, GetNoteFilesCallback callback) {
         mNoteDataSource.readNotesForMonth(month, year, callback);
+    }
+
+    @Override
+    public void deleteFiles(List<File> fileList) {
+        mNoteDataSource.deleteFiles(fileList);
     }
 }

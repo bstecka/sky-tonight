@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AudioLocalDataSource implements AudioDataSource {
@@ -58,6 +59,26 @@ public class AudioLocalDataSource implements AudioDataSource {
             e.printStackTrace();
         }
         return file;
+    }
+
+    @Override
+    public void deleteFiles(final List<File> fileList) {
+        if (storageDir != null) {
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    boolean found = false;
+                    for (int i = 0; i < fileList.size() && !found; i++){
+                        if (fileList.get(i).getName().contains(name))
+                            found = true;
+                    }
+                    return found;
+                }
+            });
+            for (File file : filteredFiles) {
+                file.delete();
+            }
+        }
     }
 
     @Override
