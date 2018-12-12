@@ -72,7 +72,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
             }
         });
         mAdapter = new SimplePhotoRecyclerViewAdapter(photoList);
-        RecyclerView recyclerView = view.findViewById(R.id.eventRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.photoRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         return view;
@@ -197,6 +197,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Toast.makeText(view.getContext(), R.string.photo_saved, Toast.LENGTH_SHORT).show();
+            Log.e("onActivityResult", photoList.toString());
             photoList.clear();
             mAdapter.notifyDataSetChanged();
         }

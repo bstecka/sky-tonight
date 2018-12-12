@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
+
 import com.example.barbara.skytonight.data.PhotoDataSource;
 import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.PhotoRepository;
@@ -71,6 +73,7 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
         photoRepository.readPhotosForWeek(selectedDate, new PhotoDataSource.GetImageFileCallback() {
             @Override
             public void onDataLoaded(ImageFile file) {
+                Log.e("readPhotosForWeek", file.getBitmap().toString());
                 list.add(file);
                 mPhotoGalleryView.refreshListInView();
             }

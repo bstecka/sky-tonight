@@ -52,11 +52,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
     }
 
     public File createImageFile(Calendar selectedDate) {
-        String timeStamp;
-        if (selectedDate != null)
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
-        else
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File file;
         try {
@@ -112,6 +108,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
                     try {
                         Date date = sdf.parse(name.substring(5, 13));
+                        Log.e("DataSource", date.toString());
                         calendar.setTime(date);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -216,6 +213,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
         @Override
         protected void onProgressUpdate(ImageFile... values) {
             callback.onDataLoaded(values[0]);
+            Log.e("onProgress", values[0].getFile().toString());
         }
     }
 }

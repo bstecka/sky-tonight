@@ -18,9 +18,9 @@
             android:id="@+id/astroEventNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Solar Eclipse"
+            android:text=""
             android:textColor="@color/colorPrimary"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -36,7 +36,7 @@
             android:id="@+id/astroEventDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2011-01-04"
+            android:text=""
             android:textSize="14dp"
             android:textStyle="normal|bold" />
 
@@ -44,7 +44,7 @@
             android:id="@+id/astroEventPeakTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Peak time: 08:51:42"
+            android:text=""
             android:textSize="12dp"
             android:textStyle="normal" />
 
@@ -61,7 +61,7 @@
             android:id="@+id/astroEventVisTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Real visibility: partial"
+            android:text=""
             android:textSize="12dp"
             android:textStyle="normal"
             android:visibility="gone" />
