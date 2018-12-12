@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.example.barbara.skytonight.R;
 import com.example.barbara.skytonight.entity.AstroEvent;
 import com.example.barbara.skytonight.entity.NewsHeadline;
@@ -65,6 +67,26 @@ public class NewsFragment extends Fragment implements NewsContract.View {
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void showErrorText() {
+        if (getView() != null && getContext() != null) {
+            View rView = getView().findViewById(R.id.newsRecyclerView);
+            rView.setVisibility(View.INVISIBLE);
+            TextView textView = getView().findViewById(R.id.errorTextView);
+            textView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideErrorText() {
+        if (getView() != null && getContext() != null) {
+            View rView = getView().findViewById(R.id.newsRecyclerView);
+            rView.setVisibility(View.VISIBLE);
+            TextView textView = getView().findViewById(R.id.errorTextView);
+            textView.setVisibility(View.INVISIBLE);
         }
     }
 

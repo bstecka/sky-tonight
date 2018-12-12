@@ -76,6 +76,7 @@ public class TodayPresenter implements TodayContract.Presenter {
         mISSRepository.getISSObject(time, latitude, longitude, new ISSDataSource.GetISSObjectCallback() {
             @Override
             public void onDataLoaded(ISSObject issObject) {
+                mTodayView.hideErrorText();
                 mTodayView.updateList(issObject);
             }
 
@@ -98,6 +99,7 @@ public class TodayPresenter implements TodayContract.Presenter {
                         index = i;
                 }
                 WeatherObject next = weatherObjectList.get(index);
+                mTodayView.hideErrorText();
                 mTodayView.updateWeatherView(next);
             }
 
@@ -118,11 +120,13 @@ public class TodayPresenter implements TodayContract.Presenter {
             mAstroObjectRepository.getAstroObject(time, id, new AstroObjectsDataSource.GetAstroObjectsCallback() {
                 @Override
                 public void onDataLoaded(AstroObject object) {
+                    mTodayView.hideErrorText();
                     mTodayView.updateList(object);
                 }
                 @Override
                 public void onDataNotAvailable() {
                     //Log.e("TodayPresenter", "AstroObject not available");
+                    mTodayView.showErrorText();
                 }
             });
         }

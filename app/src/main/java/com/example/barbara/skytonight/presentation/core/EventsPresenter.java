@@ -75,11 +75,13 @@ public class EventsPresenter implements EventsContract.Presenter {
                         }
                     });
                 }
+                mEventsView.hideErrorText();
                 mEventsView.updateList(arrayList);
             }
 
             @Override
             public void onDataNotAvailable() {
+                mEventsView.showErrorText();
                 Log.e("EventsPresenter", "DataNotAvailable");
             }
         });

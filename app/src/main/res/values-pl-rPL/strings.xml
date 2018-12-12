@@ -200,4 +200,5 @@
     <string name="app_news">Wiadomości astronomiczne odsyłają do www.space.com, www.astronomy.com, www.space24.pl oraz www.astronet.pl.</string>
     <string name="topbar_menu_delete">Usuń pliki</string>
     <string name="topbar_menu_cancel">Przerwij</string>
+    <string name="no_internet">Brak połączenia z internetem</string>
 </resources>

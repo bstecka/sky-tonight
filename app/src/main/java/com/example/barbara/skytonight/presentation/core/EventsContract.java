@@ -13,6 +13,8 @@ public interface EventsContract {
     interface View extends BaseView<Presenter> {
         void updateList(ArrayList<AstroEvent> list);
         void clearList();
+        void showErrorText();
+        void hideErrorText();
         Activity getCurrentActivity();
     }
 

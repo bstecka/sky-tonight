@@ -72,7 +72,7 @@ public class PhotoGalleryFragment extends Fragment implements PhotoGalleryContra
             }
         });
         mAdapter = new SimplePhotoRecyclerViewAdapter(photoList);
-        RecyclerView recyclerView = view.findViewById(R.id.photoRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.eventRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(mAdapter);
         return view;

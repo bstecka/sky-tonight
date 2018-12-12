@@ -76,7 +76,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         context = view.getContext();
         noEventsTextView = view.findViewById(R.id.noEventsTextView);
         monthTextView = view.findViewById(R.id.monthTextView);
-        RecyclerView recyclerView = view.findViewById(R.id.photoRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.eventRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(mAdapter);
         AppCompatImageButton nextMonthButton = view.findViewById(R.id.nextMonthButton);
@@ -112,6 +112,28 @@ public class EventsFragment extends Fragment implements EventsContract.View {
         });
         setCurrentMonthTextView();
         return view;
+    }
+
+    @Override
+    public void showErrorText() {
+        if (getView() != null && getContext() != null) {
+            View rView = getView().findViewById(R.id.eventRecyclerView);
+            rView.setVisibility(View.INVISIBLE);
+            TextView textView = getView().findViewById(R.id.noEventsTextView);
+            textView.setText(R.string.no_internet);
+            textView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideErrorText() {
+        if (getView() != null && getContext() != null) {
+            View rView = getView().findViewById(R.id.eventRecyclerView);
+            rView.setVisibility(View.VISIBLE);
+            TextView textView = getView().findViewById(R.id.noEventsTextView);
+            textView.setText(R.string.no_events_text);
+            textView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

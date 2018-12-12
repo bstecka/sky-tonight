@@ -16,6 +16,8 @@ public class TodayContract {
         void deleteFromList(int id);
         void refreshLocationInAdapter(Location location);
         void updateWeatherView(WeatherObject currentWeather);
+        void showErrorText();
+        void hideErrorText();
         Activity getCurrentActivity();
         int getTimeOverhead();
     }
