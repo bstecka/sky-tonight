@@ -16,6 +16,8 @@ public interface EventsContract {
         void showErrorText();
         void hideErrorText();
         Activity getCurrentActivity();
+        int getCurrentlyDisplayedMonth();
+        int getCurrentlyDisplayedYear();
     }
 
     interface Presenter extends BasePresenter {

@@ -38,7 +38,9 @@ public class EventsPresenter implements EventsContract.Presenter {
 
     @Override
     public void start() {
-        showEventsForMonth(Calendar.getInstance().get(Calendar.MONTH)+1, Calendar.getInstance().get(Calendar.YEAR));
+        int currentMonth = mEventsView.getCurrentlyDisplayedMonth();
+        int currentYear = mEventsView.getCurrentlyDisplayedYear();
+        showEventsForMonth(currentMonth+1, currentYear);
     }
 
     @Override

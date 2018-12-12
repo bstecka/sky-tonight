@@ -35,14 +35,14 @@ public class EventsFragment extends Fragment implements EventsContract.View {
 
     public EventsFragment() {
         list = new ArrayList<>();
+        this.currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
+        this.currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
-        currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
-        currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
         setCurrentMonthTextView();
         int itemCount = mAdapter.getItemCount();
         if (itemCount < 1)
@@ -68,6 +68,14 @@ public class EventsFragment extends Fragment implements EventsContract.View {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+    }
+
+    public int getCurrentlyDisplayedMonth() {
+        return currentlyDisplayedMonth;
+    }
+
+    public int getCurrentlyDisplayedYear() {
+        return currentlyDisplayedYear;
     }
 
     @Override
