@@ -48,16 +48,28 @@ public class NoteLocalDataSource implements NoteDataSource {
         return INSTANCE;
     }
 
-    public void saveFile(Calendar date, String content) {
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date.getTime());
+    @Override
+    public void replaceFile(Calendar date, final String filePath, String content) {
+        Log.e("NoteLocal", "REPLACE CALLED");
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date.getTime());
         if (storageDir != null) {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
-                public boolean accept(File dir, String name) { return name.contains(timeStamp); }
+                public boolean accept(File dir, String name) { return name.contains(filePath); }
             });
             for (File file : filteredFiles)
                 file.delete();
         }
+        try {
+            File file = createTextFile(date);
+            writeStringAsFile(file, content);
+        } catch (IOException e) {
+            Log.e("NoteLocalDataSource", "IOException");
+        }
+    }
+
+    @Override
+    public void saveFile(Calendar date, String content) {
         try {
             File file = createTextFile(date);
             writeStringAsFile(file, content);
@@ -109,6 +121,19 @@ public class NoteLocalDataSource implements NoteDataSource {
                 @Override
                 public boolean accept(File dir, String name) {
                     return name.contains(timeStamp);
+                }
+            });
+            for (File file : filteredFiles)
+                new NoteLocalDataSource.ReadTextFileTask(file, callback).execute(file);
+        }
+    }
+
+    public void readSingleNote(final String fileName, GetNoteFilesCallback callback) {
+        if (storageDir != null) {
+            File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
+                @Override
+                public boolean accept(File dir, String name) {
+                    return name.contains(fileName);
                 }
             });
             for (File file : filteredFiles)

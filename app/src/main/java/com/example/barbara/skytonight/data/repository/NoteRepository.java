@@ -23,8 +23,18 @@ public class NoteRepository implements NoteDataSource {
     }
 
     @Override
+    public void replaceFile(Calendar date, String filePath, String content) {
+        mNoteDataSource.replaceFile(date, filePath, content);
+    }
+
+    @Override
     public void saveFile(Calendar date, String content) {
         mNoteDataSource.saveFile(date, content);
+    }
+
+    @Override
+    public void readSingleNote(String fileName, GetNoteFilesCallback callback) {
+        mNoteDataSource.readSingleNote(fileName, callback);
     }
 
     @Override

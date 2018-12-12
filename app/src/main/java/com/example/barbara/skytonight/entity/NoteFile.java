@@ -1,8 +1,9 @@
 package com.example.barbara.skytonight.entity;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class NoteFile {
+public class NoteFile implements Serializable {
 
     private String content;
     private File file;

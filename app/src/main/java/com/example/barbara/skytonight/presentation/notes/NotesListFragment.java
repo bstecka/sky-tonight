@@ -136,6 +136,7 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
         intent.putExtra("type", CalendarContract.TAB_TYPE_DAY);
         intent.putExtra("year", Calendar.getInstance().get(Calendar.YEAR));
         intent.putExtra("dayOfYear", Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        intent.putExtra("create", CalendarContract.CREATE_MODE);
         startActivity(intent);
     }
 

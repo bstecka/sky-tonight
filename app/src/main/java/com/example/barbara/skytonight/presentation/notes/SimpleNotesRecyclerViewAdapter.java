@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,9 +64,9 @@ public class SimpleNotesRecyclerViewAdapter extends RecyclerView.Adapter<SimpleN
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
         Date date;
         try {
-            date = sdf.parse(file.getName().substring(4, 18));
+            date = sdf.parse(file.getName().substring(4, 17));
             calendar.setTime(date);
-            SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy", Locale.getDefault());
+            SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy, HH:mm", Locale.getDefault());
             holder.mTextView.setText(readable.format(calendar.getTime()));
         } catch (ParseException e) {
             e.printStackTrace();

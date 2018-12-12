@@ -300,12 +300,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void onNotesButtonClick() {
-        TabLayout tabLayout = view.findViewById(R.id.tabs);
-        Intent intent;
-        if (tabLayout.getSelectedTabPosition() == 0)
-            intent = new Intent(getActivity(), NoteActivity.class);
-        else
-            intent = new Intent(getActivity(), NotesListActivity.class);
+        Intent intent = new Intent(getActivity(), NotesListActivity.class);
         startActivityOnMenuButton(intent);
     }
 

@@ -1,5 +1,7 @@
 package com.example.barbara.skytonight.presentation.notes;
 
+import android.util.Log;
+
 import com.example.barbara.skytonight.data.NoteDataSource;
 import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.NoteRepository;
@@ -17,25 +19,33 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void start() {
-        readFiles();
+        readFile();
     }
 
-    private void readFiles() {
-        noteRepository.readNotesForDay(mNotesView.getSelectedDate(), new NoteDataSource.GetNoteFilesCallback() {
-            @Override
-            public void onDataLoaded(NoteFile file) {
-                mNotesView.setText(file.getContent());
-            }
+    private void readFile() {
+        if (!mNotesView.isCreateModeEnabled()) {
+            noteRepository.readSingleNote(mNotesView.getFilePath(), new NoteDataSource.GetNoteFilesCallback() {
+                @Override
+                public void onDataLoaded(NoteFile file) {
+                    mNotesView.setText(file.getContent());
+                }
 
-            @Override
-            public void onDataNotAvailable() {
+                @Override
+                public void onDataNotAvailable() {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void saveFile(String text) {
-        noteRepository.saveFile(mNotesView.getSelectedDate(), text);
+        if (mNotesView.isCreateModeEnabled()) {
+            Log.e("SAVEFILE", "enabled");
+            noteRepository.saveFile(mNotesView.getSelectedDate(), text);
+            mNotesView.exitCreateMode();
+        }
+        else
+            noteRepository.replaceFile(mNotesView.getSelectedDate(), mNotesView.getFilePath(), text);
         mNotesView.setText(text);
     }
 }
