@@ -40,22 +40,13 @@ public class LunarDetailsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Serializable serializable = bundle.getSerializable("event");
-            if (serializable instanceof LunarEclipseEvent) {
+            if (serializable instanceof LunarEclipseEvent)
                 event = (LunarEclipseEvent) serializable;
-                Log.e("LunarDetails", event.getLongName());
-            }
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.lunarDetailsFragment);
         LunarDetailsFragment fragment = (LunarDetailsFragment) currentFragment;
-        if (fragment == null) {
-            fragment = new LunarDetailsFragment();
-            fragment.setPresenter(new LunarDetailsPresenter(fragment, event));
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.lunarDetailsFragment, fragment);
-            transaction.commit();
-        }
-        else {
+        if (fragment != null) {
             fragment.setPresenter(new LunarDetailsPresenter(fragment, event));
         }
         if (getActionBar() != null) {

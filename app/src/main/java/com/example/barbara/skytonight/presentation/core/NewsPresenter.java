@@ -42,11 +42,13 @@ public class NewsPresenter implements NewsContract.Presenter {
             @Override
             public void onDataLoaded(List<NewsHeadline> newsHeadlines) {
                 ArrayList<NewsHeadline> arrayList = (ArrayList<NewsHeadline>) newsHeadlines;
+                mNewsView.hideErrorText();
                 mNewsView.updateList(arrayList);
             }
 
             @Override
             public void onDataNotAvailable() {
+                mNewsView.showErrorText();
                 Log.e("NewsPresenter", "DataNotAvailable");
             }
         });

@@ -95,6 +95,26 @@ public class TodayFragment extends Fragment implements TodayContract.View {
     }
 
     @Override
+    public void showErrorText() {
+        if (getView() != null && getContext() != null) {
+            View rView = getView().findViewById(R.id.astroObjectRecyclerView);
+            rView.setVisibility(View.INVISIBLE);
+            TextView textView = getView().findViewById(R.id.errorTextView);
+            textView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void hideErrorText() {
+        if (getView() != null && getContext() != null) {
+            View rView = getView().findViewById(R.id.astroObjectRecyclerView);
+            rView.setVisibility(View.VISIBLE);
+            TextView textView = getView().findViewById(R.id.errorTextView);
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
     public int getTimeOverhead() {
         int overhead = 0;
         if (getView() != null) {

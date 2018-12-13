@@ -30,5 +30,6 @@ public class VideoContract {
     interface Presenter extends BasePresenter {
         void dispatchTakeVideoIntent();
         void deleteFiles(List<File> fileList);
+        void deleteLastSavedFile();
     }
 }

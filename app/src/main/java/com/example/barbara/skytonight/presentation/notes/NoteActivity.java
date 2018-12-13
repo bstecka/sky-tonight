@@ -8,9 +8,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.entity.NoteFile;
 import com.example.barbara.skytonight.presentation.core.CalendarContract;
 import com.example.barbara.skytonight.presentation.util.LocaleHelper;
 
@@ -32,7 +34,8 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boolean weekMode = false;
+        boolean weekMode = false, createMode = false;
+        String filePath = null;
         Bundle bundle = getIntent().getExtras();
         Calendar selectedDate = Calendar.getInstance();
         if (bundle != null) {
@@ -41,7 +44,7 @@ public class NoteActivity extends AppCompatActivity {
                 selectedDate.set(Calendar.DAY_OF_YEAR, bundle.getInt("dayOfYear"));
             }
             else if (bundle.getString("filePath") != null) {
-                String filePath = bundle.getString("filePath");
+                filePath = bundle.getString("filePath");
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
                 try {
                     Date date = sdf.parse(filePath.substring(4, 13));
@@ -52,26 +55,19 @@ public class NoteActivity extends AppCompatActivity {
             }
             if (bundle.getInt("type") == CalendarContract.TAB_TYPE_WEEK)
                 weekMode = true;
+            if (bundle.getInt("create") == CalendarContract.CREATE_MODE)
+                createMode = true;
         }
         setContentView(R.layout.activity_note);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.noteFragment);
         noteFragment = (NoteFragment) currentFragment;
-        if (noteFragment == null) {
-            noteFragment = new NoteFragment();
+        if (noteFragment != null) {
             noteFragment.setPresenter(new NotePresenter(noteFragment));
             noteFragment.setSelectedDate(selectedDate);
-            if (weekMode)
-                noteFragment.setWeekMode(true);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.noteFragment, noteFragment);
-            transaction.commit();
-        }
-        else {
-            noteFragment.setPresenter(new NotePresenter(noteFragment));
-            noteFragment.setSelectedDate(selectedDate);
-            if (weekMode)
-                noteFragment.setWeekMode(true);
+            noteFragment.setWeekMode(weekMode);
+            noteFragment.setCreateMode(createMode);
+            noteFragment.setFilePath(filePath);
         }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);

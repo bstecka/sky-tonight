@@ -59,7 +59,6 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Toolbar", "On click");
                 getViewActivity().onBackPressed();
             }
         });
@@ -72,9 +71,7 @@ public class SettingsFragment extends Fragment implements SettingsContract.View 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.e("onOptions", item.getItemId() + "");
         if (item.getItemId() == android.R.id.home) {
-            Log.e("Settings", "Home");
             getViewActivity().onBackPressed();
             return true;
         }

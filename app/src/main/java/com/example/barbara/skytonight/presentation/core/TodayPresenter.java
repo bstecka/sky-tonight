@@ -49,7 +49,6 @@ public class TodayPresenter implements TodayContract.Presenter {
         mLocationRepository.getUserLocation(mTodayView.getCurrentActivity(), new LocationDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
-                Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                 mTodayView.refreshLocationInAdapter(location);
                 loadISS(location.getLatitude(), location.getLongitude());
                 loadWeather(location.getLatitude(), location.getLongitude());
@@ -76,12 +75,13 @@ public class TodayPresenter implements TodayContract.Presenter {
         mISSRepository.getISSObject(time, latitude, longitude, new ISSDataSource.GetISSObjectCallback() {
             @Override
             public void onDataLoaded(ISSObject issObject) {
+                mTodayView.hideErrorText();
                 mTodayView.updateList(issObject);
             }
 
             @Override
             public void onDataNotAvailable() {
-                //Log.e("TodayPresenter", "ISS station not available");
+                mTodayView.showErrorText();
             }
         });
     }
@@ -97,13 +97,18 @@ public class TodayPresenter implements TodayContract.Presenter {
                     if (weatherObjectList.get(i).getTime().getTimeInMillis() >= time.getTimeInMillis())
                         index = i;
                 }
-                WeatherObject next = weatherObjectList.get(index);
-                mTodayView.updateWeatherView(next);
+                if (index != -1) {
+                    WeatherObject next = weatherObjectList.get(index);
+                    mTodayView.hideErrorText();
+                    mTodayView.updateWeatherView(next);
+                } else {
+                    mTodayView.showErrorText();
+                }
             }
 
             @Override
             public void onDataNotAvailable() {
-                //Log.e("TodayPresenter", "Weather not available");
+                mTodayView.showErrorText();
             }
         });
     }
@@ -118,11 +123,12 @@ public class TodayPresenter implements TodayContract.Presenter {
             mAstroObjectRepository.getAstroObject(time, id, new AstroObjectsDataSource.GetAstroObjectsCallback() {
                 @Override
                 public void onDataLoaded(AstroObject object) {
+                    mTodayView.hideErrorText();
                     mTodayView.updateList(object);
                 }
                 @Override
                 public void onDataNotAvailable() {
-                    //Log.e("TodayPresenter", "AstroObject not available");
+                    mTodayView.showErrorText();
                 }
             });
         }

@@ -101,19 +101,17 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (getActivity() != null)
+            getActivity().invalidateOptionsMenu();
         switch (item.getItemId()) {
             case R.id.action_delete:
                 inDeleteMode = true;
-                if (getActivity() != null)
-                    getActivity().invalidateOptionsMenu();
                 mAdapter.clearSelectedFiles();
                 mAdapter.setDeleteMode(true);
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
                 return true;
             case R.id.action_delete_selected:
                 inDeleteMode = false;
-                if (getActivity() != null)
-                    getActivity().invalidateOptionsMenu();
                 mAdapter.setDeleteMode(false);
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
                 List<File> selectedFiles = mAdapter.getSelectedFiles();
@@ -121,8 +119,6 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
                 return true;
             case R.id.action_cancel:
                 inDeleteMode = false;
-                if (getActivity() != null)
-                    getActivity().invalidateOptionsMenu();
                 mAdapter.setDeleteMode(false);
                 mAdapter.clearSelectedFiles();
                 mAdapter.notifyItemRangeChanged(0, mAdapter.getItemCount());
@@ -136,6 +132,7 @@ public class NotesListFragment extends Fragment implements NotesListContract.Vie
         intent.putExtra("type", CalendarContract.TAB_TYPE_DAY);
         intent.putExtra("year", Calendar.getInstance().get(Calendar.YEAR));
         intent.putExtra("dayOfYear", Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        intent.putExtra("create", CalendarContract.CREATE_MODE);
         startActivity(intent);
     }
 

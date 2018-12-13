@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -55,7 +54,6 @@ public class AstroObjectsRemoteDataSource implements AstroObjectsDataSource {
         time2.add(Calendar.HOUR, 1);
         String endDate = isoFormat.format(time2.getTime());
         String url = String.format(AppConstants.ASTRO_OBJECT_API_URL, objectId, startDate, endDate);
-        Log.e("RemoteDataSource", url);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

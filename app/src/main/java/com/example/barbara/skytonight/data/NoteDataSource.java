@@ -16,6 +16,8 @@ public interface NoteDataSource {
     void readNotesForDay(Calendar selectedDate, GetNoteFilesCallback callback);
     void readNotesForWeek(final Calendar selectedDate, GetNoteFilesCallback callback);
     void readNotesForMonth(int month, int year, GetNoteFilesCallback callback);
+    void readSingleNote(String fileName, GetNoteFilesCallback callback);
     void deleteFiles(List<File> fileList);
+    void replaceFile(String filePath, String content);
     void saveFile(Calendar date, String content);
 }

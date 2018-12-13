@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
@@ -48,19 +49,7 @@ public class NotesListActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.notesListFragment);
         NotesListFragment notesListFragment = (NotesListFragment) currentFragment;
-        if (notesListFragment == null) {
-            notesListFragment = new NotesListFragment();
-            notesListFragment.setPresenter(new NotesListPresenter(notesListFragment));
-            notesListFragment.setSelectedDate(selectedDate);
-            if (selectedMonth != null)
-                notesListFragment.setSelectedMonthYear(selectedMonth, selectedYear);
-            if (weekMode)
-                notesListFragment.setWeekMode(true);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.notesListFragment, notesListFragment);
-            transaction.commit();
-        }
-        else {
+        if (notesListFragment != null) {
             notesListFragment.setPresenter(new NotesListPresenter(notesListFragment));
             notesListFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)

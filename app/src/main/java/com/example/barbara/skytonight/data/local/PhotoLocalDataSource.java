@@ -52,11 +52,7 @@ public class PhotoLocalDataSource implements PhotoDataSource {
     }
 
     public File createImageFile(Calendar selectedDate) {
-        String timeStamp;
-        if (selectedDate != null)
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(selectedDate.getTime());
-        else
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File file;
         try {

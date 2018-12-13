@@ -1,7 +1,6 @@
 package com.example.barbara.skytonight.data.remote;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,7 +44,6 @@ public class ISSRemoteDataSource implements ISSDataSource {
         final ArrayList<Integer> durations = new ArrayList<>();
         final ISSObject issObject = new ISSObject(flybyTimes, durations, time);
         String url = this.url + "&lat=" + latitude + "&lon=" + longitude;
-        Log.e("getISSObject", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

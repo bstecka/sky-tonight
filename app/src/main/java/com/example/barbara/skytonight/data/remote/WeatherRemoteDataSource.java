@@ -44,7 +44,6 @@ public class WeatherRemoteDataSource implements WeatherDataSource {
     public void getWeatherObjects(final double latitude, final double longitude, final GetWeatherObjectsCallback callback) {
         final List<WeatherObject> weatherObjects = new ArrayList<>();
         String url = this.url + "?lat=" + latitude + "&lng=" + longitude;
-        Log.e("getWeatherObjects", url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

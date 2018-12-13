@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.barbara.skytonight.R;
+import com.example.barbara.skytonight.entity.NoteFile;
 import com.example.barbara.skytonight.presentation.notes.NoteContract;
 
 import java.util.Calendar;
@@ -23,6 +24,8 @@ public class NoteFragment extends Fragment implements NoteContract.View {
     private View view;
     private boolean editModeEnabled = false;
     private boolean weekMode = false;
+    private boolean createMode = false;
+    String filePath;
 
     @Override
     public void setPresenter(NoteContract.Presenter presenter) {
@@ -63,8 +66,27 @@ public class NoteFragment extends Fragment implements NoteContract.View {
         return view;
     }
 
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    @Override
+    public String getFilePath() {
+        return filePath;
+    }
+
     public void setWeekMode(boolean value) {
         weekMode = value;
+    }
+
+    public void setCreateMode(boolean value) { createMode = value; }
+
+    @Override
+    public void exitCreateMode() { createMode = false; }
+
+    @Override
+    public boolean isCreateModeEnabled() {
+        return createMode;
     }
 
     @Override

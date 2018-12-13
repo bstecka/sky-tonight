@@ -10,6 +10,8 @@ import com.example.barbara.skytonight.entity.NoteFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class NotesListPresenter implements NotesListContract.Presenter {
@@ -26,14 +28,14 @@ public class NotesListPresenter implements NotesListContract.Presenter {
     @Override
     public void start() {
         mNotesListView.clearListInView();
-        readNotesAsync();
+        readNotes();
     }
 
     @Override
     public void deleteFiles(List<File> fileList){
         noteRepository.deleteFiles(fileList);
         mNotesListView.clearListInView();
-        readNotesAsync();
+        readNotes();
     }
 
     private void readNotesForDay(Calendar selectedDate) {
@@ -43,6 +45,12 @@ public class NotesListPresenter implements NotesListContract.Presenter {
             @Override
             public void onDataLoaded(NoteFile file) {
                 list.add(file);
+                Collections.sort(list, new Comparator<NoteFile>() {
+                    @Override
+                    public int compare(NoteFile o1, NoteFile o2) {
+                        return o1.getDate().compareTo(o2.getDate());
+                    }
+                });
                 mNotesListView.refreshListInView();
             }
 
@@ -60,6 +68,12 @@ public class NotesListPresenter implements NotesListContract.Presenter {
             @Override
             public void onDataLoaded(NoteFile file) {
                 list.add(file);
+                Collections.sort(list, new Comparator<NoteFile>() {
+                    @Override
+                    public int compare(NoteFile o1, NoteFile o2) {
+                        return o1.getDate().compareTo(o2.getDate());
+                    }
+                });
                 mNotesListView.refreshListInView();
             }
 
@@ -77,6 +91,12 @@ public class NotesListPresenter implements NotesListContract.Presenter {
             @Override
             public void onDataLoaded(NoteFile file) {
                 list.add(file);
+                Collections.sort(list, new Comparator<NoteFile>() {
+                    @Override
+                    public int compare(NoteFile o1, NoteFile o2) {
+                        return o1.getDate().compareTo(o2.getDate());
+                    }
+                });
                 mNotesListView.refreshListInView();
             }
 
@@ -87,7 +107,7 @@ public class NotesListPresenter implements NotesListContract.Presenter {
         });
     }
 
-    private void readNotesAsync() {
+    private void readNotes() {
         Calendar selectedDate = mNotesListView.getSelectedDate();
         if (mNotesListView.isWeekModeEnabled()) {
             readNotesForWeek(selectedDate);

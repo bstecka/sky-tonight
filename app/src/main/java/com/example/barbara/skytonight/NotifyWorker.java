@@ -51,7 +51,6 @@ public class NotifyWorker extends Worker {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (preferences.getBoolean(AppConstants.PREF_KEY_NOTIF_EVENTS, true)) {
             triggerNotificationsForEvents();
-            Log.e("NotifyWorker", "N1 doing work");
         }
         return Worker.Result.SUCCESS;
     }
@@ -75,7 +74,7 @@ public class NotifyWorker extends Worker {
         android.content.res.Configuration conf = res.getConfiguration();
         conf.locale = new Locale(LocaleHelper.getPersistedLocale(context));
         res.updateConfiguration(conf, null);
-        long timeWindowMilis = 60 * 1000 * 12; //NOTIFY 12 HOURS BEFORE THE EVENT
+        long timeWindowMilis = 60 * 1000 * 12;
         long timeCushion = 60 * 1000;
         Calendar now = Calendar.getInstance();
         for (int i = 0; i < events.size(); i++) {

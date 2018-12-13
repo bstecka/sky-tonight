@@ -54,19 +54,7 @@ public class AudioActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.audioFragment);
         AudioFragment audioFragment = (AudioFragment) currentFragment;
-        if (audioFragment == null) {
-            audioFragment = new AudioFragment();
-            audioFragment.setPresenter(new AudioPresenter(audioFragment));
-            audioFragment.setSelectedDate(selectedDate);
-            if (selectedMonth != null)
-                audioFragment.setSelectedMonthYear(selectedMonth, selectedYear);
-            if (weekMode)
-                audioFragment.setWeekMode(true);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.audioFragment, audioFragment);
-            transaction.commit();
-        }
-        else {
+        if (audioFragment != null) {
             audioFragment.setPresenter(new AudioPresenter(audioFragment));
             audioFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
@@ -100,7 +88,6 @@ public class AudioActivity extends AppCompatActivity {
             case AppConstants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                        Log.e("onRequestPermission", "Record audio");
                         AudioFragment audioView = (AudioFragment) getSupportFragmentManager().findFragmentById(R.id.audioFragment);
                         if (audioView != null)
                             audioView.setRecordingPermitted(true);

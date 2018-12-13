@@ -85,14 +85,14 @@ public class CoreActivity extends AppCompatActivity implements CoreContract.View
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                this.startActivity(intent);
+                Intent intentSettings = new Intent(this, SettingsActivity.class);
+                intentSettings.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                this.startActivity(intentSettings);
                 finish();
                 return true;
             case R.id.action_info:
-                Intent intent2 = new Intent(this, InfoActivity.class);
-                this.startActivity(intent2);
+                Intent intentInfo = new Intent(this, InfoActivity.class);
+                this.startActivity(intentInfo);
                 return true;
         }
         return super.onOptionsItemSelected(item);

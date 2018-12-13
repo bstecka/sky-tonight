@@ -17,25 +17,32 @@ public class NotePresenter implements NoteContract.Presenter {
 
     @Override
     public void start() {
-        readFiles();
+        readFile();
     }
 
-    private void readFiles() {
-        noteRepository.readNotesForDay(mNotesView.getSelectedDate(), new NoteDataSource.GetNoteFilesCallback() {
-            @Override
-            public void onDataLoaded(NoteFile file) {
-                mNotesView.setText(file.getContent());
-            }
+    private void readFile() {
+        if (!mNotesView.isCreateModeEnabled()) {
+            noteRepository.readSingleNote(mNotesView.getFilePath(), new NoteDataSource.GetNoteFilesCallback() {
+                @Override
+                public void onDataLoaded(NoteFile file) {
+                    mNotesView.setText(file.getContent());
+                }
 
-            @Override
-            public void onDataNotAvailable() {
+                @Override
+                public void onDataNotAvailable() {
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void saveFile(String text) {
-        noteRepository.saveFile(mNotesView.getSelectedDate(), text);
+        if (mNotesView.isCreateModeEnabled()) {
+            noteRepository.saveFile(mNotesView.getSelectedDate(), text);
+            mNotesView.exitCreateMode();
+        }
+        else
+            noteRepository.replaceFile(mNotesView.getFilePath(), text);
         mNotesView.setText(text);
     }
 }

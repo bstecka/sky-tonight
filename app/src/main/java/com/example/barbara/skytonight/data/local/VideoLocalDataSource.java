@@ -1,4 +1,5 @@
 package com.example.barbara.skytonight.data.local;
+
 import android.content.Context;
 import android.os.Environment;
 
@@ -66,11 +67,7 @@ public class VideoLocalDataSource implements VideoDataSource {
 
     @Override
     public File createFile(Calendar date) {
-        String timeStamp;
-        if (date != null)
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date.getTime());
-        else
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
         String imageFileName = "MP4_" + timeStamp + "_";
         File file = null;
         try {

@@ -3,6 +3,7 @@ package com.example.barbara.skytonight.presentation.notes;
 import android.app.Activity;
 import android.content.Context;
 
+import com.example.barbara.skytonight.entity.NoteFile;
 import com.example.barbara.skytonight.presentation.BasePresenter;
 import com.example.barbara.skytonight.presentation.BaseView;
 
@@ -15,7 +16,10 @@ public class NoteContract {
         Context getContext();
         Activity getViewActivity();
         Calendar getSelectedDate();
+        String getFilePath();
         boolean isWeekModeEnabled();
+        boolean isCreateModeEnabled();
+        void exitCreateMode();
     }
 
     interface Presenter extends BasePresenter {

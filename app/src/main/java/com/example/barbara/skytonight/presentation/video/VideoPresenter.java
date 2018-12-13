@@ -10,14 +10,20 @@ import com.example.barbara.skytonight.data.VideoDataSource;
 import com.example.barbara.skytonight.data.repository.VideoRepository;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class VideoPresenter implements VideoContract.Presenter {
 
     private final VideoContract.View mVideoView;
     private VideoRepository videoRepository;
+    private File lastSavedFile;
 
     public VideoPresenter(VideoContract.View mVideoView) {
         this.mVideoView = mVideoView;
@@ -34,12 +40,20 @@ public class VideoPresenter implements VideoContract.Presenter {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (takeVideoIntent.resolveActivity(mVideoView.getViewActivity().getPackageManager()) != null) {
             File videoFile = createFile();
+            lastSavedFile = videoFile;
             if (videoFile != null) {
                 Uri videoURI = FileProvider.getUriForFile(mVideoView.getContext(), "com.example.barbara.skytonight.fileprovider", videoFile);
                 takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, videoURI);
             }
             mVideoView.startVideoActivity(takeVideoIntent);
         }
+    }
+
+    @Override
+    public void deleteLastSavedFile() {
+        List<File> fileList = new ArrayList<>();
+        fileList.add(lastSavedFile);
+        deleteFiles(fileList);
     }
 
     @Override
@@ -56,6 +70,12 @@ public class VideoPresenter implements VideoContract.Presenter {
             public void onDataLoaded(List<File> files) {
                 list.clear();
                 list.addAll(files);
+                Collections.sort(list, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return getDate(o1).compareTo(getDate(o2));
+                    }
+                });
                 mVideoView.refreshListInView();
             }
 
@@ -73,6 +93,12 @@ public class VideoPresenter implements VideoContract.Presenter {
             public void onDataLoaded(List<File> files) {
                 list.clear();
                 list.addAll(files);
+                Collections.sort(list, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return getDate(o1).compareTo(getDate(o2));
+                    }
+                });
                 mVideoView.refreshListInView();
             }
 
@@ -90,6 +116,12 @@ public class VideoPresenter implements VideoContract.Presenter {
             public void onDataLoaded(List<File> files) {
                 list.clear();
                 list.addAll(files);
+                Collections.sort(list, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return getDate(o1).compareTo(getDate(o2));
+                    }
+                });
                 mVideoView.refreshListInView();
             }
 
@@ -115,4 +147,16 @@ public class VideoPresenter implements VideoContract.Presenter {
         return videoRepository.createFile(mVideoView.getSelectedDate());
     }
 
+    private Calendar getDate(File file) {
+        Calendar calendar = Calendar.getInstance();
+        String filePath = file.getName();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        try {
+            Date date = sdf.parse(filePath.substring(4, 19));
+            calendar.setTime(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return calendar;
+    }
 }

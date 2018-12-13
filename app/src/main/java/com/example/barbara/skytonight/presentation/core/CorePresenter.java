@@ -1,7 +1,5 @@
 package com.example.barbara.skytonight.presentation.core;
 
-import android.util.Log;
-
 public class CorePresenter implements CoreContract.Presenter {
 
     private TodayPresenter mTodayPresenter;
@@ -16,7 +14,6 @@ public class CorePresenter implements CoreContract.Presenter {
     }
 
     public void refreshLocation() {
-        Log.e("CorePresenter", "refresh Location");
         mTodayPresenter.start();
     }
 }

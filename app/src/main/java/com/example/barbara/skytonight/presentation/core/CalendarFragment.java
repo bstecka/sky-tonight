@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -257,18 +258,14 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     public void updateDayInfoText(Calendar selectedDate) {
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         if (tabLayout.getSelectedTabPosition() == 0) {
-            int numberOfWords = mPresenter.getNumberOfWords(selectedDate);
-            int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
-            int numberOfVideos = mPresenter.getNumberOfVideos(selectedDate);
-            int numberOfVoiceNotes = mPresenter.getNumberOfVoiceNotes(selectedDate);
-            int others = numberOfVideos + numberOfVoiceNotes;
             TextView textView = view.findViewById(R.id.dayInfoTextView);
-            textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : "", others));
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
             textView.setText(sdf.format(selectedDate.getTime()));
         }
         else if (tabLayout.getSelectedTabPosition() == 1) {
-            int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK) - 1;
+            int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
+            if (Locale.getDefault().toLanguageTag().contains("pl"))
+                dayOfWeek--;
             Calendar weekStart = Calendar.getInstance();
             weekStart.setTime(selectedDate.getTime());
             weekStart.add(Calendar.DAY_OF_YEAR, -(dayOfWeek - 1));
@@ -300,12 +297,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     }
 
     private void onNotesButtonClick() {
-        TabLayout tabLayout = view.findViewById(R.id.tabs);
-        Intent intent;
-        if (tabLayout.getSelectedTabPosition() == 0)
-            intent = new Intent(getActivity(), NoteActivity.class);
-        else
-            intent = new Intent(getActivity(), NotesListActivity.class);
+        Intent intent = new Intent(getActivity(), NotesListActivity.class);
         startActivityOnMenuButton(intent);
     }
 

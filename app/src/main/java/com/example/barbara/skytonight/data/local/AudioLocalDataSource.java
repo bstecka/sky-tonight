@@ -46,11 +46,7 @@ public class AudioLocalDataSource implements AudioDataSource {
 
     @Override
     public File createFile(Calendar date) {
-        String timeStamp;
-        if (date != null)
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date.getTime());
-        else
-            timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Calendar.getInstance().getTime());
         String imageFileName = "3GP_" + timeStamp + "_";
         File file = null;
         try {

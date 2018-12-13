@@ -1,9 +1,7 @@
 package com.example.barbara.skytonight.data;
 
 import com.example.barbara.skytonight.entity.NewsHeadline;
-import com.example.barbara.skytonight.entity.ArticleContentWrapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface NewsDataSource {

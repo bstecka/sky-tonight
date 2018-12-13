@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
@@ -49,19 +50,7 @@ public class VideoActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.videoFragment);
         VideoFragment videoFragment = (VideoFragment) currentFragment;
-        if (videoFragment == null) {
-            videoFragment = new VideoFragment();
-            videoFragment.setPresenter(new VideoPresenter(videoFragment));
-            videoFragment.setSelectedDate(selectedDate);
-            if (selectedMonth != null)
-                videoFragment.setSelectedMonthYear(selectedMonth, selectedYear);
-            if (weekMode)
-                videoFragment.setWeekMode(true);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.videoFragment, videoFragment);
-            transaction.commit();
-        }
-        else {
+        if (videoFragment != null) {
             videoFragment.setPresenter(new VideoPresenter(videoFragment));
             videoFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)

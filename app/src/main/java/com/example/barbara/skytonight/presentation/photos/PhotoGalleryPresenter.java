@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+
 import com.example.barbara.skytonight.data.PhotoDataSource;
 import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.PhotoRepository;
@@ -12,6 +13,8 @@ import com.example.barbara.skytonight.entity.ImageFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
@@ -27,7 +30,7 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
     @Override
     public void start() {
         mPhotoGalleryView.clearListInView();
-        readPhotosAsync();
+        readPhotos();
     }
 
     @Override
@@ -47,7 +50,7 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
     public void deleteFiles(List<File> fileList){
         photoRepository.deleteFiles(fileList);
         mPhotoGalleryView.clearListInView();
-        readPhotosAsync();
+        readPhotos();
     }
 
     private void readPhotosForDay(Calendar selectedDate) {
@@ -56,6 +59,12 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
             @Override
             public void onDataLoaded(ImageFile file) {
                 list.add(file);
+                Collections.sort(list, new Comparator<ImageFile>() {
+                    @Override
+                    public int compare(ImageFile o1, ImageFile o2) {
+                        return o1.getDate().compareTo(o2.getDate());
+                    }
+                });
                 mPhotoGalleryView.refreshListInView();
             }
 
@@ -72,6 +81,12 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
             @Override
             public void onDataLoaded(ImageFile file) {
                 list.add(file);
+                Collections.sort(list, new Comparator<ImageFile>() {
+                    @Override
+                    public int compare(ImageFile o1, ImageFile o2) {
+                        return o1.getDate().compareTo(o2.getDate());
+                    }
+                });
                 mPhotoGalleryView.refreshListInView();
             }
 
@@ -88,6 +103,12 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
             @Override
             public void onDataLoaded(ImageFile file) {
                 list.add(file);
+                Collections.sort(list, new Comparator<ImageFile>() {
+                    @Override
+                    public int compare(ImageFile o1, ImageFile o2) {
+                        return o1.getDate().compareTo(o2.getDate());
+                    }
+                });
                 mPhotoGalleryView.refreshListInView();
             }
 
@@ -98,7 +119,7 @@ public class PhotoGalleryPresenter implements PhotoGalleryContract.Presenter {
         });
     }
 
-    private void readPhotosAsync() {
+    private void readPhotos() {
         Calendar selectedDate = mPhotoGalleryView.getSelectedDate();
         if (mPhotoGalleryView.isWeekModeEnabled()) {
             readPhotosForWeek(selectedDate);
