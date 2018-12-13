@@ -98,9 +98,13 @@ public class TodayPresenter implements TodayContract.Presenter {
                     if (weatherObjectList.get(i).getTime().getTimeInMillis() >= time.getTimeInMillis())
                         index = i;
                 }
-                WeatherObject next = weatherObjectList.get(index);
-                mTodayView.hideErrorText();
-                mTodayView.updateWeatherView(next);
+                if (index != -1) {
+                    WeatherObject next = weatherObjectList.get(index);
+                    mTodayView.hideErrorText();
+                    mTodayView.updateWeatherView(next);
+                } else {
+                    mTodayView.showErrorText();
+                }
             }
 
             @Override

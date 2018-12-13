@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -262,7 +263,9 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
             textView.setText(sdf.format(selectedDate.getTime()));
         }
         else if (tabLayout.getSelectedTabPosition() == 1) {
-            int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK) - 1;
+            int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
+            if (Locale.getDefault().toLanguageTag().contains("pl"))
+                dayOfWeek--;
             Calendar weekStart = Calendar.getInstance();
             weekStart.setTime(selectedDate.getTime());
             weekStart.add(Calendar.DAY_OF_YEAR, -(dayOfWeek - 1));
