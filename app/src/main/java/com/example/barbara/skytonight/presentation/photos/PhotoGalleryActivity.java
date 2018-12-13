@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
@@ -48,19 +49,7 @@ public class PhotoGalleryActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.photoGalleryFragment);
         PhotoGalleryFragment photoGalleryFragment = (PhotoGalleryFragment) currentFragment;
-        if (photoGalleryFragment == null) {
-            photoGalleryFragment = new PhotoGalleryFragment();
-            photoGalleryFragment.setPresenter(new PhotoGalleryPresenter(photoGalleryFragment));
-            photoGalleryFragment.setSelectedDate(selectedDate);
-            if (selectedMonth != null)
-                photoGalleryFragment.setSelectedMonthYear(selectedMonth, selectedYear);
-            if (weekMode)
-                photoGalleryFragment.setWeekMode(true);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.photoGalleryFragment, photoGalleryFragment);
-            transaction.commit();
-        }
-        else {
+        if (photoGalleryFragment != null) {
             photoGalleryFragment.setPresenter(new PhotoGalleryPresenter(photoGalleryFragment));
             photoGalleryFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)

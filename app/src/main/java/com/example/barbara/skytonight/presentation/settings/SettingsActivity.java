@@ -28,13 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.settingsFragment);
         settingsFragment = (SettingsFragment) currentFragment;
-        if (settingsFragment == null) {
-            settingsFragment = new SettingsFragment();
-            settingsFragment.setPresenter(new SettingsPresenter(settingsFragment));
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.settingsFragment, settingsFragment);
-            transaction.commit();
-        } else {
+        if (settingsFragment != null) {
             settingsFragment.setPresenter(new SettingsPresenter(settingsFragment));
         }
         if (getActionBar() != null) {

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.barbara.skytonight.R;
@@ -61,18 +62,7 @@ public class NoteActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.noteFragment);
         noteFragment = (NoteFragment) currentFragment;
-        if (noteFragment == null) {
-            noteFragment = new NoteFragment();
-            noteFragment.setPresenter(new NotePresenter(noteFragment));
-            noteFragment.setSelectedDate(selectedDate);
-            noteFragment.setWeekMode(weekMode);
-            noteFragment.setCreateMode(createMode);
-            noteFragment.setFilePath(filePath);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.noteFragment, noteFragment);
-            transaction.commit();
-        }
-        else {
+        if (noteFragment != null) {
             noteFragment.setPresenter(new NotePresenter(noteFragment));
             noteFragment.setSelectedDate(selectedDate);
             noteFragment.setWeekMode(weekMode);

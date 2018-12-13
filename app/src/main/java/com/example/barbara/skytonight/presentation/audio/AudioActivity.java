@@ -54,19 +54,7 @@ public class AudioActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.audioFragment);
         AudioFragment audioFragment = (AudioFragment) currentFragment;
-        if (audioFragment == null) {
-            audioFragment = new AudioFragment();
-            audioFragment.setPresenter(new AudioPresenter(audioFragment));
-            audioFragment.setSelectedDate(selectedDate);
-            if (selectedMonth != null)
-                audioFragment.setSelectedMonthYear(selectedMonth, selectedYear);
-            if (weekMode)
-                audioFragment.setWeekMode(true);
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.audioFragment, audioFragment);
-            transaction.commit();
-        }
-        else {
+        if (audioFragment != null) {
             audioFragment.setPresenter(new AudioPresenter(audioFragment));
             audioFragment.setSelectedDate(selectedDate);
             if (selectedMonth != null)
