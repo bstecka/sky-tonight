@@ -82,7 +82,7 @@ public class TodayPresenter implements TodayContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                //Log.e("TodayPresenter", "ISS station not available");
+                mTodayView.showErrorText();
             }
         });
     }
@@ -105,7 +105,7 @@ public class TodayPresenter implements TodayContract.Presenter {
 
             @Override
             public void onDataNotAvailable() {
-                //Log.e("TodayPresenter", "Weather not available");
+                mTodayView.showErrorText();
             }
         });
     }
@@ -125,7 +125,6 @@ public class TodayPresenter implements TodayContract.Presenter {
                 }
                 @Override
                 public void onDataNotAvailable() {
-                    //Log.e("TodayPresenter", "AstroObject not available");
                     mTodayView.showErrorText();
                 }
             });

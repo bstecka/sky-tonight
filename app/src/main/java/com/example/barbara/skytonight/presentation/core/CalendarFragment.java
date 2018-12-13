@@ -257,13 +257,7 @@ public class CalendarFragment extends Fragment implements CalendarContract.View 
     public void updateDayInfoText(Calendar selectedDate) {
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         if (tabLayout.getSelectedTabPosition() == 0) {
-            int numberOfWords = mPresenter.getNumberOfWords(selectedDate);
-            int numberOfPhotos = mPresenter.getNumberOfPhotos(selectedDate);
-            int numberOfVideos = mPresenter.getNumberOfVideos(selectedDate);
-            int numberOfVoiceNotes = mPresenter.getNumberOfVoiceNotes(selectedDate);
-            int others = numberOfVideos + numberOfVoiceNotes;
             TextView textView = view.findViewById(R.id.dayInfoTextView);
-            textView.setText(context.getString(R.string.day_info_text, numberOfWords, numberOfWords != 1 ? "s" : "", numberOfPhotos, numberOfPhotos != 1 ? "s" : "", others));
             SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
             textView.setText(sdf.format(selectedDate.getTime()));
         }
