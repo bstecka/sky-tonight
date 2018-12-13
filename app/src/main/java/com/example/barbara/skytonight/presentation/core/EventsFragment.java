@@ -34,7 +34,7 @@ public class EventsFragment extends Fragment implements EventsContract.View {
     private int currentlyDisplayedYear;
 
     public EventsFragment() {
-        list = new ArrayList<>();
+        this.list = new ArrayList<>();
         this.currentlyDisplayedMonth = Calendar.getInstance().get(Calendar.MONTH);
         this.currentlyDisplayedYear = Calendar.getInstance().get(Calendar.YEAR);
     }

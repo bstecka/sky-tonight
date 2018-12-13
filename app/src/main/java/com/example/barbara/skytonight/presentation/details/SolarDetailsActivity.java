@@ -30,10 +30,8 @@ public class SolarDetailsActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Serializable serializable = bundle.getSerializable("event");
-            if (serializable instanceof SolarEclipseEvent) {
+            if (serializable instanceof SolarEclipseEvent)
                 event = (SolarEclipseEvent) serializable;
-                Log.e("SolarDetails", event.getLongName() + " " + event.getImageUrl());
-            }
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.solarDetailsFragment);

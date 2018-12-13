@@ -49,7 +49,6 @@ public class NotifyWorkerISS extends Worker {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (preferences.getBoolean(AppConstants.PREF_KEY_NOTIF_ISS, true)) {
             triggerNotificationsForISS();
-            Log.e("NotifyWorkerISS", "NISS doing work");
         }
         return Result.SUCCESS;
     }
@@ -88,7 +87,7 @@ public class NotifyWorkerISS extends Worker {
         android.content.res.Configuration conf = res.getConfiguration();
         conf.locale = new Locale(LocaleHelper.getPersistedLocale(context));
         res.updateConfiguration(conf, null);
-        long timeCushion = 60 * 1000 * 10; // 10 MINUTES CUSHION
+        long timeCushion = 60 * 1000 * 10;
         Calendar now = Calendar.getInstance();
         final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         long diff = issObject.getNextFlyby().getTime().getTime() - now.getTime().getTime();

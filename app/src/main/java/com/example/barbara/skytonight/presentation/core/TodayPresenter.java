@@ -49,7 +49,6 @@ public class TodayPresenter implements TodayContract.Presenter {
         mLocationRepository.getUserLocation(mTodayView.getCurrentActivity(), new LocationDataSource.GetUserLocationCallback() {
             @Override
             public void onDataLoaded(Location location) {
-                Log.e("TodayPresenter", "onDataLoaded mFusedLocationClient success " + location.getLatitude() + " " + location.getLongitude());
                 mTodayView.refreshLocationInAdapter(location);
                 loadISS(location.getLatitude(), location.getLongitude());
                 loadWeather(location.getLatitude(), location.getLongitude());

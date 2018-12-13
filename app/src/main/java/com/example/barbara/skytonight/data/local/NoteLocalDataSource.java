@@ -180,7 +180,6 @@ public class NoteLocalDataSource implements NoteDataSource {
                 }
             });
             for (File file : filteredFiles) {
-                Log.e("NOTELOCAL", file.getName());
                 new NoteLocalDataSource.ReadTextFileTask(file, callback).execute(file);
             }
         }
@@ -222,10 +221,7 @@ public class NoteLocalDataSource implements NoteDataSource {
         @Override
         protected void onPostExecute(NoteFile result) {
             if (result != null && result.getContent().trim().length() > 1) {
-                Log.e("RESULT", result.getContent());
                 callback.onDataLoaded(result);
-            } else {
-                Log.e("RES", result.getContent() + "NAH");
             }
         }
 

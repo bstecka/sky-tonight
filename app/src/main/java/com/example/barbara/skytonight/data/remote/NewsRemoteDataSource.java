@@ -59,7 +59,6 @@ public class NewsRemoteDataSource implements NewsDataSource {
     @Override
     public void getNewsHeadlines(final GetNewsHeadlinesCallback callback) {
         final List<NewsHeadline> newsHeadlines = new ArrayList<>();
-        Log.e("getNewsHeadlines", baseUrl);
         StringRequest request = new StringRequest(Request.Method.GET, baseUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

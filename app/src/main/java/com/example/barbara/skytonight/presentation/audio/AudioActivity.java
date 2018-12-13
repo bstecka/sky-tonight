@@ -100,7 +100,6 @@ public class AudioActivity extends AppCompatActivity {
             case AppConstants.MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-                        Log.e("onRequestPermission", "Record audio");
                         AudioFragment audioView = (AudioFragment) getSupportFragmentManager().findFragmentById(R.id.audioFragment);
                         if (audioView != null)
                             audioView.setRecordingPermitted(true);
