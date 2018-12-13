@@ -1,7 +1,5 @@
 package com.example.barbara.skytonight.presentation.notes;
 
-import android.util.Log;
-
 import com.example.barbara.skytonight.data.NoteDataSource;
 import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.NoteRepository;
@@ -40,12 +38,11 @@ public class NotePresenter implements NoteContract.Presenter {
 
     public void saveFile(String text) {
         if (mNotesView.isCreateModeEnabled()) {
-            Log.e("SAVEFILE", "enabled");
             noteRepository.saveFile(mNotesView.getSelectedDate(), text);
             mNotesView.exitCreateMode();
         }
         else
-            noteRepository.replaceFile(mNotesView.getSelectedDate(), mNotesView.getFilePath(), text);
+            noteRepository.replaceFile(mNotesView.getFilePath(), text);
         mNotesView.setText(text);
     }
 }

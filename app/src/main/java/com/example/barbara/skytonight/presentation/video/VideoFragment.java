@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -199,6 +200,9 @@ public class VideoFragment extends Fragment implements VideoContract.View {
             Toast.makeText(view.getContext(), R.string.video_saved, Toast.LENGTH_SHORT).show();
             fileList.clear();
             mAdapter.notifyDataSetChanged();
+        }
+        else if(requestCode == REQUEST_VIDEO_CAPTURE) {
+            mPresenter.deleteLastSavedFile();
         }
     }
 

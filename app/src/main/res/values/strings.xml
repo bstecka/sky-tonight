@@ -179,8 +179,8 @@
     <string name="title_activity_lunar_details">LunarDetailsActivity</string>
     <string name="part_begins">Partial Eclipse begins: %1$s</string>
     <string name="part_ends">Partial Eclipse ends: %1$s</string>
-    <string name="pen_begins">Penunmbral Eclipse begins: %1$s</string>
-    <string name="pen_ends">Penunmbral Eclipse ends: %1$s</string>
+    <string name="pen_begins">Penumbral Eclipse begins: %1$s</string>
+    <string name="pen_ends">Penumbral Eclipse ends: %1$s</string>
     <string name="total_begins">Total Eclipse begins: %1$s</string>
     <string name="total_ends">Total Eclipse ends: %1$s</string>
     <string name="greatest_eclipse">Greatest Eclipse: %1$s</string>

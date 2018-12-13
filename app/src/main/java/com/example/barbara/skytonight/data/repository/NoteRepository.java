@@ -23,8 +23,8 @@ public class NoteRepository implements NoteDataSource {
     }
 
     @Override
-    public void replaceFile(Calendar date, String filePath, String content) {
-        mNoteDataSource.replaceFile(date, filePath, content);
+    public void replaceFile(String filePath, String content) {
+        mNoteDataSource.replaceFile(filePath, content);
     }
 
     @Override

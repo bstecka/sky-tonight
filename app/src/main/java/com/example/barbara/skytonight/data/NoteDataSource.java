@@ -18,6 +18,6 @@ public interface NoteDataSource {
     void readNotesForMonth(int month, int year, GetNoteFilesCallback callback);
     void readSingleNote(String fileName, GetNoteFilesCallback callback);
     void deleteFiles(List<File> fileList);
-    void replaceFile(Calendar date, String filePath, String content);
+    void replaceFile(String filePath, String content);
     void saveFile(Calendar date, String content);
 }

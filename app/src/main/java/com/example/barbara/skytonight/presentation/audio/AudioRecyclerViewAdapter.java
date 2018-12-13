@@ -50,6 +50,10 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         }
     }
 
+    public boolean isPlaying() {
+        return mediaPlayer != null && mediaPlayer.isPlaying();
+    }
+
     public void setDeleteMode(boolean value) {
         inDeleteMode = value;
     }
@@ -69,7 +73,7 @@ public class AudioRecyclerViewAdapter extends RecyclerView.Adapter<AudioRecycler
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmm", Locale.getDefault());
         Date date;
         try {
-            date = sdf.parse(file.getName().substring(4, 18));
+            date = sdf.parse(file.getName().substring(4, 17));
             calendar.setTime(date);
             SimpleDateFormat readable = new SimpleDateFormat("MMM dd yyyy, HH:mm", Locale.getDefault());
             holder.mTextView.setText(readable.format(calendar.getTime()));

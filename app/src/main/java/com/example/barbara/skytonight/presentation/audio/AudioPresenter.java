@@ -6,11 +6,18 @@ import android.util.Log;
 import com.example.barbara.skytonight.data.AudioDataSource;
 import com.example.barbara.skytonight.data.RepositoryFactory;
 import com.example.barbara.skytonight.data.repository.AudioRepository;
+import com.example.barbara.skytonight.entity.ImageFile;
+
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AudioPresenter implements AudioContract.Presenter {
 
@@ -67,6 +74,12 @@ public class AudioPresenter implements AudioContract.Presenter {
             public void onDataLoaded(List<File> files) {
                 list.clear();
                 list.addAll(files);
+                Collections.sort(list, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return getDate(o1).compareTo(getDate(o2));
+                    }
+                });
                 mAudioView.refreshListInView();
             }
 
@@ -84,6 +97,12 @@ public class AudioPresenter implements AudioContract.Presenter {
             public void onDataLoaded(List<File> files) {
                 list.clear();
                 list.addAll(files);
+                Collections.sort(list, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return getDate(o1).compareTo(getDate(o2));
+                    }
+                });
                 mAudioView.refreshListInView();
             }
 
@@ -101,6 +120,12 @@ public class AudioPresenter implements AudioContract.Presenter {
             public void onDataLoaded(List<File> files) {
                 list.clear();
                 list.addAll(files);
+                Collections.sort(list, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return getDate(o1).compareTo(getDate(o2));
+                    }
+                });
                 mAudioView.refreshListInView();
             }
 
@@ -120,6 +145,19 @@ public class AudioPresenter implements AudioContract.Presenter {
         } else if (mAudioView.getSelectedMonth() != null) {
             readFilesForMonth(mAudioView.getSelectedMonth(), mAudioView.getSelectedYear());
         }
+    }
+
+    private Calendar getDate(File file) {
+        Calendar calendar = Calendar.getInstance();
+        String filePath = file.getName();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        try {
+            Date date = sdf.parse(filePath.substring(4, 19));
+            calendar.setTime(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return calendar;
     }
 
     private File createFile() {

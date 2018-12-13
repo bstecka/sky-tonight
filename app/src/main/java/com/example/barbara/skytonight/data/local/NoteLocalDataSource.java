@@ -49,9 +49,7 @@ public class NoteLocalDataSource implements NoteDataSource {
     }
 
     @Override
-    public void replaceFile(Calendar date, final String filePath, String content) {
-        Log.e("NoteLocal", "REPLACE CALLED");
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(date.getTime());
+    public void replaceFile(final String filePath, String content) {
         if (storageDir != null) {
             File[] filteredFiles = storageDir.listFiles(new FilenameFilter() {
                 @Override
@@ -61,7 +59,7 @@ public class NoteLocalDataSource implements NoteDataSource {
                 file.delete();
         }
         try {
-            File file = createTextFile(date);
+            File file = createTextFile(filePath);
             writeStringAsFile(file, content);
         } catch (IOException e) {
             Log.e("NoteLocalDataSource", "IOException");
@@ -76,6 +74,11 @@ public class NoteLocalDataSource implements NoteDataSource {
         } catch (IOException e) {
             Log.e("NoteLocalDataSource", "IOException");
         }
+    }
+
+    private File createTextFile(String filePath) throws IOException {
+        String imageFileName = filePath.substring(0, 17);
+        return File.createTempFile(imageFileName, ".txt", storageDir);
     }
 
     private File createTextFile(Calendar date) throws IOException {
@@ -216,9 +219,8 @@ public class NoteLocalDataSource implements NoteDataSource {
 
         @Override
         protected void onPostExecute(NoteFile result) {
-            if (result != null && result.getContent().trim().length() > 1) {
+            if (result != null && result.getContent().trim().length() > 1)
                 callback.onDataLoaded(result);
-            }
         }
 
         @Override
